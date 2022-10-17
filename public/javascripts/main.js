@@ -2,6 +2,8 @@ function SideNavControl(button) {
 
     let sideNav = document.getElementsByClassName('side-nav-bar')[0]
     let mainSection = document.getElementsByClassName('main')[0]
+    let header_profile = document.getElementsByClassName('nav-bar')[0]
+    let hamburger = document.getElementsByClassName('hamburger')[0]
     let text_content = document.querySelectorAll('.side-nav-text')
     if (sideNav.clientWidth > 100) {
         text_content.forEach((div) => {
@@ -11,6 +13,8 @@ function SideNavControl(button) {
         });
         sideNav.style.width = "80px"
         mainSection.style.marginLeft = "80px"
+        header_profile.classList.toggle("full-navbar")
+        hamburger.classList.toggle('expand-hamburger')
         button.classList.toggle("change")
 
 
@@ -23,6 +27,8 @@ function SideNavControl(button) {
         });
         sideNav.style.width = "265px"
         mainSection.style.marginLeft = "265px"
+        header_profile.classList.toggle("full-navbar")
+        hamburger.classList.toggle('expand-hamburger')
         button.classList.toggle("change")
     }
 }
