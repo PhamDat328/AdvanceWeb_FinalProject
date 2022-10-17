@@ -590,3 +590,57 @@ tbody tr:nth-child(even) {
 
 
 /* End Home page CSS */
+
+/* Start admin homepage */
+
+.admin-menu .menu-btn-background:hover {
+    background-color: #1991c4;
+    cursor: pointer;
+}
+
+.admin-menu {
+    height: 70%;
+    width: 100%;
+}
+
+.admin-menu .menu-item {
+    width: 95%;
+    height: 56.5px;
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    margin-top: 45px;
+    transition: 0.3s;
+}
+
+.admin-menu .menu-item img {
+    width: 55px;
+    margin-left: 5px;
+}
+
+.admin-menu .menu-item p {
+    color: #fff;
+
+    position: absolute;
+    left: 32%;
+    font-size: 18px;
+    font-weight: 600;
+    width: 180px;
+}
+
+.admin-menu .menu-item:hover {
+    background-color: #1eaae7;
+    color: black;
+    cursor: pointer;
+}
+
+.admin-menu .menu-item:hover .side-nav-text {
+    color: #fff;
+    z-index: 2;
+}
+
+#admin #pending {
+    width: 80%;
+    margin: 0 auto;
+}
+/* End admin homepage */
