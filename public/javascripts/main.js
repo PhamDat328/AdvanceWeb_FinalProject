@@ -1,37 +1,110 @@
+// Start Login JS
+$(document).ready(function() {
+
+    let animating = false,
+        submitPhase1 = 1500,
+        submitPhase2 = 400,
+        $login = $(".login");
+
+    function ripple(elem, e) {
+        $(".ripple").remove();
+        let elTop = elem.offset().top,
+            elLeft = elem.offset().left,
+            x = e.pageX - elLeft,
+            y = e.pageY - elTop;
+        let $ripple = $("<div class='ripple'></div>");
+        $ripple.css({ top: y, left: x });
+        elem.append($ripple);
+    };
+
+    $(document).on("click", ".login__submit", function(e) {
+
+        if (animating) return;
+
+        animating = true;
+
+        let that = this;
+
+        ripple($(that), e);
+
+        $(that).addClass("processing");
+        setTimeout(function() {
+
+            $(that).addClass("success");
+
+            setTimeout(function() {
+                $login.hide();
+                $login.addClass("inactive");
+                animating = false;
+                $(that).removeClass("success processing");
+                window.location.href = "/"
+            }, submitPhase2);
+
+
+
+        }, submitPhase1);
+
+    });
+
+
+
+});
+
+// End Login JS
+
+//Start Side Nav Control (! Do not fix anything !)
+const body = document.body
+const sideNav = document.getElementsByClassName('side-nav-bar')[0]
+const mainSection = document.getElementsByClassName('main')[0]
+const hamburger = document.getElementsByClassName('hamburger')[0]
+const text_content = document.querySelectorAll('.side-nav-text')
+const header = document.getElementById("nav-bar-header")
+const logoName = document.getElementById("logo-Name")
+
 function SideNavControl(button) {
 
-    let sideNav = document.getElementsByClassName('side-nav-bar')[0]
-    let mainSection = document.getElementsByClassName('main')[0]
-    let header_profile = document.getElementsByClassName('nav-bar')[0]
-    let hamburger = document.getElementsByClassName('hamburger')[0]
-    let text_content = document.querySelectorAll('.side-nav-text')
-    if (sideNav.clientWidth > 100) {
+
+    if (body.clientWidth >= 1024) {
+
+        //remove below 1024px screen property
+        sideNav.classList.remove("side-nav-bar-expand")
+        mainSection.classList.remove("content-expand")
+            // header.classList.remove("minimize-navbar")
+
+        logoName.classList.toggle("hide-logo")
         text_content.forEach((div) => {
 
-            div.style.display = "none"
+            div.parentElement.classList.toggle("menu-item-hide")
+                // div.classList.toggle("menu-item-text-hide")
+
 
         });
-        sideNav.style.width = "80px"
-        mainSection.style.marginLeft = "80px"
-        header_profile.classList.toggle("full-navbar")
-        hamburger.classList.toggle('expand-hamburger')
-        button.classList.toggle("change")
+        //add new property
+        sideNav.classList.toggle("side-nav-bar-minimize")
+        mainSection.classList.toggle("content-minimize")
+            // header.classList.toggle("full-navbar")
 
 
     } else {
+        //remove on 1024px screen property
+        sideNav.classList.remove("side-nav-bar-minimize")
+        mainSection.classList.remove("content-minimize")
+            // header.classList.remove("full-navbar")
 
-        text_content.forEach((div) => {
+        //add new property
+        sideNav.classList.toggle("side-nav-bar-expand")
+        mainSection.classList.toggle("content-expand")
+            // header.classList.toggle("minimize-navbar")
 
-            div.style.display = "block"
-
-        });
-        sideNav.style.width = "265px"
-        mainSection.style.marginLeft = "265px"
-        header_profile.classList.toggle("full-navbar")
-        hamburger.classList.toggle('expand-hamburger')
-        button.classList.toggle("change")
     }
+
+    hamburger.classList.toggle('expand-hamburger')
+    button.classList.toggle("change")
+
 }
+
+
+// End Side Nav Control (! Do not fix anything !)
 
 // Start Notification Dropdown JS
 const notificationMenu = document.querySelector(".notification-dropdown")

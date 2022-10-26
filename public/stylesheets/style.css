@@ -9,8 +9,14 @@
 body {
     color: white;
     font-family: 'Lato', sans-serif;
-    max-width: 100vw;
-    max-height: 100vh;
+    max-width: 100%;
+    height: 100%;
+}
+
+.default-body {
+    overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 body::-webkit-scrollbar {
@@ -32,60 +38,90 @@ p {
     display: block !important;
 }
 
+.hide-logo {
+    display: none !important;
+    width: 0px !important;
+}
+
+.menu-item-hide {
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 15px 0 !important;
+    margin-top: 15px !important;
+}
+
+.menu-item-hide img {
+    width: 45px !important;
+}
+
+.menu-item-hide p {
+    font-size: 0.7rem !important;
+    text-align: center !important;
+    padding-top: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: clip;
+}
+
 
 /* Start Home page CSS */
 
 .main {
     margin-left: 265px;
     transition: 0.2s;
+    min-height: 900px;
+}
+
+.content-minimize {
+    margin-left: 80px !important;
 }
 
 .content-holder {
     margin-top: 100px;
 }
 
-header {
+#nav-bar-header {
     width: 100%;
+    height: 70px;
+    background-color: #50a3fa;
     position: fixed;
     top: 0;
-    z-index: 20;
-    transition: 0.2s;
+    z-index: 1;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
-footer {
-    margin-top: 30px;
+#nav-bar-header .nav-bar {
     width: 100%;
-    height: 70px;
-    background: aqua;
-}
-
-.nav-bar {
-    width: 100%;
-    height: 70px;
-    background-color: #1eaae7;
+    height: 100%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-wrap: nowrap;
+    padding: 0;
     transition: 0.2s;
 }
 
 .full-navbar {
-    padding-left: 10%;
+    padding-left: 80px !important;
 }
 
+.minimize-navbar {
+    padding-left: 265px !important;
+}
 
-/* .expand-hamburger {
-    position: relative;
-    right: 130px;
-    animation: hamburger-moving-in 0.4s;
-} */
-
-.header-profile {
+#nav-bar-header .header-content {
     height: 100%;
-    width: 36%;
     display: flex;
     align-items: center;
-    transition: 0.3s;
+    padding-right: 5.5rem;
+}
+
+#nav-bar-header .header-profile {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .click-profile {
@@ -101,7 +137,7 @@ footer {
     display: none;
     width: 165px;
     position: absolute;
-    top: 75px;
+    top: 70px;
     transform: translateX(50%);
     padding: 15px 0px;
 }
@@ -204,7 +240,7 @@ footer {
     width: 350px;
     z-index: 100;
     top: 55px;
-    transform: translateX(-100%);
+    transform: translateX(-85%);
     padding: 0;
     outline: none;
     border: none;
@@ -265,12 +301,20 @@ footer {
     width: 265px;
     background-color: #143B64;
     position: fixed;
-    z-index: 1;
-    top: 0;
+    z-index: 3;
+    top: 70px;
     left: 0;
     overflow-x: hidden;
     overflow-y: scroll;
-    transition: 0.2s;
+    transition: 0.3s;
+}
+
+.side-nav-bar-minimize {
+    width: 80px !important;
+}
+
+.side-nav-bar-expand {
+    width: 265px !important;
 }
 
 
@@ -292,25 +336,21 @@ footer {
 }
 
 .logo {
-    position: relative;
-    width: 100%;
-    height: 70px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 .logo img {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
     margin-left: 10px;
 }
 
 .logo p {
-    position: absolute;
+    padding-top: 10px;
+    padding-left: 10px;
     font-family: 'Coiny', cursive;
-    top: 60%;
-    left: 30%;
-    transform: translateY(-50%);
     font-size: 27px;
     font-weight: bolder;
     width: 180px;
@@ -323,6 +363,7 @@ footer {
     background-image: url(../images/16934033_5804870.jpg);
     background-size: auto;
     background-attachment: unset;
+    transition: all 0.5s;
 }
 
 @keyframes clouds-moving {
@@ -339,7 +380,6 @@ footer {
 
 .hamburger {
     display: inline-block;
-    position: absolute;
     cursor: pointer;
     margin: 12px 0px 6px 6px;
     width: 45px;
@@ -370,27 +410,27 @@ footer {
 }
 
 .change .bar1 {
-    transform: translate(-4px, 5px) rotate(-30deg);
+    transform: translate(8px, 5px) rotate(30deg);
     width: 20px;
     height: 3.5px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .change .bar2 {
-    transform: translate(5px, 0px);
+    transform: translate(1px, 0px);
     width: 30px;
     height: 4px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .change .bar3 {
-    transform: translate(-4px, -5px) rotate(30deg);
+    transform: translate(8px, -5px) rotate(-30deg);
     width: 20px;
     height: 3.5px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .menu-btn-background:hover {
@@ -415,15 +455,13 @@ footer {
 
 .menu-item img {
     width: 55px;
-    margin-left: 5px;
 }
 
 .menu-item p {
-    position: absolute;
-    left: 35%;
     font-size: 20px;
     font-weight: 600;
-    width: 180px;
+    width: 80%;
+    padding-left: 6%;
 }
 
 .menu-item:hover {
@@ -478,15 +516,15 @@ footer {
 /* Start main first row ( user balance + lastest transaction) */
 
 .first-row {
-    margin-top: 20px;
-    margin-left: 30px;
+    width: 90%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin: 20px auto 0px;
 }
 
 .first-panel {
-    width: 400px;
+    width: 380px;
     height: 245px;
     border-radius: 10px;
     background-image: url(/images/5f30235e70c35.jpg);
@@ -525,8 +563,7 @@ footer {
 }
 
 .second-panel {
-    margin-right: 40px;
-    width: 580px;
+    width: 55%;
     height: 260px;
     border-radius: 10px;
     padding: 0px 0px 15px;
@@ -610,65 +647,69 @@ tbody tr:nth-child(even) {
 
 .second-row {
     width: 90%;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-left: 55px;
-    margin-top: 50px;
+    margin: 50px auto 0px;
 }
 
 #userMonthlyFluctuations {
-    width: 100%;
-    max-height: 300px;
+    max-width: 100%;
+    height: 500px !important;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 
 /* End main second row (chart js) */
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    background: aqua;
+    margin-top: 20px;
+}
 
 
 /* Start home page responsive */
 
 @media screen and (max-width: 1450px) {
     .custome-header-1 {
-        font-size: 22px;
+        font-size: 25px;
     }
     .balance-font {
-        font-size: 28px;
+        font-size: 30px;
     }
     .second-panel {
-        width: 500px;
         margin-left: 20px;
     }
     .second-panel .custome-header {
-        font-size: 20px;
+        font-size: 25px;
     }
     .transaction-table img {
-        max-width: 25px;
+        max-width: 28px;
     }
     .transaction-table {
-        font-size: 13px;
+        font-size: 16px;
     }
     .first-panel {
-        width: 320px;
+        width: 35%;
+        background-size: cover;
     }
-    .header-profile {
-        width: 43%;
+    #userMonthlyFluctuations {
+        max-height: 480px;
     }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1250px) {
     .custome-header-1 {
         font-size: 30px;
     }
-    .balance-font {
-        font-size: 35px;
-    }
     .first-panel {
-        width: 420px;
+        width: 400px;
         margin-bottom: 40px;
-        background-size: cover;
     }
     .second-panel {
-        width: 95%;
+        width: 100%;
         margin-left: 0px;
         margin-right: 0px;
     }
@@ -682,19 +723,38 @@ tbody tr:nth-child(even) {
         font-size: 18px;
         font-weight: 500s;
     }
-    .header-profile {
-        width: 48%;
-    }
     .first-row {
         flex-direction: column;
+    }
+    .second-row {
+        padding-bottom: 30px;
     }
     .user-basic-info {
         margin-top: 20px;
     }
 }
 
-@media screen and (max-width: 980px) {
-    .header-profile {
+@media screen and (max-width: 1024px) {
+    .second-panel .custome-header {
+        font-size: 24px;
+    }
+    .transaction-table img {
+        max-width: 25px;
+    }
+    .transaction-table {
+        font-size: 15px;
+        font-weight: 800s;
+    }
+    .side-nav-bar {
+        width: 80px;
+    }
+    .main {
+        margin-left: 80px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* .header-profile {
         width: 55%;
     }
     .second-panel .custome-header {
@@ -706,7 +766,7 @@ tbody tr:nth-child(even) {
     .transaction-table {
         font-size: 13px;
         font-weight: 800;
-    }
+    } */
 }
 
 
@@ -714,3 +774,261 @@ tbody tr:nth-child(even) {
 
 
 /* End Home page CSS */
+
+
+/* Start Login Form CSS */
+
+svg {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    overflow: visible;
+}
+
+.svg-icon {
+    cursor: pointer;
+}
+
+.svg-icon path {
+    stroke: rgba(255, 255, 255, 0.9);
+    fill: none;
+    stroke-width: 1;
+}
+
+input,
+button {
+    outline: none;
+    border: none;
+}
+
+.cont * {
+    box-sizing: border-box;
+}
+
+.cont {
+    background-image: url("/images/login_background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: auto;
+    height: 100%;
+}
+
+.demo {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left: -15rem;
+    margin-top: -26.5rem;
+    width: 30rem;
+    height: 53rem;
+    overflow: hidden;
+}
+
+.login {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+    transition: opacity 0.1s, transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+    transform: scale(0.70);
+}
+
+.login.inactive {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+.login__form___logo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 2.5rem;
+}
+
+.login__form___logo::after {
+    content: "Smart Wallet";
+    font-size: 3rem;
+    font-weight: 600;
+    font-family: 'Coiny', cursive;
+    animation: clouds-moving infinite 100s;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    animation-timing-function: linear;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: url(../images/16934033_5804870.jpg);
+    background-size: auto;
+    background-attachment: unset;
+}
+
+.login__form {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    padding: 0rem 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.login__row {
+    height: 5rem;
+    padding-top: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login__icon {
+    margin-bottom: -0.4rem;
+    margin-right: 0.5rem;
+}
+
+.login__icon.name path {
+    stroke-dasharray: 73.50196075439453;
+    stroke-dashoffset: 73.50196075439453;
+    -webkit-animation: animatePath 2s 0.5s forwards;
+    animation: animatePath 2s 0.5s forwards;
+}
+
+.login__icon.pass path {
+    stroke-dasharray: 92.10662841796875;
+    stroke-dashoffset: 92.10662841796875;
+    -webkit-animation: animatePath 2s 0.5s forwards;
+    animation: animatePath 2s 0.5s forwards;
+}
+
+.login__input {
+    display: inline-block;
+    width: 22rem;
+    height: 100%;
+    padding-left: 1.5rem;
+    font-size: 1.5rem;
+    background: transparent;
+    color: #FDFCFD;
+}
+
+.login__submit {
+    position: relative;
+    width: 100%;
+    height: 4rem;
+    margin: 5rem 0 2.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: #1eaae7;
+    font-size: 1.5rem;
+    border-radius: 3rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
+}
+
+.login__submit:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -1.5rem;
+    margin-top: -1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border: 2px dotted #fff;
+    border-radius: 50%;
+    border-left: none;
+    border-bottom: none;
+    transition: opacity 0.1s 0.4s;
+    opacity: 0;
+}
+
+.login__submit.processing {
+    width: 4rem;
+    font-size: 0;
+}
+
+.login__submit.processing:after {
+    opacity: 1;
+    -webkit-animation: rotate 0.5s 0.4s infinite linear;
+    animation: rotate 0.5s 0.4s infinite linear;
+}
+
+.login__submit.success {
+    transition: transform 0.3s 0.1s ease-out, opacity 0.1s 0.3s, background-color 0.1s 0.3s;
+    transform: scale(30);
+    opacity: 0.9;
+}
+
+.login__submit.success:after {
+    transition: opacity 0.1s 0s;
+    opacity: 0;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.login__signup {
+    font-size: 1.2rem;
+    color: #ABA8AE;
+}
+
+.login__signup a {
+    color: #fff;
+    cursor: pointer;
+}
+
+.ripple {
+    position: absolute;
+    width: 15rem;
+    height: 15rem;
+    margin-left: -7.5rem;
+    margin-top: -7.5rem;
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0);
+    -webkit-animation: animRipple 0.4s;
+    animation: animRipple 0.4s;
+    border-radius: 50%;
+}
+
+@-webkit-keyframes animRipple {
+    to {
+        transform: scale(3.5);
+        opacity: 0;
+    }
+}
+
+@keyframes animRipple {
+    to {
+        transform: scale(3.5);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes animatePath {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes animatePath {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .login__form___logo img {
+        width: 11rem;
+    }
+}
+
+
+/* End Login Form CSS */
