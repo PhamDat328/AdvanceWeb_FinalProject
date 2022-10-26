@@ -715,7 +715,7 @@ tbody tr:nth-child(even) {
 /* End Home page CSS */
 
 /* Start Admin Homepage */
-.admin-menu .menu-item p {
+.admin-menu .menu-item {
     color: #fff;
     text-decoration: none;
 }
