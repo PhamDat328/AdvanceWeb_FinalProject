@@ -11,13 +11,13 @@ router.get("/activated", function (req, res) {
   res.render("activated", { layout: "admin" });
 });
 router.get("/locked", function (req, res) {
-  res.render("locked", { layouts: "admin" });
+  res.render("locked", { layout: "admin" });
 });
-router.get("/disable", function (req, res) {
-  res.render("disable", { layouts: "admin" });
+router.get("/disabled", function (req, res) {
+  res.render("disabled", { layout: "admin" });
 });
 router.get("/transactionApproval", function (req, res) {
-  res.render("transactionApproval", { layouts: "admin" });
+  res.render("transactionApproval", { layout: "admin" });
 });
 
 module.exports = router;
