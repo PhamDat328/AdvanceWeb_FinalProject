@@ -776,6 +776,9 @@ footer {
 /* End Home page CSS */
 
 
+/* End Home page CSS */
+
+
 /* Start Login Form CSS */
 
 svg {
@@ -1032,3 +1035,55 @@ button {
 
 
 /* End Login Form CSS */
+
+
+/* Start Admin Homepage */
+
+.admin-menu .menu-item {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* End Admin Homepage */
+
+
+/* Start Admin PendingPage */
+
+#admin #pending {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#admin #pending tr {
+    background-color: #fff !important;
+    background-image: unset;
+}
+
+#admin #pending thead tr th {
+    background-color: #8338ec;
+    color: #fff;
+}
+
+#admin #pending thead tr {
+    padding: 10px 0;
+}
+
+#admin #pending .pending-title {
+    background-color: #8338ec;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    margin: 2rem 0;
+}
+
+#admin #pending .pending-title .text-title {
+    padding: 20px;
+    font-weight: 700;
+    font-family: 'Coiny', cursive;
+    font-size: 24px;
+}
+
+
+/* End Admin PendingPage */
