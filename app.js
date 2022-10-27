@@ -12,8 +12,8 @@ const adminRouter = require("./routes/admin");
 const app = express();
 
 //Connect Database
-const DB = require("./connectDB")
-DB.connect()
+// const DB = require("./connectDB")
+// DB.connect()
 
 // view engine setup
 app.engine("hbs", hbs.engine({ extname: ".hbs", defaultLayout: "main" }));
