@@ -2,8 +2,9 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const logger = require("morgan");
+// const logger = require("morgan");
 const hbs = require("express-handlebars");
+const session = require("express-session");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -12,19 +13,31 @@ const adminRouter = require("./routes/admin");
 const app = express();
 
 //Connect Database
-// const DB = require("./connectDB")
-// DB.connect()
+const DB = require("./connectDB");
+DB.connect();
 
 // view engine setup
 app.engine("hbs", hbs.engine({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", "hbs");
 // const hbsCreate = hbs.create({});
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(__dirname + "/public"));
+app.use(
+    session({
+        resave: true,
+        saveUninitialized: true,
+        secret: "somesecret",
+    })
+);
+app.use((req, res, next) => {
+    res.locals.flash = req.session.flash;
+    delete req.session.flash;
+    next();
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

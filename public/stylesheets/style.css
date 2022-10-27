@@ -1188,6 +1188,9 @@ button {
     .login__form___logo img {
         width: 11rem;
     }
+    .login {
+        scale: 0.7;
+    }
 }
 
 
@@ -1244,3 +1247,104 @@ button {
 
 
 /* End Admin PendingPage */
+
+
+/* ----------------------------------------------------------------------------------- */
+
+
+/* Register page */
+
+#register {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+#register::-webkit-scrollbar {
+    display: none;
+}
+
+.register-form {
+    margin-top: 3rem;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+}
+
+.register-title {
+    color: #000;
+    text-align: center;
+    margin-top: 1.75rem;
+}
+
+.register-form form {
+    width: 100%;
+    display: flex;
+    /* background-color: rgb(147,153,157); */
+    /* position: absolute; */
+}
+
+.register-form form input {
+    width: 95%;
+}
+
+.register-form label {
+    color: black;
+    /* display: block; */
+}
+
+#register #form-1 {
+    width: 600px;
+    border: 1px solid black;
+    padding: 24px;
+    border-radius: 8px;
+    transform: translateX(50%);
+    transition: all .7s;
+}
+
+#register #form-2 {
+    width: 600px;
+    transition: all .7s;
+    height: fit-content;
+    border: 1px solid black;
+    padding: 24px;
+    border-radius: 8px;
+    transform: translateX(120%);
+}
+
+#register #form-1 button,
+#register #form-2 button {
+    float: right;
+    margin-left: 1rem;
+    padding: 0.65rem 2rem;
+    margin-top: 1rem;
+}
+
+#register .fontIdImage-error {
+    display: block;
+}
+
+#register .backIdImage-error {
+    display: block;
+}
+
+#register .fullName-error {
+    display: block;
+}
+
+#register .email-error {
+    display: block;
+}
+
+#register .address-error {
+    display: block;
+}
+
+#register .phoneNumber-error {
+    display: block;
+}
+
+#register .dateOfBirth-error {
+    display: block;
+}

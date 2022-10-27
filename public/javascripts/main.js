@@ -1,6 +1,5 @@
 // Start Login JS
 $(document).ready(function() {
-
     let animating = false,
         submitPhase1 = 1500,
         submitPhase2 = 400,
@@ -15,10 +14,9 @@ $(document).ready(function() {
         let $ripple = $("<div class='ripple'></div>");
         $ripple.css({ top: y, left: x });
         elem.append($ripple);
-    };
+    }
 
     $(document).on("click", ".login__submit", function(e) {
-
         if (animating) return;
 
         animating = true;
@@ -29,7 +27,6 @@ $(document).ready(function() {
 
         $(that).addClass("processing");
         setTimeout(function() {
-
             $(that).addClass("success");
 
             setTimeout(function() {
@@ -37,17 +34,10 @@ $(document).ready(function() {
                 $login.addClass("inactive");
                 animating = false;
                 $(that).removeClass("success processing");
-                window.location.href = "/"
+                window.location.href = "/";
             }, submitPhase2);
-
-
-
         }, submitPhase1);
-
     });
-
-
-
 });
 
 // End Login JS
@@ -62,7 +52,6 @@ const logoName = document.getElementById("logo-Name")
 const hamburger = document.getElementsByClassName("hamburger")[0]
 
 function SideNavControl(button) {
-
 
     if (body.clientWidth >= 1024) {
 
@@ -103,35 +92,25 @@ function SideNavControl(button) {
         window_wrapper.classList.toggle("wrapper-active")
         button.classList.toggle("unchange")
     }
-
-
-
-
 }
-
 
 // End Side Nav Control (! Do not fix anything !)
 
 // Start Notification Dropdown JS
-const notificationMenu = document.querySelector(".notification-dropdown")
-
-
+const notificationMenu = document.querySelector(".notification-dropdown");
 
 function showNotification() {
-
-    notificationMenu.classList.toggle("show")
-
+    notificationMenu.classList.toggle("show");
 }
-
 
 // End Notification Dropdown JS
 
 // Start User Option Dropdown
 
-const userOption = document.querySelector(".userOption")
+const userOption = document.querySelector(".userOption");
 
 function showUserOption() {
-    userOption.classList.toggle("show")
+    userOption.classList.toggle("show");
 }
 // End User Option Dropdown
 
@@ -166,6 +145,7 @@ window.addEventListener("resize", () => {
         if (body.clientWidth > 768) {
 
             window_wrapper.classList.remove("wrapper-active")
+            logoName.classList.remove("show-logo")
 
         }
         if (body.clientWidth > 1024) {
@@ -184,56 +164,107 @@ window.addEventListener("resize", () => {
     })
     //Start User Chart JS
 
-const userChart = document.getElementById("userMonthlyFluctuations")
+const userChart = document.getElementById("userMonthlyFluctuations");
 const monthlyBalanceFluctuationsChart = new Chart(userChart, {
-    type: 'bar',
+    type: "bar",
     data: {
-        labels: ['Black', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ["Black", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [{
-            label: '# of Votes',
+            label: "# of Votes",
             data: [10, 20, 30, 40, 50, 60],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
             ],
 
             borderWidth: 1,
-            barThickness: 30
-        }]
+            barThickness: 30,
+        }, ],
     },
     options: {
-
         plugins: {
             legend: { display: false },
             title: {
                 display: true,
                 text: "Monthly Balance Fluctuations",
             },
-
         },
 
         scales: {
-
-
             y: {
-                beginAtZero: true
-            }
-        }
-
-    }
+                beginAtZero: true,
+            },
+        },
+    },
 });
 
 //End User Chart JS
-//End User Chart JS
+
+
+// -------------------------------------------------------------
+// Register page
+
+const registerNextBtn = document.querySelector("#register-next-btn");
+const registerBackBtn = document.querySelector("#register-back-btn");
+const form2 = document.querySelector("#form-2");
+const form1 = document.querySelector("#form-1");
+const fullName = document.getElementsByName("fullName")[0];
+const email = document.getElementsByName("email")[0];
+const address = document.getElementsByName("address")[0];
+const phoneNumber = document.getElementsByName("phoneNumber")[0];
+const dateOfBirth = document.getElementsByName("dateOfBirth")[0];
+const fontIdImage = document.getElementsByName("fontIdImage")[0];
+const backIdImage = document.getElementsByName("backIdImage")[0];
+
+const fontIdImageError =
+    document.getElementsByClassName("fontIdImage-error")[0];
+const backIdImageError =
+    document.getElementsByClassName("backIdImage-error")[0];
+const fullNameError = document.getElementsByClassName("fullName-error")[0];
+const emailError = document.getElementsByClassName("email-error")[0];
+const addressError = document.getElementsByClassName("address-error")[0];
+const phoneNumberError =
+    document.getElementsByClassName("phoneNumber-error")[0];
+const dateOfBirthError =
+    document.getElementsByClassName("dateOfBirth-error")[0];
+
+registerNextBtn.addEventListener("click", () => {
+    console.log("click");
+    if (fullName.value === "") {
+        fullNameError.innerHTML = "Please enter your full name.";
+    } else if (email.value === "") {
+        emailError.innerHTML = "Please enter your email.";
+    } else if (address.value === "") {
+        addressError.innerHTML = "Please enter your address.";
+    } else if (phoneNumber.value === "") {
+        phoneNumberError.innerHTML = "Please enter your phone number.";
+    } else if (dateOfBirth.value === "") {
+        dateOfBirthError.innerHTML = "Please enter your date of birth.";
+    } else {
+        form2.style.transform = "translateX(-50%)";
+        form1.style.transform = "translateX(-120%)";
+    }
+});
+registerBackBtn.addEventListener("click", () => {
+    // console.log("click");
+    form2.style.transform = "translateX(120%)";
+    form1.style.transform = "translateX(50%)";
+});
+
+// ||
+//     email === "" ||
+//     address === "" ||
+//     phoneNumber === "" ||
+//     dateOfBirth === ""

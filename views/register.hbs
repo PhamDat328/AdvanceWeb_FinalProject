@@ -1,0 +1,91 @@
+<section id="register" class="container">
+  <h1 class="register-title">
+    Account Register
+  </h1>
+  <div class="register-form">
+    <form method="POST" action="/register" enctype="multipart/form-data">
+      <div id="form-1">
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input
+            name="fullName"
+            type="text"
+            class="form-control"
+            id="fullName"
+          />
+          <div class="form-text text-danger fullName-error"></div>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="dateOfBirth" class="form-label">Date of Birth</label>
+          <input
+            type="date"
+            class="form-control"
+            name="dateOfBirth"
+            id="dateOfBirth"
+          />
+          <div class="form-text text-danger dateOfBirth-error"></div>
+
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" id="email" />
+          <div class="form-text text-danger email-error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input type="text" name="address" class="form-control" id="address" />
+          <div class="form-text text-danger address-error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input
+            type="number"
+            name="phoneNumber"
+            class="form-control"
+            id="phoneNumber"
+          />
+          <div class="form-text text-danger phoneNumber-error"></div>
+        </div>
+
+        <button
+          id="register-next-btn"
+          type="button"
+          class="btn btn-success"
+        >Next</button>
+      </div>
+      <div id="form-2">
+        <div class="mb-3">
+          <label for="font" class="form-label">Font ID Image</label>
+          <input
+            type="file"
+            name="fontIdImage"
+            class="form-control"
+            id="email"
+          />
+          <div class="form-text text-danger fontIdImage-error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="back" class="form-label">Back ID Image</label>
+          <input
+            type="file"
+            name="backIdImage"
+            class="form-control"
+            id="back"
+          />
+          <div class="form-text text-danger backIdImage-error"></div>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+
+        <button
+          type="button"
+          id="register-back-btn"
+          class="btn btn-success"
+        >Back</button>
+
+      </div>
+    </form>
+  </div>
+
+</section>
