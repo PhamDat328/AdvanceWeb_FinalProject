@@ -7,6 +7,7 @@ router.get("/", function (req, res) {
   res.render("index", { title: "Express", layout: "admin" });
 });
 router.route("/pending").get(adminController.getPending);
+
 router.get("/activated", function (req, res) {
   res.render("activated", { layout: "admin" });
 });
