@@ -16,14 +16,29 @@ User.find((err, users) => {
   }).save();
 });
 
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express", layout: "main" });
-});
+router
+  .route("/")
+  .get(
+    authController.checkToken,
+    authController.refreshToken,
+    authController.getHomePage
+  );
 router.get("/pending", function (req, res, next) {
   res.render("pending", { title: "Express", layout: "main" });
 });
 
-router.route("/login").get(authController.getLoginPage);
+router.route("/successRegister").get(authController.getSuccessRegister);
+
+router
+  .route("/login")
+  .get(authController.getLoginPage)
+  .post(authController.postLoginPage);
+
+router.route("/logout").get(authController.logout);
+router
+  .route("/changePassword")
+  .get(authController.getChangePasswordPage)
+  .post(authController.postChangePasswordPage);
 router
   .route("/register")
   .get(authController.getRegisterPage)

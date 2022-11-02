@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 let Account = mongoose.Schema({
   username: String,
   password: String,
+  hashPassword: String,
+
   lockedTimes: {
     type: Number,
     default: 0,
@@ -18,6 +20,26 @@ let Account = mongoose.Schema({
   status: {
     type: String,
     default: "pending",
+  },
+  balance: {
+    type: Number,
+    default: 500000,
+  },
+  history: {
+    type: [],
+    default: [],
+  },
+  refreshToken: {
+    type: String,
+    default: "",
+  },
+  admin: {
+    type: Boolean,
+    default: false,
+  },
+  lastLogin: {
+    type: Date,
+    default: "",
   },
 });
 

@@ -1,44 +1,45 @@
 // Start Login JS
-$(document).ready(function () {
-  let animating = false,
-    submitPhase1 = 1500,
-    submitPhase2 = 400,
-    $login = $(".login");
+// $(document).ready(function () {
+//   let animating = false,
+//     submitPhase1 = 1500,
+//     submitPhase2 = 400,
+//     $login = $(".login");
 
-  function ripple(elem, e) {
-    $(".ripple").remove();
-    let elTop = elem.offset().top,
-      elLeft = elem.offset().left,
-      x = e.pageX - elLeft,
-      y = e.pageY - elTop;
-    let $ripple = $("<div class='ripple'></div>");
-    $ripple.css({ top: y, left: x });
-    elem.append($ripple);
-  }
+//   function ripple(elem, e) {
+//     $(".ripple").remove();
+//     let elTop = elem.offset().top,
+//       elLeft = elem.offset().left,
+//       x = e.pageX - elLeft,
+//       y = e.pageY - elTop;
+//     let $ripple = $("<div class='ripple'></div>");
+//     $ripple.css({ top: y, left: x });
+//     elem.append($ripple);
+//   }
 
-  $(document).on("click", ".login__submit", function (e) {
-    if (animating) return;
+// $(document).on("click", ".login__submit", function (e) {
+//   if (animating) return;
 
-    animating = true;
+//   animating = true;
 
-    let that = this;
+//   let that = this;
 
-    ripple($(that), e);
+//   ripple($(that), e);
 
-    $(that).addClass("processing");
-    setTimeout(function () {
-      $(that).addClass("success");
+//   $(that).addClass("processing");
+//   setTimeout(function () {
+//     $(that).addClass("success");
 
-      setTimeout(function () {
-        $login.hide();
-        $login.addClass("inactive");
-        animating = false;
-        $(that).removeClass("success processing");
-        window.location.href = "/";
-      }, submitPhase2);
-    }, submitPhase1);
-  });
-});
+//     setTimeout(function () {
+//       $login.hide();
+//       $login.addClass("inactive");
+//       animating = false;
+//       $(that).removeClass("success processing");
+//       // if()
+//       // window.location.href = "/";
+//     }, submitPhase2);
+//   }, submitPhase1);
+// });
+// });
 
 // End Login JS
 
@@ -187,6 +188,8 @@ const phoneNumber = document.getElementsByName("phoneNumber")[0];
 const dateOfBirth = document.getElementsByName("dateOfBirth")[0];
 const fontIdImage = document.getElementsByName("fontIdImage")[0];
 const backIdImage = document.getElementsByName("backIdImage")[0];
+const submitBtn = document.querySelector("#register .submit-btn");
+const form = document.querySelector("#register form");
 
 const fontIdImageError =
   document.getElementsByClassName("fontIdImage-error")[0];
@@ -200,18 +203,26 @@ const phoneNumberError =
 const dateOfBirthError =
   document.getElementsByClassName("dateOfBirth-error")[0];
 
+const allInputRegister = document.querySelectorAll("#register input");
+const allErrorSpan = document.querySelectorAll("#register span");
+allInputRegister.forEach((inp, index) => {
+  inp.addEventListener("focus", () => {
+    allErrorSpan[index].innerHTML = "";
+  });
+});
+
 registerNextBtn.addEventListener("click", () => {
   console.log("click");
   if (fullName.value === "") {
     fullNameError.innerHTML = "Please enter your full name.";
+  } else if (dateOfBirth.value === "") {
+    dateOfBirthError.innerHTML = "Please enter your date of birth.";
   } else if (email.value === "") {
     emailError.innerHTML = "Please enter your email.";
   } else if (address.value === "") {
     addressError.innerHTML = "Please enter your address.";
   } else if (phoneNumber.value === "") {
     phoneNumberError.innerHTML = "Please enter your phone number.";
-  } else if (dateOfBirth.value === "") {
-    dateOfBirthError.innerHTML = "Please enter your date of birth.";
   } else {
     form2.style.transform = "translateX(-50%)";
     form1.style.transform = "translateX(-120%)";
@@ -223,6 +234,15 @@ registerBackBtn.addEventListener("click", () => {
   form1.style.transform = "translateX(50%)";
 });
 
+submitBtn.addEventListener("click", (e) => {
+  if (fontIdImage.value === "") {
+    fontIdImageError.innerHTML = "Please enter your font id image.";
+  } else if (backIdImage.value === "") {
+    backIdImageError.innerHTML = "Please enter your back id image.";
+  } else {
+    form.submit();
+  }
+});
 // ||
 //     email === "" ||
 //     address === "" ||

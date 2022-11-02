@@ -2,29 +2,37 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 // const logger = require("morgan");
+const dotenv = require("dotenv");
 const hbs = require("express-handlebars");
 const session = require("express-session");
+// const jwt = require("jsonwebtoken");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
-
+dotenv.config("./.env");
 const app = express();
 
 //Connect Database
 const DB = require("./connectDB");
+const authController = require("./controllers/authController");
 DB.connect();
 
 // view engine setup
 app.engine("hbs", hbs.engine({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", "hbs");
-// const hbsCreate = hbs.create({});
+app.use(cors());
+const hbsCreate = hbs.create({});
+// hbsCreate.handlebars.registerHelper("user", () => {
+//   return authController.getUser();
+// });
 
 // app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(__dirname + "/public"));
 app.use(
   session({
@@ -34,12 +42,14 @@ app.use(
   })
 );
 app.use((req, res, next) => {
+  // res.cookie()
   res.locals.flash = req.session.flash;
   delete req.session.flash;
   next();
 });
 
 app.use("/", indexRouter);
+
 app.use("/users", usersRouter);
 app.use("/admin", adminRouter);
 
