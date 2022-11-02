@@ -40,6 +40,46 @@
 //   }, submitPhase1);
 // });
 // });
+$(document).ready(function () {
+  let animating = false,
+    submitPhase1 = 1500,
+    submitPhase2 = 400,
+    $login = $(".login");
+
+  function ripple(elem, e) {
+    $(".ripple").remove();
+    let elTop = elem.offset().top,
+      elLeft = elem.offset().left,
+      x = e.pageX - elLeft,
+      y = e.pageY - elTop;
+    let $ripple = $("<div class='ripple'></div>");
+    $ripple.css({ top: y, left: x });
+    elem.append($ripple);
+  }
+
+  $(document).on("click", ".login__submit", function (e) {
+    if (animating) return;
+
+    animating = true;
+
+    let that = this;
+
+    ripple($(that), e);
+
+    $(that).addClass("processing");
+    setTimeout(function () {
+      $(that).addClass("success");
+
+      setTimeout(function () {
+        $login.hide();
+        $login.addClass("inactive");
+        animating = false;
+        $(that).removeClass("success processing");
+        window.location.href = "/";
+      }, submitPhase2);
+    }, submitPhase1);
+  });
+});
 
 // End Login JS
 
@@ -47,41 +87,45 @@
 const body = document.body;
 const sideNav = document.getElementsByClassName("side-nav-bar")[0];
 const mainSection = document.getElementsByClassName("main")[0];
-const hamburger = document.getElementsByClassName("hamburger")[0];
 const text_content = document.querySelectorAll(".side-nav-text");
 const header = document.getElementById("nav-bar-header");
 const logoName = document.getElementById("logo-Name");
+const hamburger = document.getElementsByClassName("hamburger")[0];
 
 function SideNavControl(button) {
   if (body.clientWidth >= 1024) {
     //remove below 1024px screen property
     sideNav.classList.remove("side-nav-bar-expand");
-    mainSection.classList.remove("content-expand");
-    // header.classList.remove("minimize-navbar")
+    logoName.classList.remove("show-logo");
+    button.classList.remove("unchange");
 
     logoName.classList.toggle("hide-logo");
     text_content.forEach((div) => {
+      div.parentElement.classList.remove("menu-item-show");
       div.parentElement.classList.toggle("menu-item-hide");
-      // div.classList.toggle("menu-item-text-hide")
     });
     //add new property
     sideNav.classList.toggle("side-nav-bar-minimize");
     mainSection.classList.toggle("content-minimize");
-    // header.classList.toggle("full-navbar")
+    button.classList.toggle("change");
   } else {
     //remove on 1024px screen property
     sideNav.classList.remove("side-nav-bar-minimize");
     mainSection.classList.remove("content-minimize");
-    // header.classList.remove("full-navbar")
+    logoName.classList.remove("hide-logo");
+    button.classList.remove("change");
+
+    logoName.classList.toggle("show-logo");
+    text_content.forEach((div) => {
+      div.parentElement.classList.remove("menu-item-hide");
+      div.parentElement.classList.toggle("menu-item-show");
+    });
 
     //add new property
     sideNav.classList.toggle("side-nav-bar-expand");
-    mainSection.classList.toggle("content-expand");
-    // header.classList.toggle("minimize-navbar")
+    window_wrapper.classList.toggle("wrapper-active");
+    button.classList.toggle("unchange");
   }
-
-  hamburger.classList.toggle("expand-hamburger");
-  button.classList.toggle("change");
 }
 
 // End Side Nav Control (! Do not fix anything !)
@@ -105,6 +149,7 @@ function showUserOption() {
 // End User Option Dropdown
 
 // Hide all dropdown when click anywhere on window
+const window_wrapper = document.getElementById("window-wrapper");
 window.onclick = (event) => {
   if (
     !event.target.matches(".bell-wrap") &&
@@ -120,8 +165,40 @@ window.onclick = (event) => {
   ) {
     userOption.classList.remove("show");
   }
+  if (body.clientWidth <= 1024) {
+    if (
+      !event.target.matches(".side-nav-bar") &&
+      !event.target.matches(".hamburger") &&
+      !event.target.matches(".bar1") &&
+      !event.target.matches(".bar2") &&
+      !event.target.matches(".bar3")
+    ) {
+      sideNav.classList.remove("side-nav-bar-expand");
+      window_wrapper.classList.remove("wrapper-active");
+      text_content.forEach((div) => {
+        div.parentElement.classList.remove("menu-item-show");
+      });
+      hamburger.classList.remove("unchange");
+      logoName.classList.remove("show-logo");
+    }
+  }
 };
 
+window.addEventListener("resize", () => {
+  if (body.clientWidth > 768) {
+    window_wrapper.classList.remove("wrapper-active");
+    logoName.classList.remove("show-logo");
+  }
+  if (body.clientWidth > 1024) {
+    sideNav.classList.remove("side-nav-bar-expand");
+    hamburger.classList.remove("unchange");
+
+    logoName.classList.remove("hide-logo");
+    text_content.forEach((div) => {
+      div.parentElement.classList.remove("menu-item-show");
+    });
+  }
+});
 //Start User Chart JS
 
 const userChart = document.getElementById("userMonthlyFluctuations");
