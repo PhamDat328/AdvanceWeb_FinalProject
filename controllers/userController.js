@@ -1,43 +1,51 @@
 const User = require("../models/User");
 const formidable = require("formidable");
+const async = require("hbs/lib/async");
+const jwt = require("jsonwebtoken");
 // const bcrypt = require("bcrypt");
 // const salt = await bcrypt.genSalt(10);
 // const hash = await bcrypt.hash(password, salt);
 
 module.exports = {
 
-    getHomePage: (req, res, next) => {
 
-        res.render("index", { title: "SmartWallet" })
+    getDepositForm: async(req, res, next) => {
 
-    },
+        if (!req.session.isLogin) {
+            return res.redirect("/login");
+        } else {
+            const accessToken = req.cookies.accessToken;
+            const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
 
-    getDepositForm: (req, res, next) => {
-
-        res.render("Deposit", { title: "SmartWallet" })
+            return res.render("deposit", { title: "SmartWallet", layout: false });
+        }
 
     },
 
     getWithdrawForm: (req, res, next) => {
 
-        res.render("Withdraw", { title: "SmartWallet" })
+        res.render("withdraw", { title: "SmartWallet", layout: false })
 
     },
 
     getTransferForm: (req, res, next) => {
 
-        res.render("Transfer", { title: "SmartWallet" })
+        res.render("transfer", { title: "SmartWallet", layout: false })
 
     },
 
     getBuyPhoneCardForm: (req, res, next) => {
 
-        res.render("BuyPhoneCard", { title: "SmartWallet" })
+        res.render("buyphonecard", { title: "SmartWallet", layout: false })
 
     },
     getTransactionHistory: (req, res, next) => {
 
-        res.render("index", { title: "SmartWallet" })
+        res.render("transaction", { title: "SmartWallet", layout: false })
 
+    },
+
+    getEnterOTPForm: (req, res, next) => {
+        res.render("enterOTP", { title: "SmartWallet", layout: "blankLayout" })
     }
 }

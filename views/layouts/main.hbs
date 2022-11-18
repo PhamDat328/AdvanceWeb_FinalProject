@@ -117,7 +117,13 @@
               <div class="profile-wrap" onclick="showUserOption();"></div>
               <div class="profile-info">
                 <p class="header-profile-fs-1">Hello,
-                  <span id="header-profile-username">Username</span>
+                  <span id="header-profile-username">
+
+                    {{#each data}}
+                      {{this.fullName}}
+                    {{/each}}
+
+                  </span>
                 </p>
                 <span id="role" class="header-profile-fs-2">
                   Activated user</span>
@@ -130,7 +136,7 @@
                   src="/images/user_profile.png"
                   width="30px"
                 /><span>Profile</span></a>
-              <a href="/login"><img
+              <a href="/logout"><img
                   src="/images/log-out.png"
                   width="30px"
                 /><span>Log out</span></a>
@@ -147,31 +153,36 @@
       <div class="menu">
 
         <!-- deposit -->
-        <div class="menu-item">
+        <div id="deposit" class="menu-item">
+          <div class="item-wrapper" onclick="getView('/deposit')"></div>
           <img src="/images/deposit.png" alt="deposit" />
           <p class="side-nav-text side-nav-menu-text">Deposit</p>
         </div>
 
         <!-- withdraw -->
-        <div class="menu-item">
+        <div id="withdraw" class="menu-item">
+          <div   class="item-wrapper" onclick="getView('/withdraw')"></div>
           <img src="/images/withdraw.png" alt="withdraw" />
           <p class="side-nav-text side-nav-menu-text">Withdraw</p>
         </div>
 
         <!-- transfer -->
-        <div class="menu-item">
+        <div id="transfer" class="menu-item">
+          <div   class="item-wrapper" onclick="getView('/transfer')"></div>
           <img src="/images/transfer.png" alt="transfer" />
           <p class="side-nav-text side-nav-menu-text">Transfer</p>
         </div>
 
         <!-- buy phone card -->
-        <div class="menu-item">
+        <div id="buy" class="menu-item">
+          <div   class="item-wrapper" onclick="getView('/buyphonecard')"></div>
           <img src="/images/phonecard.png" alt="phonecard" />
           <p class="side-nav-text side-nav-menu-text">Buy phone card</p>
         </div>
 
         <!-- transaction -->
-        <div class="menu-item">
+        <div id="transaction" class="menu-item">
+          <div   class="item-wrapper" onclick="getView('/transaction')"></div>
           <img src="/images/transaction.png" alt="transaction" />
           <p class="side-nav-text side-nav-menu-text">Transaction</p>
         </div>
@@ -183,7 +194,7 @@
     <!-- Main content -->
     <div class="main">
       <!-- Website body -->
-      <div class="content-holder">
+      <div class="content-holder" id="content-holder">
 
         {{{body}}}
       </div>

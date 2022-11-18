@@ -5,6 +5,7 @@
   <div class="register-form">
     <form method="POST" action="/register" enctype="multipart/form-data">
       <div id="form-1">
+        {{!-- Fullname --}}
         <div class="mb-3">
           <label for="fullName" class="form-label">Full Name</label>
           <div class="input__row">
@@ -12,35 +13,23 @@
             <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-person-fill register__icon name svg-icon" viewBox="0 0 16 16">
                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg>
-              <input
-              name="fullName"
-              type="text"
-              class="form-control"
-              id="fullName"
-            />
-          </div>
-          
-          <div class="form-text text-danger fullName-error"></div>
-
+              <input name="fullName"  type="text" class="form-control"  id="fullName"value="{{fullName}}" />
+          </div> 
+          <span class="form-text text-danger fullName-error"></span>
         </div>
-
+        {{!-- Date of birth --}}
         <div class="mb-3">
           <label for="dateOfBirth" class="form-label">Date of Birth</label>
           <div class="input__row">
             <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="register__icon date svg-icon bi bi-calendar" viewBox="0 0 16 16">
                 <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
             </svg>
-              <input
-              type="date"
-              class="form-control"
-              name="dateOfBirth"
-              id="dateOfBirth"
-            />
+              <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" value="{{dateOfBirth}}"/>
           </div>
-          
-          <div class="form-text text-danger dateOfBirth-error"></div>
+          <span class="form-text text-danger dateOfBirth-error"></span>
 
         </div>
+        {{!-- Email --}}
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <div class="input__row">
@@ -49,20 +38,32 @@
             </svg>
             <input type="email" name="email" class="form-control" id="email" />
           </div>
-          
-          <div class="form-text text-danger email-error"></div>
+          <span class="form-text text-danger email-error">
+            {{#if error.errorE}}
+              {{error.messageE}}
+            {{/if}}
+          </span>
         </div>
+        {{!-- Address --}}
         <div class="mb-3">
           <label for="address" class="form-label">Address</label>
           <div class="input__row">
             <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="register__icon address svg-icon bi bi-geo-alt-fill" viewBox="0 0 16 16">
               <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
             </svg>
-            <input type="text" name="address" class="form-control" id="address" />
+            <input
+            type="text"
+            name="address"
+            value="{{address}}"
+            class="form-control"
+            id="address"
+          />
           </div>
 
-          <div class="form-text text-danger address-error"></div>
+         <span class="form-text text-danger address-error"></span>
         </div>
+
+        {{!-- Phone --}}
         <div class="mb-3">
           <label for="phoneNumber" class="form-label">Phone Number</label>
           <div class="input__row">
@@ -70,50 +71,62 @@
               <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
             </svg>
               <input
-              type="number"
-              name="phoneNumber"
-              class="form-control"
-              id="phoneNumber"
-            />
+                type="number"
+                name="phoneNumber"
+                class="form-control"
+                id="phoneNumber"
+              />
           </div>
           
-          <div class="form-text text-danger phoneNumber-error"></div>
+          <span class="form-text text-danger phoneNumber-error">
+            {{#if error.errorPN}}
+              {{error.messagePN}}
+            {{/if}}
+          </span>
+          
         </div>
 
+
+        <div class="btn-contain">
+          
+
+        <a href="/login" class="btn btn-secondary">Back</a>
         <button
           id="register-next-btn"
           type="button"
           class="btn btn-success"
         >Next</button>
+
+        </div>
+
+        
       </div>
       <div id="form-2">
         <div class="mb-3">
           <label for="font" class="form-label">Font ID Image</label>
-          <input
-            type="file"
-            name="fontIdImage"
-            class="form-control"
-            id="email"
-          />
-          <div class="form-text text-danger fontIdImage-error"></div>
+          <input type="file" class="form-control ID-input" accept="image/*" name="fontIdImage" id="front"  onchange="loadFrontIDImage(event)">
+          <img id="FrontIdDIsplay"  />
+          <span class="form-text text-danger fontIdImage-error"></span>
         </div>
         <div class="mb-3">
           <label for="back" class="form-label">Back ID Image</label>
-          <input
-            type="file"
-            name="backIdImage"
-            class="form-control"
-            id="back"
-          />
-          <div class="form-text text-danger backIdImage-error"></div>
+          <input type="file" class="form-control ID-input" accept="image/*" name="backIdImage" id="back"  onchange="loadBackIDImage(event)">
+          <img id="BackIdDisplay"  />
+          <span class="form-text text-danger backIdImage-error"></span>
         </div>
-        <button type="submit" class="btn btn-success">Submit</button>
 
-        <button
-          type="button"
-          id="register-back-btn"
-          class="btn btn-success"
-        >Back</button>
+        <div class="btn-contain">
+          <button
+            type="button"
+            id="register-back-btn"
+            class="btn btn-secondary"
+          >Back</button>
+
+          <button type="button" class="btn btn-success submit-btn">Submit</button>
+
+          
+        </div>
+        
 
       </div>
     </form>

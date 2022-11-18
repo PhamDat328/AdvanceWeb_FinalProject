@@ -11,7 +11,9 @@
     <div class="user-basic-info">
       <div class="mr-1">
         <p class="custome-text-1 mb-1">USER NAME</p>
-        <span>NGUYEN VAN A</span>
+        <span>{{#each data}}
+            {{this.fullName}}
+          {{/each}}</span>
       </div>
 
       <div>
@@ -94,7 +96,7 @@
 </div>
 
   <div class="second-row">
-      <canvas id="userMonthlyFluctuations"></canvas>
+      <canvas id="userMonthlyFluctuations" ></canvas>
   </div>
 
         
