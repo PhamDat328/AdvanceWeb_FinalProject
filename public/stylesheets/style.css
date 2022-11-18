@@ -59,6 +59,7 @@ p {
 }
 
 .menu-item-hide p {
+
     font-size: 0.7rem !important;
     text-align: center !important;
     padding-top: 5px;
@@ -281,10 +282,7 @@ p {
     box-shadow: 3px 6px 10px 1.5px #000000b8
 }
 
-.notification-box {
-    height: 315px;
-    padding: 16px;
-}
+.notification-box {height: 315px;padding: 16px;}
 
 .notification-list {
     list-style-type: none;

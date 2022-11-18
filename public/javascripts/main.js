@@ -306,7 +306,6 @@ registerNextBtn.addEventListener("click", () => {
   }
 });
 registerBackBtn.addEventListener("click", () => {
-  // console.log("click");
   form2.style.transform = "translateX(120%)";
   form1.style.transform = "translateX(50%)";
 });
@@ -320,8 +319,3 @@ submitBtn.addEventListener("click", (e) => {
     form.submit();
   }
 });
-// ||
-//     email === "" ||
-//     address === "" ||
-//     phoneNumber === "" ||
-//     dateOfBirth === ""
