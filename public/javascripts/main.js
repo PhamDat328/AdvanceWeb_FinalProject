@@ -45,11 +45,7 @@ $(document).ready(function () {
 // End Login JS
 
 //Start window load control
-const deposit = document.getElementById("deposit");
-const withdraw = document.getElementById("withdraw");
-const transfer = document.getElementById("transfer");
-const buy = document.getElementById("buy");
-const transaction = document.getElementById("transaction");
+
 window.onload = () => {
   if (window.location.pathname === "/") {
     createUserChart();
@@ -274,6 +270,7 @@ function createUserChart() {
 
 // -------------------------------------------------------------
 // Register page
+
 const allInputRegister = document.querySelectorAll("#register input");
 const allErrorSpan = document.querySelectorAll("#register span");
 allInputRegister.forEach((inp, index) => {
@@ -304,8 +301,11 @@ multiStepForm.addEventListener("click", (e) => {
   if (e.target.matches("[data-next]")) {
     incrementor = 1;
   } else if (e.target.matches("[data-previous]")) {
-    incrementor = -1;
+    currentStep--;
+    showCurrentStep();
   }
+  console.log(incrementor);
+
   if (incrementor == null) return;
 
   const inputs = [...formSteps[currentStep].querySelectorAll("#form-1 input")];
@@ -313,11 +313,9 @@ multiStepForm.addEventListener("click", (e) => {
   // const allValid = inputs.every((input) => {
   //   return input.reportValidity();
   // });
-  // let allValid = true;
   let countValid = 0;
   inputs.forEach((inp, index) => {
     if (inp.value === "") {
-      allValid = false;
       allErrorSpan[index].innerText = "Please enter this field!";
     } else {
       countValid++;
@@ -381,6 +379,7 @@ const loadBackIDImage = function (event) {
 
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
 
+// buy.addEventListener("click", () => {});
 function focusOTP(e, previous, curr, next) {
   e.preventDefault();
   let only1num = /[0-9]/;
