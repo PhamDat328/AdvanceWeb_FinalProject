@@ -59,6 +59,7 @@ p {
 }
 
 .menu-item-hide p {
+
     font-size: 0.7rem !important;
     text-align: center !important;
     padding-top: 5px;
@@ -282,10 +283,7 @@ p {
     box-shadow: 3px 6px 10px 1.5px #000000b8
 }
 
-.notification-box {
-    height: 315px;
-    padding: 16px;
-}
+.notification-box {height: 315px;padding: 16px;}
 
 .notification-list {
     list-style-type: none;
@@ -952,6 +950,8 @@ footer {
 /* End Home page CSS */
 
 
+
+/* ---------------------------------------------------------------------------------------- */
 /* Start Login Form CSS */
 
 svg {
@@ -1075,14 +1075,14 @@ button {
 .login__icon.name path {
     stroke-dasharray: 73.50196075439453;
     stroke-dashoffset: 73.50196075439453;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
 .login__icon.pass path {
     stroke-dasharray: 92.10662841796875;
     stroke-dashoffset: 92.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
@@ -1204,7 +1204,7 @@ button {
     }
 }
 
-@-webkit-keyframes animatePath {
+@-webkit-keyframes animatePath-web-kit {
     to {
         stroke-dashoffset: 0;
     }
@@ -1277,12 +1277,16 @@ button {
     font-size: 24px;
 }
 
+.pending-modal .modal-body,
+.pending-modal h5 {
+    color: #000;
+}
+
 
 /* End Admin PendingPage */
 
 
 /* ----------------------------------------------------------------------------------- */
-
 
 /* Register page */
 
@@ -1311,7 +1315,6 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* flex-direction: column; */
 }
 
 .register-title {
@@ -1324,9 +1327,7 @@ button {
 
 .register-form form {
     width: 100%;
-    display: flex;
-    /* background-color: rgb(147,153,157); */
-    /* position: absolute; */
+    position: relative;
 }
 
 .register-form .input__row {
@@ -1361,38 +1362,58 @@ button {
 
 .register-form label {
     color: white;
-    /* display: block; */
     font-size: 18px;
     font-weight: 600;
 }
 
-#register #form-1 {
+.multi-step-form {
+    overflow: hidden;
+    position: relative;
+  }
+
+.register-form .card {
     background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
     width: 600px;
     border: 1px solid black;
     padding: 24px;
     border-radius: 8px;
-    transform: translateX(105%);
-    transition: all .7s;
+    transition: all 1s;
+    margin: 0 auto;
+    animation: fade 300ms ease-in-out forwards;
 }
 
-#register #form-2 {
-    background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
-    width: 600px;
-    transition: all .7s;
-    height: fit-content;
-    border: 1px solid black;
-    padding: 24px;
-    border-radius: 8px;
-    transform: translateX(250%);
+.register-form .card.active {
+    animation: slide 300ms 150ms ease-in-out both;
+  }
+
+.hide {
+    display: none;
 }
 
-#register #form-1 button,
-#register #form-2 button {
-    /* float: right;
-    margin-left: 1rem;
-    padding: 0.65rem 2rem;
-    margin-top: 1rem; */
+@keyframes slide {
+    0% {
+      transform: translateX(200%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
+  
+@keyframes fade {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(.75);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
 }
 
 #register .btn-contain {
@@ -1442,7 +1463,7 @@ button {
 .register__icon.name path {
     stroke-dasharray: 73.50196075439453;
     stroke-dashoffset: 73.50196075439453;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
@@ -1450,7 +1471,7 @@ button {
     stroke-width: 0.8;
     stroke-dasharray: 75.10662841796875;
     stroke-dashoffset: 75.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 1.5s 0.5s forwards;
 }
 
@@ -1458,21 +1479,21 @@ button {
     stroke-width: 0.8;
     stroke-dasharray: 95.10662841796875;
     stroke-dashoffset: 95.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
 .register__icon.address path {
     stroke-dasharray: 95.10662841796875;
     stroke-dashoffset: 95.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
 .register__icon.phone path {
     stroke-dasharray: 65.10662841796875;
     stroke-dashoffset: 70.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 1s 0.5s forwards;
 }
 
@@ -1535,6 +1556,16 @@ button {
     display: block;
 }
 
+/* Responsive register page */
+@media screen and (max-width: 576px) {
+    .register-form .card {
+        width: 375px;
+    }
+    
+    .register-form form input {
+        font-size: 16px;
+    }
+}
 
 /* Change Password page */
 

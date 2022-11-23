@@ -18,9 +18,8 @@ $(document).ready(function() {
     }
 
     $(document).on("click", ".login__submit", function(e) {
-
         e.preventDefault();
-        const loginForm = document.getElementById("login__form")
+        const loginForm = document.getElementById("login__form");
         if (animating) return;
 
         animating = true;
@@ -30,6 +29,8 @@ $(document).ready(function() {
         ripple($(that), e);
 
         $(that).addClass("processing");
+
+
         setTimeout(function() {
             $(that).addClass("success");
 
@@ -42,6 +43,7 @@ $(document).ready(function() {
             }, submitPhase2);
         }, submitPhase1);
     });
+
     window.onpopstate = (e) => {
         if (e.state) {
             contentHolder.innerHTML = e.state.pageData
@@ -54,11 +56,14 @@ $(document).ready(function() {
 
         }
     }
-});
+
+})
+
 
 // End Login JS
 
 //Start window load control
+
 
 window.onload = () => {
 
@@ -92,6 +97,7 @@ window.onload = () => {
 
 
 }
+
 
 //End window load control
 
@@ -168,12 +174,16 @@ window.onclick = (event) => {
         !event.target.matches(".notification-box") &&
         !event.target.matches(".view-all-notification")
     ) {
-        notificationMenu.classList.remove("show");
+        if (document.querySelector(".show") != null) {
+            notificationMenu.classList.remove("show");
+        }
     }
     if (!event.target.matches(".profile-wrap") &&
         !event.target.matches(".userOption")
     ) {
-        userOption.classList.remove("show");
+        if (document.querySelector(".show") != null) {
+            userOption.classList.remove("show");
+        }
     }
     if (body.clientWidth <= 1024) {
         if (!event.target.matches(".side-nav-bar") &&
@@ -182,29 +192,50 @@ window.onclick = (event) => {
             !event.target.matches(".bar2") &&
             !event.target.matches(".bar3")
         ) {
-            sideNav.classList.remove("side-nav-bar-expand");
-            window_wrapper.classList.remove("wrapper-active");
+            if (document.querySelector(".side-nav-bar-expand") != null) {
+                sideNav.classList.remove("side-nav-bar-expand");
+            }
+            if (document.querySelector(".wrapper-active") != null) {
+                window_wrapper.classList.remove("wrapper-active");
+            }
             text_content.forEach((div) => {
                 div.parentElement.classList.remove("menu-item-show");
             });
-            hamburger.classList.remove("unchange");
-            logoName.classList.remove("show-logo");
+            if (document.querySelector(".unchange") != null) {
+                hamburger.classList.remove("unchange");
+            }
+            if (document.querySelector(".show-logo") != null) {
+                logoName.classList.remove("show-logo");
+            }
         }
     }
 };
 
 window.addEventListener("resize", () => {
     if (body.clientWidth > 768) {
-        window_wrapper.classList.remove("wrapper-active");
-        logoName.classList.remove("show-logo");
+        if (document.querySelector(".wrapper-active") != null) {
+            window_wrapper.classList.remove("wrapper-active");
+        }
+
+        if (document.querySelector(".show-logo") != null) {
+            logoName.classList.remove("show-logo");
+        }
     }
     if (body.clientWidth > 1024) {
-        sideNav.classList.remove("side-nav-bar-expand");
-        hamburger.classList.remove("unchange");
+        if (document.querySelector(".side-nav-bar-expand") != null) {
+            sideNav.classList.remove("side-nav-bar-expand");
+        }
+        if (document.querySelector(".unchange") != null) {
+            hamburger.classList.remove("unchange");
+        }
 
-        logoName.classList.remove("hide-logo");
+        if (document.querySelector(".hide-logo") != null) {
+            logoName.classList.remove("hide-logo");
+        }
         text_content.forEach((div) => {
-            div.parentElement.classList.remove("menu-item-show");
+            if (document.querySelector(".menu-item-show") != null) {
+                div.parentElement.classList.remove("menu-item-show");
+            }
         });
     }
 });
@@ -259,12 +290,71 @@ function createUserChart() {
     });
 }
 
-
-
 //End User Chart JS
 
 // -------------------------------------------------------------
 // Register page
+const multiStepForm = document.querySelector("[data-multi-step]");
+const formSteps = [...multiStepForm.querySelectorAll("[data-step]")];
+let currentStep = formSteps.findIndex((step) => {
+    return step.classList.contains("active");
+});
+
+const showCurrentStep = () => {
+    formSteps.forEach((step, index) => {
+        step.classList.toggle("active", index === currentStep);
+    });
+};
+
+if (currentStep < 0) {
+    currentStep = 0;
+    showCurrentStep();
+}
+
+multiStepForm.addEventListener("click", (e) => {
+    let incrementor;
+    if (e.target.matches("[data-next]")) {
+        incrementor = 1;
+    } else if (e.target.matches("[data-previous]")) {
+        incrementor = -1;
+    }
+    if (incrementor == null) return;
+
+    // const inputs = [...formSteps[currentStep].querySelectorAll("input")];
+    // const allValid = inputs.every((input) => {
+    //     return input.reportValidity();
+    // });
+    // if (allValid) {
+    //     currentStep += incrementor;
+    //     showCurrentStep();
+    // }
+    if (fullName.value === "") {
+        fullNameError.innerHTML = "Please enter your full name.";
+    } else if (dateOfBirth.value === "") {
+        dateOfBirthError.innerHTML = "Please enter your date of birth.";
+    } else if (email.value === "") {
+        emailError.innerHTML = "Please enter your email.";
+    } else if (address.value === "") {
+        addressError.innerHTML = "Please enter your address.";
+    } else if (phoneNumber.value === "") {
+        phoneNumberError.innerHTML = "Please enter your phone number.";
+    } else {
+        currentStep += incrementor;
+        showCurrentStep();
+    }
+});
+
+formSteps.forEach((step) => {
+    step.addEventListener("animationend", (e) => {
+        formSteps[currentStep].classList.remove("hide");
+        e.target.classList.toggle("hide", !e.target.classList.contains("active"));
+    });
+});
+
+const allSvgIconPath = [...document.querySelectorAll(".svg-icon path")];
+allSvgIconPath.forEach((svg) => {
+    svg.classList.remove("hide");
+});
 
 
 const form2 = document.querySelector("#form-2");
@@ -279,13 +369,24 @@ const backIdImage = document.getElementsByName("backIdImage")[0];
 
 const form = document.querySelector("#register form");
 
-const fontIdImageError = document.getElementsByClassName("fontIdImage-error")[0];
-const backIdImageError = document.getElementsByClassName("backIdImage-error")[0];
-const fullNameError = document.getElementsByClassName("fullName-error")[0];
-const emailError = document.getElementsByClassName("email-error")[0];
-const addressError = document.getElementsByClassName("address-error")[0];
-const phoneNumberError = document.getElementsByClassName("phoneNumber-error")[0];
-const dateOfBirthError = document.getElementsByClassName("dateOfBirth-error")[0];
+// const fontIdImageError = document.getElementsByClassName("fontIdImage-error")[0];
+// const backIdImageError = document.getElementsByClassName("backIdImage-error")[0];
+// const fullNameError = document.getElementsByClassName("fullName-error")[0];
+// const emailError = document.getElementsByClassName("email-error")[0];
+// const addressError = document.getElementsByClassName("address-error")[0];
+// const phoneNumberError = document.getElementsByClassName("phoneNumber-error")[0];
+// const dateOfBirthError = document.getElementsByClassName("dateOfBirth-error")[0];
+// const fontIdImageError =
+//   document.getElementsByClassName("fontIdImage-error")[0];
+// const backIdImageError =
+//   document.getElementsByClassName("backIdImage-error")[0];
+// const fullNameError = document.getElementsByClassName("fullName-error")[0];
+// const emailError = document.getElementsByClassName("email-error")[0];
+// const addressError = document.getElementsByClassName("address-error")[0];
+// const phoneNumberError =
+//   document.getElementsByClassName("phoneNumber-error")[0];
+// const dateOfBirthError =
+//   document.getElementsByClassName("dateOfBirth-error")[0];
 
 const allInputRegister = document.querySelectorAll("#register input");
 const allErrorSpan = document.querySelectorAll("#register span");
@@ -295,23 +396,23 @@ allInputRegister.forEach((inp, index) => {
     });
 });
 
-function registerNext() {
+// function registerNext() {
 
-    if (fullName.value === "") {
-        fullNameError.innerHTML = "Please enter your full name.";
-    } else if (dateOfBirth.value === "") {
-        dateOfBirthError.innerHTML = "Please enter your date of birth.";
-    } else if (email.value === "") {
-        emailError.innerHTML = "Please enter your email.";
-    } else if (address.value === "") {
-        addressError.innerHTML = "Please enter your address.";
-    } else if (phoneNumber.value === "") {
-        phoneNumberError.innerHTML = "Please enter your phone number.";
-    } else {
-        form2.style.transform = "translateX(-50%)";
-        form1.style.transform = "translateX(-120%)";
-    }
-};
+//     if (fullName.value === "") {
+//         fullNameError.innerHTML = "Please enter your full name.";
+//     } else if (dateOfBirth.value === "") {
+//         dateOfBirthError.innerHTML = "Please enter your date of birth.";
+//     } else if (email.value === "") {
+//         emailError.innerHTML = "Please enter your email.";
+//     } else if (address.value === "") {
+//         addressError.innerHTML = "Please enter your address.";
+//     } else if (phoneNumber.value === "") {
+//         phoneNumberError.innerHTML = "Please enter your phone number.";
+//     } else {
+//         currentStep += incrementor;
+//         showCurrentStep();
+//     }
+// };
 
 function registerBack() {
 
@@ -330,13 +431,12 @@ function registerSubmit() {
 };
 
 const loadFrontIDImage = function(event) {
-    let image = document.getElementById('FrontIdDIsplay');
+    let image = document.getElementById("FrontIdDIsplay");
     image.src = URL.createObjectURL(event.target.files[0]);
-
 };
 
 const loadBackIDImage = function(event) {
-    let image = document.getElementById('BackIdDisplay');
+    let image = document.getElementById("BackIdDisplay");
     image.src = URL.createObjectURL(event.target.files[0]);
 };
 
@@ -351,33 +451,28 @@ function focusOTP(e, previous, curr, next) {
     let nextOTP = document.getElementById(next);
 
     if (only1num.test(e.key)) {
-        currentOTP.value = e.key
+        currentOTP.value = e.key;
         if (next !== "") {
-            nextOTP.removeAttribute('disabled');
+            nextOTP.removeAttribute("disabled");
             nextOTP.focus();
-            currentOTP.setAttribute('disabled', '');
-
+            currentOTP.setAttribute("disabled", "");
         }
-
     } else if (e.key === "Backspace") {
-
         if (currentOTP.value !== "") {
             currentOTP.value = "";
         } else if (previous !== "") {
-            previousOTP.removeAttribute('disabled');
+            previousOTP.removeAttribute("disabled");
             previousOTP.focus();
-            currentOTP.setAttribute('disabled', '');
+            currentOTP.setAttribute("disabled", "");
         }
     }
 }
 
 function check_and_submit(e) {
-
     let get_otp6 = e.target;
 
     if (e.key !== "Backspace" && get_otp6.value !== "" && e.key !== "Space") {
-
-        get_otp6.setAttribute('disabled', '')
+        get_otp6.setAttribute("disabled", "");
         let otp = document.querySelectorAll(".code input");
         let get_email = document.getElementsByName("otp_email")[0].value;
         let fullotp = "";
@@ -390,30 +485,24 @@ function check_and_submit(e) {
             type: "POST",
             url: "/database/check_otp.php",
             data: {
-
                 fullotp: fullotp,
-                email: get_email
+                email: get_email,
             },
             success: function(check_data) {
-
                 let danger_alert = document.querySelector(".alert-box .alert-danger");
                 let form = document.querySelector(".OTP_Form");
                 if (check_data === "1") {
-
                     form.submit();
-
                 } else {
-
                     danger_alert.innerText = check_data;
                     danger_alert.style.display = "block";
                     get_otp6.removeAttribute("disabled");
                     get_otp6.focus();
                 }
-            }
+            },
         });
-
     } else {
-        focusOTP(e, 'otp5', 'otp6', '');
+        focusOTP(e, "otp5", "otp6", "");
     }
 }
 
@@ -421,10 +510,11 @@ function timer() {
     let get_otp1 = document.querySelector(".code .code-item #otp1").focus();
     let deadline = 60000;
     let danger_alert = document.querySelector(".alert-box .alert-danger");
-    let countdown_box = document.querySelector(".OTP_Form .countdown-box .timer .time");
+    let countdown_box = document.querySelector(
+        ".OTP_Form .countdown-box .timer .time"
+    );
 
     let set_countdown = setInterval(() => {
-
         deadline -= 1000;
         let second = Math.floor(deadline / 1000);
         let minute = Math.floor(second / 60);
@@ -436,21 +526,17 @@ function timer() {
         }
 
         if (deadline === 0) {
-
             clearInterval(set_countdown);
             let otp = document.querySelectorAll(".code input");
             for (otp_input of otp) {
-
                 otp_input.setAttribute("disabled", "");
-
             }
-            danger_alert.innerHTML = "The OTP code has expired.<br>Please click resend button.";
+            danger_alert.innerHTML =
+                "The OTP code has expired.<br>Please click resend button.";
             danger_alert.style.display = "block";
         }
     }, 1000);
 }
-
-
 
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
 

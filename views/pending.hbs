@@ -7,30 +7,151 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Username</th>
+        <th scope="col">Full name</th>
+        <th scope="col">Phone number</th>
+        <th scope="col">Email</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      {{#each pendingUsers}}
+        <tr>
+          <td>{{this.username}}</td>
+          <td><a
+              href="/admin/userDetail/{{this.username}}"
+            >{{this.fullName}}</a></td>
+          <td>{{this.phoneNumber}}</td>
+          <td>{{this.email}}</td>
+          <td>
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#confirmModal-{{this.username}}"
+              class="btn btn-success"
+            >Confirm</button>
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#cancelModal-{{this.username}}"
+              class="btn btn-danger"
+            >Cancel</button>
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#addInformationModal-{{this.username}}"
+              class="btn btn-info"
+            >Add Information</button>
+          </td>
+        </tr>
+
+        {{! Confirm modal }}
+        <div
+          class="modal pending-modal fade"
+          id="confirmModal-{{this.username}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <form action="/admin/activated/{{this.username}}" method="POST">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Confirm Modal</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  {{this.username}}
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        {{! Cancel modal }}
+        <div
+          class="modal pending-modal fade"
+          id="cancelModal-{{this.username}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <form action="/admin/cancel/{{this.username}}" method="POST">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Cancel Modal</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  {{this.username}}
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        {{! Add information modal }}
+        <div
+          class="modal pending-modal fade"
+          id="addInformationModal-{{this.username}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <form action="/admin/addInfo/{{this.username}}" method="POST">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Information
+                    Modal</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  {{this.username}}
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      {{/each}}
+
     </tbody>
   </table>
 </div>
+
+<!-- Modal -->

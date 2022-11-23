@@ -36,6 +36,7 @@ let Account = mongoose.Schema({
   admin: {
     type: Boolean,
     default: false,
+    select: false,
   },
   lastLogin: {
     type: Date,

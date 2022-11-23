@@ -10,13 +10,12 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-  
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
     />
-    
-   
+
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
 
@@ -29,11 +28,13 @@
         <!-- logo -->
         <div class="logo">
           {{! https://drive.google.com/uc?export=view&id=1YvP6uMZuw7LSANxNQhZFlRzQ39eDk8AB }}
-          <img
-            src="/images/logo.png"
-            alt="logo"
-            style="width: 60px; height: 65px"
-          />
+          <a href="/">
+            <img
+              src="/images/logo.png"
+              alt="logo"
+              style="width: 60px; height: 65px"
+            />
+          </a>
           <p id="logo-Name">SmartWallet</p>
 
         </div>
@@ -120,7 +121,11 @@
               <div class="profile-wrap" onclick="showUserOption();"></div>
               <div class="profile-info">
                 <p class="header-profile-fs-1">Hello,
-                  <span id="header-profile-username">Username</span>
+                  <span id="header-profile-username">
+                    {{#each user}}
+                      {{this.fullName}}
+                    {{/each}}
+                  </span>
                 </p>
                 <span id="role" class="header-profile-fs-2">
                   Activated user</span>
@@ -181,19 +186,19 @@
         </a>
       </div>
     </div>
-    <div class="wrapper" id="window-wrapper"></div> 
+    <div class="wrapper" id="window-wrapper"></div>
     <!-- Main content -->
     <div class="main">
       <!-- Website body -->
       <div class="content-holder" id="admin">
         {{{body}}}
       </div>
-      
+
     </div>
     <footer>
 
     </footer>
-    
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
     ></script>
@@ -210,7 +215,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"
     ></script>
     <script src="/javascripts/main.js"></script>
-    
+
   </body>
 
 </html>
