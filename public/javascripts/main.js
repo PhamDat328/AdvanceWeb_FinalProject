@@ -274,6 +274,14 @@ function createUserChart() {
 
 // -------------------------------------------------------------
 // Register page
+const allInputRegister = document.querySelectorAll("#register input");
+const allErrorSpan = document.querySelectorAll("#register span");
+allInputRegister.forEach((inp, index) => {
+  inp.addEventListener("focus", () => {
+    allErrorSpan[index].innerHTML = "";
+  });
+});
+
 const multiStepForm = document.querySelector("[data-multi-step]");
 const formSteps = [...multiStepForm.querySelectorAll("[data-step]")];
 let currentStep = formSteps.findIndex((step) => {
@@ -300,11 +308,23 @@ multiStepForm.addEventListener("click", (e) => {
   }
   if (incrementor == null) return;
 
-  const inputs = [...formSteps[currentStep].querySelectorAll("input")];
-  const allValid = inputs.every((input) => {
-    return input.reportValidity();
+  const inputs = [...formSteps[currentStep].querySelectorAll("#form-1 input")];
+
+  // const allValid = inputs.every((input) => {
+  //   return input.reportValidity();
+  // });
+  // let allValid = true;
+  let countValid = 0;
+  inputs.forEach((inp, index) => {
+    if (inp.value === "") {
+      allValid = false;
+      allErrorSpan[index].innerText = "Please enter this field!";
+    } else {
+      countValid++;
+    }
   });
-  if (allValid) {
+
+  if (countValid === 5) {
     currentStep += incrementor;
     showCurrentStep();
   }
@@ -338,14 +358,6 @@ const phoneNumberError =
   document.getElementsByClassName("phoneNumber-error")[0];
 const dateOfBirthError =
   document.getElementsByClassName("dateOfBirth-error")[0];
-
-const allInputRegister = document.querySelectorAll("#register input");
-const allErrorSpan = document.querySelectorAll("#register span");
-allInputRegister.forEach((inp, index) => {
-  inp.addEventListener("focus", () => {
-    allErrorSpan[index].innerHTML = "";
-  });
-});
 
 submitBtn.addEventListener("click", (e) => {
   if (fontIdImage.value === "") {
