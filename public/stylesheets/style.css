@@ -538,6 +538,7 @@ p {
 }
 
 .menu-item-active {
+    pointer-events: none;
     background-color: #1eaae7;
     color: black;
 }

@@ -1,4 +1,5 @@
 // Start Login JS
+const contentHolder = document.getElementById("content-holder");
 $(document).ready(function() {
     let animating = false,
         submitPhase1 = 1500,
@@ -41,16 +42,24 @@ $(document).ready(function() {
             }, submitPhase2);
         }, submitPhase1);
     });
+    window.onpopstate = (e) => {
+        if (e.state) {
+            contentHolder.innerHTML = e.state.pageData
+        } else {
+            if (window.location.pathname === "/") {
+                window.location.href = "/";
+            } else {
+                getView(window.location.pathname)
+            }
+
+        }
+    }
 });
 
 // End Login JS
 
 //Start window load control
-const deposit = document.getElementById("deposit")
-const withdraw = document.getElementById("withdraw")
-const transfer = document.getElementById("transfer")
-const buy = document.getElementById("buy")
-const transaction = document.getElementById("transaction")
+
 window.onload = () => {
 
     if (window.location.pathname === "/") {
@@ -58,19 +67,24 @@ window.onload = () => {
         createUserChart();
     }
     if (window.location.pathname === "/deposit") {
-        deposit.classList.add("menu-item-active")
+
+        getView("/deposit", "deposit");
     }
     if (window.location.pathname === "/withdraw") {
-        withdraw.classList.add("menu-item-active")
+
+        getView("/withdraw", "withdraw");
     }
     if (window.location.pathname === "/transfer") {
-        transfer.classList.add("menu-item-active")
+
+        getView("/transfer", "transfer");
     }
     if (window.location.pathname === "/buyphonecard") {
-        buy.classList.add("menu-item-active")
+
+        getView("/buyphonecard", "buyphonecard")
     }
     if (window.location.pathname === "/transaction") {
-        transaction.classList.add("menu-item-active")
+
+        getView("/transaction", "transaction")
     }
     if (window.location.pathname === "/users/recover") {
         timer();
@@ -252,8 +266,7 @@ function createUserChart() {
 // -------------------------------------------------------------
 // Register page
 
-const registerNextBtn = document.querySelector("#register-next-btn");
-const registerBackBtn = document.querySelector("#register-back-btn");
+
 const form2 = document.querySelector("#form-2");
 const form1 = document.querySelector("#form-1");
 const fullName = document.getElementsByName("fullName")[0];
@@ -263,20 +276,16 @@ const phoneNumber = document.getElementsByName("phoneNumber")[0];
 const dateOfBirth = document.getElementsByName("dateOfBirth")[0];
 const fontIdImage = document.getElementsByName("fontIdImage")[0];
 const backIdImage = document.getElementsByName("backIdImage")[0];
-const submitBtn = document.querySelector("#register .submit-btn");
+
 const form = document.querySelector("#register form");
 
-const fontIdImageError =
-    document.getElementsByClassName("fontIdImage-error")[0];
-const backIdImageError =
-    document.getElementsByClassName("backIdImage-error")[0];
+const fontIdImageError = document.getElementsByClassName("fontIdImage-error")[0];
+const backIdImageError = document.getElementsByClassName("backIdImage-error")[0];
 const fullNameError = document.getElementsByClassName("fullName-error")[0];
 const emailError = document.getElementsByClassName("email-error")[0];
 const addressError = document.getElementsByClassName("address-error")[0];
-const phoneNumberError =
-    document.getElementsByClassName("phoneNumber-error")[0];
-const dateOfBirthError =
-    document.getElementsByClassName("dateOfBirth-error")[0];
+const phoneNumberError = document.getElementsByClassName("phoneNumber-error")[0];
+const dateOfBirthError = document.getElementsByClassName("dateOfBirth-error")[0];
 
 const allInputRegister = document.querySelectorAll("#register input");
 const allErrorSpan = document.querySelectorAll("#register span");
@@ -286,8 +295,8 @@ allInputRegister.forEach((inp, index) => {
     });
 });
 
-registerNextBtn.addEventListener("click", () => {
-    console.log("click");
+function registerNext() {
+
     if (fullName.value === "") {
         fullNameError.innerHTML = "Please enter your full name.";
     } else if (dateOfBirth.value === "") {
@@ -302,14 +311,15 @@ registerNextBtn.addEventListener("click", () => {
         form2.style.transform = "translateX(-50%)";
         form1.style.transform = "translateX(-120%)";
     }
-});
-registerBackBtn.addEventListener("click", () => {
-    // console.log("click");
+};
+
+function registerBack() {
+
     form2.style.transform = "translateX(120%)";
     form1.style.transform = "translateX(50%)";
-});
+}
 
-submitBtn.addEventListener("click", (e) => {
+function registerSubmit() {
     if (fontIdImage.value === "") {
         fontIdImageError.innerHTML = "Please enter your font id image.";
     } else if (backIdImage.value === "") {
@@ -317,7 +327,7 @@ submitBtn.addEventListener("click", (e) => {
     } else {
         form.submit();
     }
-});
+};
 
 const loadFrontIDImage = function(event) {
     let image = document.getElementById('FrontIdDIsplay');
@@ -331,6 +341,7 @@ const loadBackIDImage = function(event) {
 };
 
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
+
 
 function focusOTP(e, previous, curr, next) {
     e.preventDefault();
@@ -446,20 +457,57 @@ function timer() {
 /*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
 
 
-function getView(ViewPath) {
 
-    let contentHolder = document.getElementById("content-holder")
+function getView(ViewPath, buttonName = '') {
+
+    activateButton(buttonName)
 
     $.ajax({
         type: "GET",
         url: ViewPath,
-
+        data: {
+            getBy: 'client'
+        },
         success: function(response) {
-            contentHolder.innerHTML = response
-            window.history.pushState({ 'page_id': 1 }, '', ViewPath)
+
+            contentHolder.innerHTML = response;
+            if (history.pushState) {
+                history.pushState({ pageData: response }, '', ViewPath);
+            }
+
         }
     });
 
+    return !history.pushState;
+}
+
+const deposit = document.getElementById("deposit")
+const withdraw = document.getElementById("withdraw")
+const transfer = document.getElementById("transfer")
+const buy = document.getElementById("buy")
+const transaction = document.getElementById("transaction")
+
+function activateButton(buttonName) {
+    deposit.classList.remove('menu-item-active')
+    withdraw.classList.remove('menu-item-active')
+    transfer.classList.remove('menu-item-active')
+    buy.classList.remove('menu-item-active')
+    transaction.classList.remove('menu-item-active')
+    if (buttonName === 'deposit') {
+        deposit.classList.add("menu-item-active")
+    }
+    if (buttonName === 'withdraw') {
+        withdraw.classList.add("menu-item-active")
+    }
+    if (buttonName === 'transfer') {
+        transfer.classList.add("menu-item-active")
+    }
+    if (buttonName === 'buyphonecard') {
+        buy.classList.add("menu-item-active")
+    }
+    if (buttonName === 'transaction') {
+        transaction.classList.add("menu-item-active")
+    }
 }
 
 /*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
