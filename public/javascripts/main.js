@@ -44,18 +44,18 @@ $(document).ready(function() {
         }, submitPhase1);
     });
 
-    window.onpopstate = (e) => {
-        if (e.state) {
-            contentHolder.innerHTML = e.state.pageData
-        } else {
-            if (window.location.pathname === "/") {
-                window.location.href = "/";
-            } else {
-                getView(window.location.pathname)
-            }
+    // window.onpopstate = (e) => {
+    //     if (e.state) {
+    //         contentHolder.innerHTML = e.state.pageData
+    //     } else {
+    //         if (window.location.pathname === "/") {
+    //             window.location.href = "/";
+    //         } else {
+    //             getView(window.location.pathname)
+    //         }
 
-        }
-    }
+    //     }
+    // }
 
 })
 
@@ -70,26 +70,6 @@ window.onload = () => {
     if (window.location.pathname === "/") {
 
         createUserChart();
-    }
-    if (window.location.pathname === "/deposit") {
-
-        getView("/deposit", "deposit");
-    }
-    if (window.location.pathname === "/withdraw") {
-
-        getView("/withdraw", "withdraw");
-    }
-    if (window.location.pathname === "/transfer") {
-
-        getView("/transfer", "transfer");
-    }
-    if (window.location.pathname === "/buyphonecard") {
-
-        getView("/buyphonecard", "buyphonecard")
-    }
-    if (window.location.pathname === "/transaction") {
-
-        getView("/transaction", "transaction")
     }
     if (window.location.pathname === "/users/recover") {
         timer();
@@ -294,6 +274,16 @@ function createUserChart() {
 
 // -------------------------------------------------------------
 // Register page
+
+
+const allInputRegister = document.querySelectorAll("#register input");
+const allErrorSpan = document.querySelectorAll("#register span");
+allInputRegister.forEach((inp, index) => {
+    inp.addEventListener("focus", () => {
+        allErrorSpan[index].innerHTML = "";
+    });
+});
+
 const multiStepForm = document.querySelector("[data-multi-step]");
 const formSteps = [...multiStepForm.querySelectorAll("[data-step]")];
 let currentStep = formSteps.findIndex((step) => {
@@ -316,29 +306,25 @@ multiStepForm.addEventListener("click", (e) => {
     if (e.target.matches("[data-next]")) {
         incrementor = 1;
     } else if (e.target.matches("[data-previous]")) {
-        incrementor = -1;
+        currentStep--;
+        showCurrentStep();
+
     }
     if (incrementor == null) return;
 
-    // const inputs = [...formSteps[currentStep].querySelectorAll("input")];
-    // const allValid = inputs.every((input) => {
-    //     return input.reportValidity();
-    // });
-    // if (allValid) {
-    //     currentStep += incrementor;
-    //     showCurrentStep();
-    // }
-    if (fullName.value === "") {
-        fullNameError.innerHTML = "Please enter your full name.";
-    } else if (dateOfBirth.value === "") {
-        dateOfBirthError.innerHTML = "Please enter your date of birth.";
-    } else if (email.value === "") {
-        emailError.innerHTML = "Please enter your email.";
-    } else if (address.value === "") {
-        addressError.innerHTML = "Please enter your address.";
-    } else if (phoneNumber.value === "") {
-        phoneNumberError.innerHTML = "Please enter your phone number.";
-    } else {
+    const inputs = [...formSteps[currentStep].querySelectorAll("#form-1 input")];
+
+    let countValid = 0;
+    inputs.forEach((inp, index) => {
+        if (inp.value === "") {
+            allValid = false;
+            allErrorSpan[index].innerText = "Please enter this field!";
+        } else {
+            countValid++;
+        }
+    });
+
+    if (countValid === 5) {
         currentStep += incrementor;
         showCurrentStep();
     }
@@ -351,74 +337,17 @@ formSteps.forEach((step) => {
     });
 });
 
-const allSvgIconPath = [...document.querySelectorAll(".svg-icon path")];
-allSvgIconPath.forEach((svg) => {
-    svg.classList.remove("hide");
-});
 
-
-const form2 = document.querySelector("#form-2");
-const form1 = document.querySelector("#form-1");
-const fullName = document.getElementsByName("fullName")[0];
-const email = document.getElementsByName("email")[0];
-const address = document.getElementsByName("address")[0];
-const phoneNumber = document.getElementsByName("phoneNumber")[0];
-const dateOfBirth = document.getElementsByName("dateOfBirth")[0];
 const fontIdImage = document.getElementsByName("fontIdImage")[0];
 const backIdImage = document.getElementsByName("backIdImage")[0];
-
+const submitBtn = document.querySelector("#register .submit-btn");
 const form = document.querySelector("#register form");
 
-// const fontIdImageError = document.getElementsByClassName("fontIdImage-error")[0];
-// const backIdImageError = document.getElementsByClassName("backIdImage-error")[0];
-// const fullNameError = document.getElementsByClassName("fullName-error")[0];
-// const emailError = document.getElementsByClassName("email-error")[0];
-// const addressError = document.getElementsByClassName("address-error")[0];
-// const phoneNumberError = document.getElementsByClassName("phoneNumber-error")[0];
-// const dateOfBirthError = document.getElementsByClassName("dateOfBirth-error")[0];
-// const fontIdImageError =
-//   document.getElementsByClassName("fontIdImage-error")[0];
-// const backIdImageError =
-//   document.getElementsByClassName("backIdImage-error")[0];
-// const fullNameError = document.getElementsByClassName("fullName-error")[0];
-// const emailError = document.getElementsByClassName("email-error")[0];
-// const addressError = document.getElementsByClassName("address-error")[0];
-// const phoneNumberError =
-//   document.getElementsByClassName("phoneNumber-error")[0];
-// const dateOfBirthError =
-//   document.getElementsByClassName("dateOfBirth-error")[0];
+const fontIdImageError =
+    document.getElementsByClassName("fontIdImage-error")[0];
+const backIdImageError =
+    document.getElementsByClassName("backIdImage-error")[0];
 
-const allInputRegister = document.querySelectorAll("#register input");
-const allErrorSpan = document.querySelectorAll("#register span");
-allInputRegister.forEach((inp, index) => {
-    inp.addEventListener("focus", () => {
-        allErrorSpan[index].innerHTML = "";
-    });
-});
-
-// function registerNext() {
-
-//     if (fullName.value === "") {
-//         fullNameError.innerHTML = "Please enter your full name.";
-//     } else if (dateOfBirth.value === "") {
-//         dateOfBirthError.innerHTML = "Please enter your date of birth.";
-//     } else if (email.value === "") {
-//         emailError.innerHTML = "Please enter your email.";
-//     } else if (address.value === "") {
-//         addressError.innerHTML = "Please enter your address.";
-//     } else if (phoneNumber.value === "") {
-//         phoneNumberError.innerHTML = "Please enter your phone number.";
-//     } else {
-//         currentStep += incrementor;
-//         showCurrentStep();
-//     }
-// };
-
-function registerBack() {
-
-    form2.style.transform = "translateX(120%)";
-    form1.style.transform = "translateX(50%)";
-}
 
 function registerSubmit() {
     if (fontIdImage.value === "") {
@@ -439,7 +368,8 @@ const loadBackIDImage = function(event) {
     let image = document.getElementById("BackIdDisplay");
     image.src = URL.createObjectURL(event.target.files[0]);
 };
-
+// -------------------------------------------------------------
+// Register page
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
 
 
@@ -544,56 +474,26 @@ function timer() {
 
 
 
-function getView(ViewPath, buttonName = '') {
+// function getView(ViewPath, buttonName = '') {
+//     $.ajax({
+//         type: "GET",
+//         url: ViewPath,
+//         data: {
+//             getBy: 'client'
+//         },
+//         success: function(response) {
 
-    activateButton(buttonName)
+//             contentHolder.innerHTML = response;
+//             if (history.pushState) {
+//                 history.pushState({ pageData: response }, '', ViewPath);
+//             }
 
-    $.ajax({
-        type: "GET",
-        url: ViewPath,
-        data: {
-            getBy: 'client'
-        },
-        success: function(response) {
+//         }
+//     });
 
-            contentHolder.innerHTML = response;
-            if (history.pushState) {
-                history.pushState({ pageData: response }, '', ViewPath);
-            }
+//     return !history.pushState;
+// }
 
-        }
-    });
 
-    return !history.pushState;
-}
-
-const deposit = document.getElementById("deposit")
-const withdraw = document.getElementById("withdraw")
-const transfer = document.getElementById("transfer")
-const buy = document.getElementById("buy")
-const transaction = document.getElementById("transaction")
-
-function activateButton(buttonName) {
-    deposit.classList.remove('menu-item-active')
-    withdraw.classList.remove('menu-item-active')
-    transfer.classList.remove('menu-item-active')
-    buy.classList.remove('menu-item-active')
-    transaction.classList.remove('menu-item-active')
-    if (buttonName === 'deposit') {
-        deposit.classList.add("menu-item-active")
-    }
-    if (buttonName === 'withdraw') {
-        withdraw.classList.add("menu-item-active")
-    }
-    if (buttonName === 'transfer') {
-        transfer.classList.add("menu-item-active")
-    }
-    if (buttonName === 'buyphonecard') {
-        buy.classList.add("menu-item-active")
-    }
-    if (buttonName === 'transaction') {
-        transaction.classList.add("menu-item-active")
-    }
-}
 
 /*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */

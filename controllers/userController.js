@@ -17,19 +17,14 @@ module.exports = {
 
             const accessToken = req.cookies.accessToken;
             const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+            let user = await User.findOne({ username: verifyToken.data.username });
+            return res.render("deposit", {
+                title: "SmartWallet",
+                layout: "main",
+                user,
+                depositButton: true
+            });
 
-            if (req.query.getBy === "client") {
-
-                return res.render("deposit", { title: "SmartWallet", layout: false });
-
-            } else {
-                let user = await User.findOne({ username: verifyToken.data.username });
-                return res.render("deposit", {
-                    title: "SmartWallet",
-                    layout: "main",
-                    data: user,
-                });
-            }
         }
     },
 
@@ -41,19 +36,14 @@ module.exports = {
 
             const accessToken = req.cookies.accessToken;
             const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+            let user = await User.findOne({ username: verifyToken.data.username });
+            return res.render("withdraw", {
+                title: "SmartWallet",
+                layout: "main",
+                user,
+                withdrawButton: true
+            });
 
-            if (req.query.getBy === "client") {
-
-                return res.render("withdraw", { title: "SmartWallet", layout: false })
-
-            } else {
-                let user = await User.findOne({ username: verifyToken.data.username });
-                return res.render("withdraw", {
-                    title: "SmartWallet",
-                    layout: "main",
-                    data: user,
-                });
-            }
         }
 
     },
@@ -66,19 +56,14 @@ module.exports = {
 
             const accessToken = req.cookies.accessToken;
             const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+            let user = await User.findOne({ username: verifyToken.data.username });
+            return res.render("transfer", {
+                title: "SmartWallet",
+                layout: "main",
+                user,
+                transferButton: true
+            });
 
-            if (req.query.getBy === "client") {
-
-                return res.render("transfer", { title: "SmartWallet", layout: false });
-
-            } else {
-                let user = await User.findOne({ username: verifyToken.data.username });
-                return res.render("transfer", {
-                    title: "SmartWallet",
-                    layout: "main",
-                    data: user,
-                });
-            }
         }
 
     },
@@ -91,19 +76,14 @@ module.exports = {
 
             const accessToken = req.cookies.accessToken;
             const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+            let user = await User.findOne({ username: verifyToken.data.username });
+            return res.render("buyphonecard", {
+                title: "SmartWallet",
+                layout: "main",
+                user,
+                buyButton: true
+            });
 
-            if (req.query.getBy === "client") {
-
-                return res.render("buyphonecard", { title: "SmartWallet", layout: false })
-
-            } else {
-                let user = await User.findOne({ username: verifyToken.data.username });
-                return res.render("buyphonecard", {
-                    title: "SmartWallet",
-                    layout: "main",
-                    data: user,
-                });
-            }
         }
 
     },
@@ -115,19 +95,14 @@ module.exports = {
 
             const accessToken = req.cookies.accessToken;
             const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+            let user = await User.findOne({ username: verifyToken.data.username });
+            return res.render("transaction", {
+                title: "SmartWallet",
+                layout: "main",
+                user,
+                transactionButton: true
+            });
 
-            if (req.query.getBy === "client") {
-
-                return res.render("transaction", { title: "SmartWallet", layout: false })
-
-            } else {
-                let user = await User.findOne({ username: verifyToken.data.username });
-                return res.render("transaction", {
-                    title: "SmartWallet",
-                    layout: "main",
-                    data: user,
-                });
-            }
         }
 
     },

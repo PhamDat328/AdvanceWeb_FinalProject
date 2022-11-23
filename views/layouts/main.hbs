@@ -154,36 +154,36 @@
       <div class="menu">
 
         <!-- deposit -->
-        <div id="deposit" class="menu-item">
-          <div class="item-wrapper" onclick="getView('/deposit','deposit')"></div>
+        <div id="deposit" class="menu-item {{#if depositButton}} menu-item-active  {{/if}}">
+          <div class="item-wrapper" onclick="window.location.href ='/deposit'"></div>
           <img src="/images/deposit.png" alt="deposit" />
           <p class="side-nav-text side-nav-menu-text">Deposit</p>
         </div>
 
         <!-- withdraw -->
-        <div id="withdraw" class="menu-item">
-          <div   class="item-wrapper" onclick="getView('/withdraw','withdraw')"></div>
+        <div id="withdraw" class="menu-item {{#if withdrawButton}} menu-item-active  {{/if}}">
+          <div class="item-wrapper" onclick="window.location.href ='/withdraw'"></div>
           <img src="/images/withdraw.png" alt="withdraw" />
           <p class="side-nav-text side-nav-menu-text">Withdraw</p>
         </div>
 
         <!-- transfer -->
-        <div id="transfer" class="menu-item">
-          <div   class="item-wrapper" onclick="getView('/transfer','transfer')"></div>
+        <div id="transfer" class="menu-item {{#if transferButton}} menu-item-active  {{/if}}">
+          <div class="item-wrapper" onclick="window.location.href ='/transfer'"></div>
           <img src="/images/transfer.png" alt="transfer" />
           <p class="side-nav-text side-nav-menu-text">Transfer</p>
         </div>
 
         <!-- buy phone card -->
-        <div id="buy" class="menu-item">
-          <div   class="item-wrapper" onclick="getView('/buyphonecard','buyphonecard')"></div>
+        <div id="buy" class="menu-item {{#if buyButton}} menu-item-active  {{/if}}">
+          <div class="item-wrapper" onclick="window.location.href = '/buyphonecard'"></div>
           <img src="/images/phonecard.png" alt="phonecard" />
           <p class="side-nav-text side-nav-menu-text">Buy phone card</p>
         </div>
 
         <!-- transaction -->
-        <div id="transaction" class="menu-item">
-          <div   class="item-wrapper" onclick="getView('/transaction','transaction')"></div>
+        <div id="transaction" class="menu-item {{#if transactionButton}} menu-item-active  {{/if}}">
+          <div class="item-wrapper" onclick="window.location.href = '/transaction'"></div>
           <img src="/images/transaction.png" alt="transaction" />
           <p class="side-nav-text side-nav-menu-text">Transaction</p>
         </div>
