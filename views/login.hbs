@@ -4,7 +4,7 @@
       <div class="login__form___logo">
         <img src="/images/logo.png" style="width: 13rem;" />
       </div>
-      <form method="POST" action="/login" class="login__form">
+      <form method="POST" action="/login" class="login__form" id="login__form">
         <div class="login__row">
           <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
             <path
@@ -31,8 +31,11 @@
             placeholder="Password"
           />
         </div>
+        <div class="option__row">
+          <a href="/users/recover">Forgot password ?</a>
+        </div>
         {{! <button type="submit">Sign in</button> }}
-        <button type="submit" class="login__submit">Sign in</button>
+        <button type="button" class="login__submit">Sign in</button>
         <p class="login__signup">Don't have an account? &nbsp;<a
             href="/register"
           >Sign up</a></p>

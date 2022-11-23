@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const logger = require("morgan");
+// const logger = require("morgan");
 const dotenv = require("dotenv");
 const hbs = require("express-handlebars");
 const session = require("express-session");
@@ -18,6 +18,7 @@ const app = express();
 //Connect Database
 const DB = require("./connectDB");
 const authController = require("./controllers/authController");
+const { type } = require("os");
 DB.connect();
 
 // view engine setup
@@ -25,11 +26,9 @@ app.engine("hbs", hbs.engine({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", "hbs");
 app.use(cors());
 const hbsCreate = hbs.create({});
-// hbsCreate.handlebars.registerHelper("user", () => {
-//   return authController.getUser();
-// });
+hbsCreate.handlebars.registerHelper();
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

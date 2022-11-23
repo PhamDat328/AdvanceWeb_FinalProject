@@ -90,15 +90,16 @@ p {
 .wrapper {
     display: block;
     position: fixed;
-    z-index: 3;
     width: 100%;
     min-height: 100%;
     top: 70px;
     left: 0;
+    z-index: -1;
 }
 
 .wrapper-active {
     background-color: unset;
+    z-index: 3 !important;
 }
 
 .main {
@@ -366,6 +367,14 @@ p {
     z-index: -2;
 }
 
+.side-nav-bar .menu-item .item-wrapper {
+    width: 100%;
+    height: 84.5px;
+    position: absolute;
+    left: 0;
+    z-index: 10;
+}
+
 .logo {
     height: 100%;
     display: flex;
@@ -499,7 +508,7 @@ p {
 }
 
 .menu-item {
-    width: 95%;
+    width: 100%;
     height: 56.5px;
     padding: 13px;
     display: flex;
@@ -517,12 +526,18 @@ p {
     font-weight: 600;
     width: 80%;
     padding-left: 6%;
+    z-index: 1;
 }
 
 .menu-item:hover {
     background-color: #1eaae7;
     color: black;
     cursor: pointer;
+}
+
+.menu-item-active {
+    background-color: #1eaae7;
+    color: black;
 }
 
 .menu-item:hover .side-nav-text {
@@ -934,6 +949,8 @@ footer {
 /* End Home page CSS */
 
 
+
+/* ---------------------------------------------------------------------------------------- */
 /* Start Login Form CSS */
 
 svg {
@@ -1034,7 +1051,19 @@ button {
 .login__row {
     height: 5rem;
     padding-top: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgb(255 255 255);
+}
+
+.option__row {
+    text-align: right;
+    font-size: 20px;
+    font-weight: 600;
+    padding-top: 1rem;
+}
+
+.option__row a {
+    text-decoration: none;
+    color: white;
 }
 
 .login__icon {
@@ -1045,14 +1074,14 @@ button {
 .login__icon.name path {
     stroke-dasharray: 73.50196075439453;
     stroke-dashoffset: 73.50196075439453;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
 .login__icon.pass path {
     stroke-dasharray: 92.10662841796875;
     stroke-dashoffset: 92.10662841796875;
-    -webkit-animation: animatePath 2s 0.5s forwards;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
     animation: animatePath 2s 0.5s forwards;
 }
 
@@ -1066,11 +1095,15 @@ button {
     color: #FDFCFD;
 }
 
+.login__input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
 .login__submit {
     position: relative;
     width: 100%;
     height: 4rem;
-    margin: 5rem 0 2.2rem;
+    margin: 3rem 0 2.2rem;
     color: rgba(255, 255, 255, 0.8);
     background: #1eaae7;
     font-size: 1.5rem;
@@ -1170,7 +1203,7 @@ button {
     }
 }
 
-@-webkit-keyframes animatePath {
+@-webkit-keyframes animatePath-web-kit {
     to {
         stroke-dashoffset: 0;
     }
@@ -1243,18 +1276,32 @@ button {
     font-size: 24px;
 }
 
+.pending-modal .modal-body,
+.pending-modal h5 {
+    color: #000;
+}
+
 
 /* End Admin PendingPage */
 
 
 /* ----------------------------------------------------------------------------------- */
 
-
 /* Register page */
 
 #register {
+    margin: 0;
     overflow-x: hidden;
+    max-width: 100%;
     height: 100%;
+    background-image: url(/images/login_background.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#register * {
+    box-sizing: border-box;
 }
 
 #register::-webkit-scrollbar {
@@ -1267,56 +1314,115 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* flex-direction: column; */
 }
 
 .register-title {
-    color: #000;
+    font-family: 'Coiny', cursive;
+    color: rgb(255, 255, 255);
+    font-weight: 800;
     text-align: center;
     margin-top: 1.75rem;
 }
 
 .register-form form {
     width: 100%;
+    position: relative;
+}
+
+.register-form .input__row {
     display: flex;
-    /* background-color: rgb(147,153,157); */
-    /* position: absolute; */
+    height: 2rem;
+    border-bottom: 1px solid rgb(255 255 255);
+}
+
+.register-form .input__row:hover {
+    border-bottom: 1px solid rgb(0, 0, 0);
 }
 
 .register-form form input {
-    width: 95%;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    background: transparent;
+    color: #FDFCFD;
+    padding: 0 0 0 1.5rem !important;
+    border: none;
+    outline: none;
+}
+
+.register-form form input:focus {
+    background: transparent;
+    color: #FDFCFD;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .register-form label {
-    color: black;
-    /* display: block; */
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
 }
 
-#register #form-1 {
+.multi-step-form {
+    overflow: hidden;
+    position: relative;
+  }
+
+.register-form .card {
+    background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
     width: 600px;
     border: 1px solid black;
     padding: 24px;
     border-radius: 8px;
-    transform: translateX(50%);
-    transition: all .7s;
+    transition: all 1s;
+    margin: 0 auto;
+    animation: fade 300ms ease-in-out forwards;
 }
 
-#register #form-2 {
-    width: 600px;
-    transition: all .7s;
-    height: fit-content;
-    border: 1px solid black;
-    padding: 24px;
-    border-radius: 8px;
-    transform: translateX(120%);
+.register-form .card.active {
+    animation: slide 300ms 150ms ease-in-out both;
+  }
+
+.hide {
+    display: none;
 }
 
-#register #form-1 button,
-#register #form-2 button {
-    float: right;
-    margin-left: 1rem;
-    padding: 0.65rem 2rem;
-    margin-top: 1rem;
+@keyframes slide {
+    0% {
+      transform: translateX(200%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
+  
+@keyframes fade {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(.75);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+}
+
+#register .btn-contain {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#register form .btn {
+    padding: 12px 20px;
 }
 
 #register .fontIdImage-error {
@@ -1345,6 +1451,49 @@ button {
 
 #register .dateOfBirth-error {
     display: block;
+}
+
+.register__icon {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+}
+
+.register__icon.name path {
+    stroke-dasharray: 73.50196075439453;
+    stroke-dashoffset: 73.50196075439453;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
+    animation: animatePath 2s 0.5s forwards;
+}
+
+.register__icon.date path {
+    stroke-width: 0.8;
+    stroke-dasharray: 75.10662841796875;
+    stroke-dashoffset: 75.10662841796875;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
+    animation: animatePath 1.5s 0.5s forwards;
+}
+
+.register__icon.email path {
+    stroke-width: 0.8;
+    stroke-dasharray: 95.10662841796875;
+    stroke-dashoffset: 95.10662841796875;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
+    animation: animatePath 2s 0.5s forwards;
+}
+
+.register__icon.address path {
+    stroke-dasharray: 95.10662841796875;
+    stroke-dashoffset: 95.10662841796875;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
+    animation: animatePath 2s 0.5s forwards;
+}
+
+.register__icon.phone path {
+    stroke-dasharray: 65.10662841796875;
+    stroke-dashoffset: 70.10662841796875;
+    -webkit-animation: animatePath-web-kit 2s 0.5s forwards;
+    animation: animatePath 1s 0.5s forwards;
 }
 
 .container-success-register {
@@ -1383,7 +1532,42 @@ button {
     color: #fff;
 }
 
+#form-2 .ID-input {
+    border-bottom: 1px solid white !important;
+    border-top: unset !important;
+    border-left: unset !important;
+    border-right: unset !important;
+    padding: 0.375rem 0.75rem !important;
+    outline: none;
+    border: unset;
+}
+
+#form-2 .ID-input::-webkit-file-upload-button {
+    background: #1eaae7;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#form-2 .mb-3 img {
+    width: 200px;
+    max-height: 200px;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Responsive register page */
+@media screen and (max-width: 576px) {
+    .register-form .card {
+        width: 375px;
+    }
+    
+    .register-form form input {
+        font-size: 16px;
+    }
+}
+
 /* Change Password page */
+
 #changePassword {
     color: #000;
     height: 100%;
@@ -1392,6 +1576,7 @@ button {
     align-items: center;
     justify-content: center;
 }
+
 .change-password-form {
     border-radius: 8px;
     padding: 20px;
@@ -1399,22 +1584,196 @@ button {
     border: 1px solid black;
     width: 50%;
 }
+
 #changePassword p {
     margin-bottom: 8px;
     font-size: 18px;
     font-family: 'Coiny', cursive;
-
 }
+
 #changePassword button {
     float: right;
     margin-top: 16px;
     /* margin-right: 4rem; */
 }
+
 #changePassword input {
     width: 91%;
 }
+
 #changePassword .title {
     font-size: 32px;
     font-weight: 600;
     font-family: 'Coiny', cursive;
 }
+
+
+/* Start User Function CSS */
+
+#userFunctionForm {
+    width: 600px;
+    margin: auto;
+    color: black;
+    margin-top: 50px;
+    box-shadow: rgb(38 57 77) 0px 20px 35px -5px;
+    border-radius: 10px;
+}
+
+#userFunctionForm .form-content {
+    padding: 2.5rem 3rem 2rem;
+}
+
+#userFunctionForm h2 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    padding: 8px 0px;
+    font-weight: 800;
+    background-color: #50a3fa;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#userFunctionForm .user__form__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#userFunctionForm .user__form__icon img {
+    width: 200px;
+    padding-right: 2rem;
+}
+
+#userFunctionForm input {
+    width: 80%;
+}
+
+#userFunctionForm .form-group {
+    line-height: 2rem;
+    padding-left: 2rem;
+    margin-top: 14px;
+}
+
+#userFunctionForm .form-group label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#userFunctionForm .btn {
+    width: 100px;
+    height: 35px;
+    display: block;
+}
+
+#userFunctionForm .option a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#userFunctionForm .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+
+/* End User Function CSS */
+
+
+/* -------------------------------------------------- Enter OTP CSS -----------------------------------------------------*/
+
+.entercode {
+    margin: auto;
+    width: 25%;
+    height: auto;
+    border: 1px solid lightgray;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 8px 2px grey;
+}
+
+.title-Verify {
+    text-align: center;
+    font-size: 16px;
+}
+
+.logo_entercode {
+    text-align: center;
+}
+
+.code {
+    padding: 16px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.code-item {
+    width: 30px;
+    height: 30px;
+}
+
+.code-item input {
+    width: 25px;
+    height: 25px;
+    border: none;
+    border-bottom: 1.5px solid lightgray;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.code-item input:focus {
+    outline: none;
+    border-bottom: 1.5px solid rgb(0, 0, 0);
+}
+
+.code-item input[type=number]::-webkit-inner-spin-button,
+.code-item input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.button {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.resend button {
+    color: #fff;
+    margin: 16px 0;
+    width: 100px;
+    height: 32px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: rgb(5, 183, 5);
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0px 5px 5px #75c487;
+}
+
+.resend button:hover {
+    background-color: rgb(0, 75, 12);
+}
+
+.OTP_Form .alert-box .card {
+    display: none;
+    text-align: center;
+}
+
+.OTP_Form .countdown-box {
+    margin: auto;
+    text-align: center;
+}
+
+.OTP_Form .countdown-box .time {
+    color: red;
+}
+
+
+/*-------------------------------------------------- Enter OTP CSS ----------------------------------------------------- */

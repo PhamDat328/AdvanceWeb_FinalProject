@@ -3,9 +3,9 @@ const Account = require("../models/Account");
 const formidable = require("formidable");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const app = require("../app");
-
+const mailer = require("./sendMail");
 const uploadDir = __dirname + "/../public/images/uploads";
 fs.existsSync(uploadDir) || fs.mkdirSync(uploadDir);
 
@@ -28,14 +28,10 @@ const generateRandomPassword = () => {
 };
 
 const authController = {
-  getLoginPage: (req, res) => {
-    if (req.session.isLogin) {
-      return res.redirect("/");
-    }
+  getLoginPage: (req, res, next) => {
     res.render("login", { title: "Express", layout: "blankLayout" });
   },
-
-  getRegisterPage: (req, res) => {
+  getRegisterPage: (req, res, next) => {
     res.render("register", { title: "Express", layout: "blankLayout" });
   },
 
@@ -253,8 +249,8 @@ const authController = {
       });
 
       if (!account) {
-        return res.status.render("login", {
-          layout: "main",
+        return res.status(400).render("login", {
+          layout: "blankLayout",
           error: true,
           message: "Wrong password or username",
         });
@@ -264,7 +260,8 @@ const authController = {
         account.hashPassword
       );
       if (!validPassword) {
-        return res.status.render("login", {
+        console.log("SAI MK");
+        return res.status(400).render("login", {
           layout: "blankLayout",
           error: true,
           message: "Wrong password or username",
@@ -295,6 +292,7 @@ const authController = {
       }
       res.status(500).json("error");
     } catch (error) {
+      console.log(error.message);
       res.render("login", { layout: "blankLayout", error: error });
     }
   },
@@ -305,11 +303,17 @@ const authController = {
     } else {
       const accessToken = req.cookies.accessToken;
       const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
-      const user = await User.findOne({ username: verifyToken.data.username });
+      const user = await User.findOne({
+        username: verifyToken.data.username,
+      }).select("+admin");
+      let layoutType = "main";
+      if (user.admin) {
+        layoutType = "admin";
+      }
       return res.render("index", {
-        title: "Express",
-        layout: "main",
-        data: user,
+        title: "SmartWallet",
+        layout: layoutType,
+        user,
       });
     }
   },
@@ -318,6 +322,30 @@ const authController = {
     req.session.isLogin = false;
     res.clearCookie("accessToken");
     res.redirect("/login");
+  },
+
+  getTestDisplay: (req, res) => {
+    return res.render("test", {
+      title: "SmartWallet",
+      layout: "blankLayout",
+    });
+  },
+
+  postTestDisplay: (req, res) => {
+    return mailer.sendMail(req.body.input1, req.body.input2, req.body.input3);
+  },
+
+  restrictTo: (...roles) => {
+    return (req, res, next) => {
+      // roles ['admin', 'lead-guide']. roles='user'
+      if (!roles.includes(req.user.role)) {
+        return next(
+          new AppError("You do not have permission to perform this action", 403)
+        );
+      }
+
+      next();
+    };
   },
 };
 

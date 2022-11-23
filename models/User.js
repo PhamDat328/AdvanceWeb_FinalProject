@@ -33,6 +33,7 @@ let User = mongoose.Schema({
   admin: {
     type: Boolean,
     default: false,
+    select: false,
   },
 });
 
