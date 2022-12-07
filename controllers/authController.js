@@ -27,6 +27,42 @@ const generateRandomPassword = () => {
     return password;
 };
 
+function toMoney(moneyamount, style = 'VND') {
+
+    return parseFloat(moneyamount).toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + style;
+}
+
+function compareLastLoginWithCurrentTime(currentDate, LastLogin) {
+    if (currentDate.getFullYear() === LastLogin.getFullYear()) {
+
+        if (currentDate.getMonth() === LastLogin.getMonth()) {
+
+            if (currentDate.getDate() === LastLogin.getDate()) {
+                return false;
+            } else if (currentDate.getDate() > LastLogin.getDate()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else if (currentDate.getMonth() > LastLogin.getMonth()) {
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    } else if (currentDate.getFullYear() > LastLogin.getFullYear()) {
+
+        return true;
+
+    } else {
+
+        return false;
+    }
+}
+
 const authController = {
     getLoginPage: (req, res, next) => {
         res.render("login", { title: "Express", layout: "blankLayout" });
@@ -124,6 +160,8 @@ const authController = {
                                     dateOfBirth,
                                 });
                             } else {
+                                let d = new Date();
+                                let currentDate = new Date(Date.now() - d.getTimezoneOffset() * 60 * 1000)
                                 const newUser = await User.create({
                                     username,
                                     fullName,
@@ -133,6 +171,7 @@ const authController = {
                                     dateOfBirth,
                                     fontIdImage: pathFontIdImage,
                                     backIdImage: pathBackIdImage,
+                                    createAt: currentDate,
                                 });
                                 const newAccount = await Account.create({
                                     username,
@@ -232,6 +271,8 @@ const authController = {
                     lastLogin: Date.now(),
                     hashPassword: hashed,
                 });
+                req.session.isLogin = true;
+                req.session.username = account.username;
                 return res.redirect(303, "/");
             }
             return res.render("changePassword", {
@@ -276,19 +317,29 @@ const authController = {
                 var accessToken = authController.generateAccessToken(data);
                 var refreshToken = authController.generateRefreshToken(data);
                 await account.updateOne({ refreshToken: refreshToken });
-
                 res.cookie("accessToken", accessToken, {
                     httpOnly: true,
                     secure: false,
                     path: "/",
                     sameSite: "strict",
                 });
-                req.session.isLogin = true;
-                req.session.username = account.username;
+
+                let d = new Date();
+                let currentDate = new Date(Date.now() - d.getTimezoneOffset() * 60 * 1000)
+
+                if (account.lastLogin !== null && compareLastLoginWithCurrentTime(currentDate, account.lastLogin)) {
+
+                    await account.updateOne({ remainWithDrawPerDay: 2 });
+
+                }
+
                 if (!account.lastLogin) {
                     return res.redirect("/changePassword");
                 }
 
+                req.session.isLogin = true;
+                req.session.username = account.username;
+                await account.updateOne({ lastLogin: currentDate });
                 return res.redirect(303, "/");
             }
             res.status(500).json("error");
@@ -307,14 +358,21 @@ const authController = {
             const user = await User.findOne({
                 username: verifyToken.data.username,
             }).select("+admin");
+            const currentUserAcount = await Account.findOne({ username: user.username })
             let layoutType = "main";
             if (user.admin) {
                 layoutType = "admin";
+                return res.render("index", {
+                    title: "SmartWallet",
+                    layout: layoutType,
+                    user: user.toObject(),
+                });
             }
             return res.render("index", {
                 title: "SmartWallet",
                 layout: layoutType,
-                user,
+                user: user.toObject(),
+                balance: toMoney(currentUserAcount['balance'])
             });
         }
     },
@@ -323,17 +381,6 @@ const authController = {
         req.session.isLogin = false;
         res.clearCookie("accessToken");
         res.redirect("/login");
-    },
-
-    getTestDisplay: (req, res) => {
-        return res.render("test", {
-            title: "SmartWallet",
-            layout: "blankLayout",
-        });
-    },
-
-    postTestDisplay: (req, res) => {
-        return mailer.sendMail(req.body.input1, req.body.input2, req.body.input3);
     },
 
     restrictTo: (...roles) => {

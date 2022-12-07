@@ -44,18 +44,6 @@ $(document).ready(function() {
         }, submitPhase1);
     });
 
-    // window.onpopstate = (e) => {
-    //     if (e.state) {
-    //         contentHolder.innerHTML = e.state.pageData
-    //     } else {
-    //         if (window.location.pathname === "/") {
-    //             window.location.href = "/";
-    //         } else {
-    //             getView(window.location.pathname)
-    //         }
-
-    //     }
-    // }
 
 })
 
@@ -192,7 +180,7 @@ window.onclick = (event) => {
 };
 
 window.addEventListener("resize", () => {
-    if (body.clientWidth > 768) {
+    if (body.clientWidth > 1024) {
         if (document.querySelector(".wrapper-active") != null) {
             window_wrapper.classList.remove("wrapper-active");
         }
@@ -200,8 +188,7 @@ window.addEventListener("resize", () => {
         if (document.querySelector(".show-logo") != null) {
             logoName.classList.remove("show-logo");
         }
-    }
-    if (body.clientWidth > 1024) {
+
         if (document.querySelector(".side-nav-bar-expand") != null) {
             sideNav.classList.remove("side-nav-bar-expand");
         }
@@ -470,30 +457,199 @@ function timer() {
 
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
 
-/*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
+/*-------------------------------------------------- Pending view JS ----------------------------------------------------- */
+
+function toMoney(moneyamount, style = 'VND') {
+
+    return parseFloat(moneyamount).toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + style;
+}
+
+function setAmountValue(amount) {
+    let amountDisplay = document.getElementById("amountDisplay")
+    let value = amount.value
+    let displayValue = "";
+    if (value <= 5) {
+        displayValue = "Mọi số tiền";
+        amountDisplay.innerText = displayValue
+    } else {
+        amountDisplay.innerText = `Trên ${toMoney(value * 1000000)}`
+    }
+}
+
+
+function searchPendingUser() {
+    let searchForm = new FormData(document.getElementById("searchPendingData"));
+    let data = Object.fromEntries(searchForm);
+    let url = "/admin/pending";
+    let firstItem = 0;
+    let tableTbody = document.querySelector("#admin #pending .table #userData")
+    let tableNotification = document.querySelector("#admin #pending .tableNotification")
+
+    tableTbody.innerHTML = ""
+    tableNotification.innerHTML = `<div class="spinner-border" role="status" style="color:#000"></div>`
+    tableNotification.classList.add("InLoading")
+    for (item in data) {
+        if (data[item] !== "") {
+            if (firstItem === 0) {
+                url += `?${item}=${data[item]}`;
+                firstItem = 1;
+            } else {
+                url += `&${item}=${data[item]}`;
+            }
+        }
+
+    }
+    if (firstItem != 0) {
+        url += "&search=true"
+        fetch(url, { method: 'POST' })
+            .then((result) => {
+
+                return result.json()
+            })
+            .then((JSONResult) => {
+
+                tableNotification.classList.remove("InLoading")
+                let html = ``
+                if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
+                    JSONResult.result.forEach((row) => {
+                        html += `<tr>
+                        <td>${row.username}</td>
+                        <td>${row.fullName}</td>
+                        <td>${row.address}</td>
+                        <td>${row.phoneNumber}</td>
+                        <td>${row.email}</td>
+                        <td>
+                            <button onclick="window.location.href ='/admin/userDetail/${this.username}'" class="btn btn-info">Xem chi tiết</button>
+                            <button data-bs-toggle="modal" data-bs-target="#confirmModal-${row.username}" class="btn btn-success">Duyệt</button>
+                            <button data-bs-toggle="modal" data-bs-target="#cancelModal-${row.username}" class="btn btn-danger">Hủy</button>
+                            <button data-bs-toggle="modal" data-bs-target="#addInformationModal-${row.username}" class="btn btn-warning">Thêm thông tin</button>
+                        </td>
+                      </tr>`
+                    })
+                    tableNotification.innerHTML = ""
+                    tableTbody.innerHTML = html
+
+                } else {
+                    html = `<div style="color:#000; padding-top: 0.5rem;">${JSONResult.msg}</div>`
+                    tableNotification.innerHTML = html
+                }
+                history.replaceState("", "", url)
+            })
+    }
+}
+
+function searchPendingTransaction() {
+    let searchForm = new FormData(document.getElementById("searchPendingData"));
+    let data = Object.fromEntries(searchForm);
+    let url = "/admin/transactionApproval";
+    let firstItem = 0;
+    let tableTbody = document.querySelector("#admin #pending .table #transactionData")
+    let tableNotification = document.querySelector("#admin #pending .tableNotification")
+
+    tableTbody.innerHTML = ""
+    tableNotification.innerHTML = `<div class="spinner-border" role="status" style="color:#000"></div>`
+    tableNotification.classList.add("InLoading")
+
+    for (item in data) {
+        if (data[item] !== "") {
+            if (firstItem === 0) {
+                url += `?${item}=${data[item]}`;
+                firstItem = 1;
+            } else {
+                url += `&${item}=${data[item]}`;
+            }
+        }
+
+    }
+    if (firstItem != 0) {
+        url += "&search=true"
+        fetch(url, { method: 'POST' })
+            .then((result) => {
+
+                return result.json()
+            })
+            .then((JSONResult) => {
+
+                tableNotification.classList.remove("InLoading")
+                let html = ``
+                if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
+                    JSONResult.result.forEach((row) => {
+                        html += `<tr>
+                        <td>${row._id}</td>
+                        <td>${row.userID}</td>
+                        <td>${row.transactionDate}</td>
+                        <td>${row.transactionAmount}</td>
+                        <td>${row.status}</td>
+                        <td>
+                          <button data-bs-toggle="modal" data-bs-target="#confirmModal-${row._id}" class="btn btn-success">Duyệt</button>
+                          <button data-bs-toggle="modal" data-bs-target="#cancelModal-${row._id}" class="btn btn-danger">Hủy</button>
+                        </td>
+                      </tr>
+                        <div class="modal pending-modal fade" id="confirmModal-${row._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <form action="/admin/activated/${row._id}" method="POST">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Modal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                     ${row._id}
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                    >Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="modal pending-modal fade" id="cancelModal-${row._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <form action="/admin/cancel/${row._id}" method="POST">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Cancel Modal</h5>
+                                    <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${row._id}
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                    >Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                      `
+                    })
+                    tableNotification.innerHTML = ""
+                    tableTbody.innerHTML = html
+
+                } else {
+                    html = `<div style="color:#000; padding-top: 0.5rem;">${JSONResult.msg}</div>`
+                    tableNotification.innerHTML = html
+                }
+                history.replaceState("", "", url)
+            })
+    }
+}
 
 
 
-// function getView(ViewPath, buttonName = '') {
-//     $.ajax({
-//         type: "GET",
-//         url: ViewPath,
-//         data: {
-//             getBy: 'client'
-//         },
-//         success: function(response) {
-
-//             contentHolder.innerHTML = response;
-//             if (history.pushState) {
-//                 history.pushState({ pageData: response }, '', ViewPath);
-//             }
-
-//         }
-//     });
-
-//     return !history.pushState;
-// }
-
-
-
-/*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
+/*-------------------------------------------------- Pending view JS ----------------------------------------------------- */

@@ -15,7 +15,7 @@ const authController = require("../controllers/authController");
 // router.get("/", (req, res) => {
 //   res.render("index", { title: "Express", layout: "admin" });
 // });
-router.route("/pending").get(adminController.getPending);
+router.route("/pending").get(adminController.getPending).post(adminController.searchPendingUser);
 router.route("/activated/:username").post(adminController.activated);
 router.route("/cancel/:username").post(adminController.disabled);
 router.route("/addInfo/:username").post(adminController.addInfo);
@@ -24,14 +24,6 @@ router.route("/activated").get(adminController.getActive);
 router.route("/disabled").get(adminController.getDisabled);
 router.route("/userDetail/:username").get(adminController.getUserDetail);
 
-router.get("/locked", function (req, res) {
-  res.render("locked", { layout: "admin" });
-});
-router.get("/disabled", function (req, res) {
-  res.render("disabled", { layout: "admin" });
-});
-router.get("/transactionApproval", function (req, res) {
-  res.render("transactionApproval", { layout: "admin" });
-});
-
+router.route("/transactionApproval").get(adminController.getPendingTransaction).post(adminController.searchPendingTransaction)
+router.route("/transaction/accepted/:transactionID").post(adminController.acceptPendingTransaction)
 module.exports = router;

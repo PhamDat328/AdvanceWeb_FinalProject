@@ -64,7 +64,7 @@
                     <div class="notification-item">
                       <img src="/images/user.png" alt="" width="50px" />
                       <div class="item-body">
-                        <h6>Nguyen Van A transfer you 50.000 VND</h6>
+                        <h6>Nguyen Van A đã chuyển cho bạn 50.000 VND</h6>
                         <span>29 July 2020 - 02:26 PM</span>
                       </div>
                     </div>
@@ -73,7 +73,7 @@
                     <div class="notification-item">
                       <img src="/images/user.png" alt="" width="50px" />
                       <div class="item-body">
-                        <h6>Nguyen Van A transfer you 50.000 VND</h6>
+                        <h6>Nguyen Van A đã chuyển cho bạn 50.000 VND</h6>
                         <span>29 July 2020 - 02:26 PM</span>
                       </div>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="notification-item">
                       <img src="/images/user.png" alt="" width="50px" />
                       <div class="item-body">
-                        <h6>Nguyen Van A transfer you 50.000 VND</h6>
+                        <h6>Nguyen Van A đã chuyển cho bạn 50.000 VND</h6>
                         <span>29 July 2020 - 02:26 PM</span>
                       </div>
                     </div>
@@ -91,7 +91,7 @@
                     <div class="notification-item">
                       <img src="/images/user.png" alt="" width="50px" />
                       <div class="item-body">
-                        <h6>Nguyen Van A transfer you 50.000 VND</h6>
+                        <h6>Nguyen Van A đã chuyển cho bạn 50.000 VND</h6>
                         <span>29 July 2020 - 02:26 PM</span>
                       </div>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="notification-item">
                       <img src="/images/user.png" alt="" width="50px" />
                       <div class="item-body">
-                        <h6>Nguyen Van A transfer you 50.000 VND</h6>
+                        <h6>Nguyen Van A đã chuyển cho bạn 50.000 VND</h6>
                         <span>29 July 2020 - 02:26 PM</span>
                       </div>
                     </div>
@@ -117,12 +117,10 @@
             <div class="click-profile">
               <div class="profile-wrap" onclick="showUserOption();"></div>
               <div class="profile-info">
-                <p class="header-profile-fs-1">Hello,
+                <p class="header-profile-fs-1">Xin chào,
                   <span id="header-profile-username">
 
-                    {{#each user}}
-                      {{this.fullName}}
-                    {{/each}}
+                      {{user.fullName}}
 
                   </span>
                 </p>
@@ -136,11 +134,11 @@
               <a href="/profile"><img
                   src="/images/user_profile.png"
                   width="30px"
-                /><span>Profile</span></a>
+                /><span>Thông tin</span></a>
               <a href="/logout"><img
                   src="/images/log-out.png"
                   width="30px"
-                /><span>Log out</span></a>
+                /><span>Đăng xuất</span></a>
             </div>
 
           </div>
@@ -157,35 +155,35 @@
         <div id="deposit" class="menu-item {{#if depositButton}} menu-item-active  {{/if}}">
           <div class="item-wrapper" onclick="window.location.href ='/deposit'"></div>
           <img src="/images/deposit.png" alt="deposit" />
-          <p class="side-nav-text side-nav-menu-text">Deposit</p>
+          <p class="side-nav-text side-nav-menu-text">Nạp tiền</p>
         </div>
 
         <!-- withdraw -->
         <div id="withdraw" class="menu-item {{#if withdrawButton}} menu-item-active  {{/if}}">
           <div class="item-wrapper" onclick="window.location.href ='/withdraw'"></div>
           <img src="/images/withdraw.png" alt="withdraw" />
-          <p class="side-nav-text side-nav-menu-text">Withdraw</p>
+          <p class="side-nav-text side-nav-menu-text">Rút tiền</p>
         </div>
 
         <!-- transfer -->
         <div id="transfer" class="menu-item {{#if transferButton}} menu-item-active  {{/if}}">
           <div class="item-wrapper" onclick="window.location.href ='/transfer'"></div>
           <img src="/images/transfer.png" alt="transfer" />
-          <p class="side-nav-text side-nav-menu-text">Transfer</p>
+          <p class="side-nav-text side-nav-menu-text">Chuyển khoản</p>
         </div>
 
         <!-- buy phone card -->
         <div id="buy" class="menu-item {{#if buyButton}} menu-item-active  {{/if}}">
           <div class="item-wrapper" onclick="window.location.href = '/buyphonecard'"></div>
           <img src="/images/phonecard.png" alt="phonecard" />
-          <p class="side-nav-text side-nav-menu-text">Buy phone card</p>
+          <p class="side-nav-text side-nav-menu-text">Mua thẻ điện thoại</p>
         </div>
 
         <!-- transaction -->
         <div id="transaction" class="menu-item {{#if transactionButton}} menu-item-active  {{/if}}">
           <div class="item-wrapper" onclick="window.location.href = '/transaction'"></div>
           <img src="/images/transaction.png" alt="transaction" />
-          <p class="side-nav-text side-nav-menu-text">Transaction</p>
+          <p class="side-nav-text side-nav-menu-text">Lịch sử giao dịch</p>
         </div>
       </div>
     </div>
@@ -196,7 +194,6 @@
     <div class="main">
       <!-- Website body -->
       <div class="content-holder" id="content-holder">
-
         {{{body}}}
       </div>
 
