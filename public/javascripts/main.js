@@ -1,4 +1,5 @@
 // Start Login JS
+const contentHolder = document.getElementById("content-holder");
 $(document).ready(function () {
   let animating = false,
     submitPhase1 = 1500,
@@ -28,6 +29,7 @@ $(document).ready(function () {
     ripple($(that), e);
 
     $(that).addClass("processing");
+
     setTimeout(function () {
       $(that).addClass("success");
 
@@ -40,6 +42,19 @@ $(document).ready(function () {
       }, submitPhase2);
     }, submitPhase1);
   });
+
+  // window.onpopstate = (e) => {
+  //     if (e.state) {
+  //         contentHolder.innerHTML = e.state.pageData
+  //     } else {
+  //         if (window.location.pathname === "/") {
+  //             window.location.href = "/";
+  //         } else {
+  //             getView(window.location.pathname)
+  //         }
+
+  //     }
+  // }
 });
 
 // End Login JS
@@ -49,21 +64,6 @@ $(document).ready(function () {
 window.onload = () => {
   if (window.location.pathname === "/") {
     createUserChart();
-  }
-  if (window.location.pathname === "/deposit") {
-    deposit.classList.add("menu-item-active");
-  }
-  if (window.location.pathname === "/withdraw") {
-    withdraw.classList.add("menu-item-active");
-  }
-  if (window.location.pathname === "/transfer") {
-    transfer.classList.add("menu-item-active");
-  }
-  if (window.location.pathname === "/buyphonecard") {
-    buy.classList.add("menu-item-active");
-  }
-  if (window.location.pathname === "/transaction") {
-    transaction.classList.add("menu-item-active");
   }
   if (window.location.pathname === "/users/recover") {
     timer();
@@ -304,18 +304,14 @@ multiStepForm.addEventListener("click", (e) => {
     currentStep--;
     showCurrentStep();
   }
-  console.log(incrementor);
-
   if (incrementor == null) return;
 
   const inputs = [...formSteps[currentStep].querySelectorAll("#form-1 input")];
 
-  // const allValid = inputs.every((input) => {
-  //   return input.reportValidity();
-  // });
   let countValid = 0;
   inputs.forEach((inp, index) => {
     if (inp.value === "") {
+      allValid = false;
       allErrorSpan[index].innerText = "Please enter this field!";
     } else {
       countValid++;
@@ -335,11 +331,6 @@ formSteps.forEach((step) => {
   });
 });
 
-const allSvgIconPath = [...document.querySelectorAll(".svg-icon path")];
-allSvgIconPath.forEach((svg) => {
-  svg.classList.remove("hide");
-});
-
 const fontIdImage = document.getElementsByName("fontIdImage")[0];
 const backIdImage = document.getElementsByName("backIdImage")[0];
 const submitBtn = document.querySelector("#register .submit-btn");
@@ -349,15 +340,8 @@ const fontIdImageError =
   document.getElementsByClassName("fontIdImage-error")[0];
 const backIdImageError =
   document.getElementsByClassName("backIdImage-error")[0];
-const fullNameError = document.getElementsByClassName("fullName-error")[0];
-const emailError = document.getElementsByClassName("email-error")[0];
-const addressError = document.getElementsByClassName("address-error")[0];
-const phoneNumberError =
-  document.getElementsByClassName("phoneNumber-error")[0];
-const dateOfBirthError =
-  document.getElementsByClassName("dateOfBirth-error")[0];
 
-submitBtn.addEventListener("click", (e) => {
+function registerSubmit() {
   if (fontIdImage.value === "") {
     fontIdImageError.innerHTML = "Please enter your font id image.";
   } else if (backIdImage.value === "") {
@@ -365,7 +349,7 @@ submitBtn.addEventListener("click", (e) => {
   } else {
     form.submit();
   }
-});
+}
 
 const loadFrontIDImage = function (event) {
   let image = document.getElementById("FrontIdDIsplay");
@@ -376,10 +360,10 @@ const loadBackIDImage = function (event) {
   let image = document.getElementById("BackIdDisplay");
   image.src = URL.createObjectURL(event.target.files[0]);
 };
-
+// -------------------------------------------------------------
+// Register page
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
 
-// buy.addEventListener("click", () => {});
 function focusOTP(e, previous, curr, next) {
   e.preventDefault();
   let only1num = /[0-9]/;
@@ -479,18 +463,52 @@ function timer() {
 
 /*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
 
-function getView(ViewPath) {
-  let contentHolder = document.getElementById("content-holder");
+// function getView(ViewPath, buttonName = '') {
+//     $.ajax({
+//         type: "GET",
+//         url: ViewPath,
+//         data: {
+//             getBy: 'client'
+//         },
+//         success: function(response) {
 
-  $.ajax({
-    type: "GET",
-    url: ViewPath,
+//             contentHolder.innerHTML = response;
+//             if (history.pushState) {
+//                 history.pushState({ pageData: response }, '', ViewPath);
+//             }
 
-    success: function (response) {
-      contentHolder.innerHTML = response;
-      window.history.pushState({ page_id: 1 }, "", ViewPath);
-    },
-  });
-}
+//         }
+//     });
+
+//     return !history.pushState;
+// }
 
 /*-------------------------------------------------- Get Homepage View ----------------------------------------------------- */
+
+// user-profile;
+function activeEdit() {
+  const allInput = document.querySelectorAll("#user-profile input");
+  allInput.forEach((inp) => {
+    inp.removeAttribute("disabled");
+  });
+  const editBtn = document.querySelector(".btn-edit");
+  editBtn.style.display = "none";
+  const cancelBtn = document.querySelector(".btn-cancel");
+  cancelBtn.style.display = "inline-block";
+  const submitBtn = document.querySelector(".btn-submit");
+  submitBtn.style.display = "inline-block";
+}
+
+function cancelEdit() {
+  console.log("cancel");
+  const allInput = document.querySelectorAll("#user-profile input");
+  allInput.forEach((inp) => {
+    inp.setAttribute("disabled", "true");
+  });
+  const editBtn = document.querySelector(".btn-edit");
+  editBtn.style.display = "block";
+  const cancelBtn = document.querySelector(".btn-cancel");
+  cancelBtn.style.display = "none";
+  const submitBtn = document.querySelector(".btn-submit");
+  submitBtn.style.display = "none";
+}

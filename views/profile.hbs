@@ -1,3 +1,57 @@
 <section id="user-profile">
-
+  <div class="row-user-profile">
+    <div class="col-left-3">
+      <div class="avatar">
+        <img src="images/user_profile.png" alt="" width="170px " />
+      </div>
+      <p class="name" style="margin-bottom: 1rem;">
+        Phạm Nguyễn Phát Đạt
+      </p>
+    </div>
+    <form method="POST" action="/update-info" class="col-right-9">
+      <div class="information">
+        <div class="label">
+          <p>Số điện thoại: </p>
+          <p>Email: </p>
+          <p>Địa chỉ: </p>
+          <p>Trạng thái: </p>
+          <p>Ngày sinh: </p>
+        </div>
+        <div class="input">
+          <input
+            disabled
+            type="text"
+            name="phoneNumber"
+            id=""
+            value="0123456789"
+          />
+          <input
+            disabled
+            type="text"
+            name="email"
+            id=""
+            value="dat@gmail.com"
+          />
+          <input disabled type="text" name="address" id="" value="Viet Nam" />
+          <input disabled type="text" name="status" id="" value="Activated" />
+          <input
+            disabled
+            type="text"
+            name="birthDay"
+            id=""
+            value="25/12/2002"
+          />
+        </div>
+        <button type="button" class="btn-edit" onclick="activeEdit()">
+          Chỉnh sửa
+        </button>
+      </div>
+      <button
+        class="btn-cancel"
+        type="button"
+        onclick="cancelEdit()"
+      >Hủy</button>
+      <button class="btn-submit" type="submit">Lưu thay đỗi</button>
+    </form>
+  </div>
 </section>

@@ -9,7 +9,7 @@ let User = mongoose.Schema({
   fullName: {
     type: String,
   },
-  datDfBirth: Date,
+  dateOfBirth: Date,
   phoneNumber: String,
   email: {
     type: String,
