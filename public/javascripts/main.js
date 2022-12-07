@@ -30,7 +30,6 @@ $(document).ready(function() {
 
         $(that).addClass("processing");
 
-
         setTimeout(function() {
             $(that).addClass("success");
 
@@ -44,28 +43,20 @@ $(document).ready(function() {
         }, submitPhase1);
     });
 
-
-})
-
+});
 
 // End Login JS
 
 //Start window load control
 
-
 window.onload = () => {
-
     if (window.location.pathname === "/") {
-
         createUserChart();
     }
     if (window.location.pathname === "/users/recover") {
         timer();
     }
-
-
-}
-
+};
 
 //End window load control
 
@@ -180,15 +171,8 @@ window.onclick = (event) => {
 };
 
 window.addEventListener("resize", () => {
+
     if (body.clientWidth > 1024) {
-        if (document.querySelector(".wrapper-active") != null) {
-            window_wrapper.classList.remove("wrapper-active");
-        }
-
-        if (document.querySelector(".show-logo") != null) {
-            logoName.classList.remove("show-logo");
-        }
-
         if (document.querySelector(".side-nav-bar-expand") != null) {
             sideNav.classList.remove("side-nav-bar-expand");
         }
@@ -262,7 +246,6 @@ function createUserChart() {
 // -------------------------------------------------------------
 // Register page
 
-
 const allInputRegister = document.querySelectorAll("#register input");
 const allErrorSpan = document.querySelectorAll("#register span");
 allInputRegister.forEach((inp, index) => {
@@ -295,7 +278,6 @@ multiStepForm.addEventListener("click", (e) => {
     } else if (e.target.matches("[data-previous]")) {
         currentStep--;
         showCurrentStep();
-
     }
     if (incrementor == null) return;
 
@@ -324,7 +306,6 @@ formSteps.forEach((step) => {
     });
 });
 
-
 const fontIdImage = document.getElementsByName("fontIdImage")[0];
 const backIdImage = document.getElementsByName("backIdImage")[0];
 const submitBtn = document.querySelector("#register .submit-btn");
@@ -335,7 +316,6 @@ const fontIdImageError =
 const backIdImageError =
     document.getElementsByClassName("backIdImage-error")[0];
 
-
 function registerSubmit() {
     if (fontIdImage.value === "") {
         fontIdImageError.innerHTML = "Please enter your font id image.";
@@ -344,7 +324,7 @@ function registerSubmit() {
     } else {
         form.submit();
     }
-};
+}
 
 const loadFrontIDImage = function(event) {
     let image = document.getElementById("FrontIdDIsplay");
@@ -358,7 +338,6 @@ const loadBackIDImage = function(event) {
 // -------------------------------------------------------------
 // Register page
 /*-------------------------------------------------- Enter Code JS ----------------------------------------------------- */
-
 
 function focusOTP(e, previous, curr, next) {
     e.preventDefault();
@@ -651,5 +630,30 @@ function searchPendingTransaction() {
 }
 
 
+// user-profile;
+function activeEdit() {
+    const allInput = document.querySelectorAll("#user-profile input");
+    allInput.forEach((inp) => {
+        inp.removeAttribute("disabled");
+    });
+    const editBtn = document.querySelector(".btn-edit");
+    editBtn.style.display = "none";
+    const cancelBtn = document.querySelector(".btn-cancel");
+    cancelBtn.style.display = "inline-block";
+    const submitBtn = document.querySelector(".btn-submit");
+    submitBtn.style.display = "inline-block";
+}
 
-/*-------------------------------------------------- Pending view JS ----------------------------------------------------- */
+function cancelEdit() {
+    console.log("cancel");
+    const allInput = document.querySelectorAll("#user-profile input");
+    allInput.forEach((inp) => {
+        inp.setAttribute("disabled", "true");
+    });
+    const editBtn = document.querySelector(".btn-edit");
+    editBtn.style.display = "block";
+    const cancelBtn = document.querySelector(".btn-cancel");
+    cancelBtn.style.display = "none";
+    const submitBtn = document.querySelector(".btn-submit");
+    submitBtn.style.display = "none";
+}

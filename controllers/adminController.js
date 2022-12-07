@@ -242,7 +242,6 @@ const adminController = {
                                         return backToInputForm("deposit", user, res, error, dataBag)
 
                                     }
-
                                 })
                             } else {
                                 console.log("less")

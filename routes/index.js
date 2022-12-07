@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
-const userController = require("../controllers/userController")
+const userController = require("../controllers/userController");
 const User = require("../models/User");
 
 /* GET home page. */
@@ -17,8 +17,7 @@ User.find((err, users) => {
     }).save();
 });
 
-router
-    .route("/")
+router.route("/")
     .get(
         authController.checkToken,
         authController.refreshToken,
@@ -30,27 +29,24 @@ router.get("/pending", function(req, res, next) {
 
 router.route("/successRegister").get(authController.getSuccessRegister);
 
-router
-    .route("/login")
+router.route("/login")
     .get(authController.getLoginPage)
     .post(authController.postLoginPage);
 
 router.route("/logout").get(authController.logout);
-router
-    .route("/changePassword")
+router.route("/changePassword")
     .get(authController.getChangePasswordPage)
     .post(authController.postChangePasswordPage);
-router
-    .route("/register")
+router.route("/register")
     .get(authController.getRegisterPage)
     .post(authController.postRegisterPage);
 
-router.route("/register").get(authController.getRegisterPage).post(authController.postRegisterPage);
 
 router.route("/deposit").get(userController.getDepositForm).post(userController.postDepositForm);
 router.route("/withdraw").get(userController.getWithdrawForm).post(userController.postWithdrawForm);
 router.route("/transfer").get(userController.getTransferForm)
 router.route("/buyphonecard").get(userController.getBuyPhoneCardForm)
 router.route("/transaction").get(userController.getTransactionHistory)
+router.route("/profile").get(userController.getProfile);
 
 module.exports = router;

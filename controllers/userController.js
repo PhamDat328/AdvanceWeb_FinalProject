@@ -100,7 +100,7 @@ function makeWithdraw(user, userAccount, req, res, error, dataBag, amountWithFee
             transactionType: "Withdraw",
             transactionDate: generateLocalDate(),
             transactionAmount: amountWithFee,
-            status: "Đợi duyệt",
+            status: "Pending",
             describe: `Yêu cầu giao dịch đã được ghi nhận. Do số tiền lớn hơn 5.000.000 đồng nên vui lòng đợi được duyệt`
         })
 
@@ -384,5 +384,9 @@ module.exports = {
 
     getEnterOTPForm: (req, res, next) => {
         res.render("enterOTP", { title: "SmartWallet", layout: "blankLayout" })
-    }
-}
+    },
+
+    getProfile: (req, res, next) => {
+        return res.render("profile");
+    },
+};

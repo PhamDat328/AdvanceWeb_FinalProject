@@ -1916,3 +1916,182 @@ button {
 
 
 /*-------------------------------------------------- Enter OTP CSS ----------------------------------------------------- */
+
+#user-profile {
+    width: 95%;
+    background-color: rgb(249, 252, 254);
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 3rem;
+}
+
+#user-profile .row-user-profile {
+    width: 100%;
+    display: flex;
+}
+
+#user-profile .col-left-3 {
+    width: 25%;
+    background-color: rgb(246, 241, 235);
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#user-profile .col-right-9 {
+    width: 75%;
+    background-color: rgb(219, 255, 245);
+    height: 500px;
+}
+
+#user-profile .col-left-3 .name {
+    font-size: 24px;
+    font-weight: 600;
+    color: #000;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#user-profile .col-left-3 .avatar {
+    width: 170px;
+    margin: 1rem 0;
+}
+
+#user-profile .col-right-9 .information {
+    display: flex;
+    flex-direction: row;
+}
+
+#user-profile .col-right-9 .label {
+    padding: 1rem;
+    color: #000;
+}
+
+#user-profile .col-right-9 .label p {
+    margin: 16px 0;
+    font-size: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+}
+
+#user-profile .col-right-9 input {
+    display: block;
+    font-size: 18px;
+    outline-color: rgb(7, 138, 138);
+    margin: 1rem 0;
+    margin-left: 1rem;
+    padding: 8px 1rem;
+    border-radius: 4px;
+    border: 0.5px rgb(164, 161, 161) solid;
+    color: rgb(127, 117, 117);
+    width: 400px;
+}
+
+#user-profile .col-right-9 .input {
+    padding: 1rem;
+}
+
+#user-profile .col-right-9 button {
+    height: fit-content;
+    margin-top: 2rem;
+    margin-left: .5rem;
+    padding: 1rem 2rem;
+    background-color: rgb(31, 38, 171);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#user-profile .col-right-9 .btn-submit {
+    margin: 0;
+    margin-left: 2.5rem;
+    position: relative;
+    left: 50%;
+    background-color: rgb(24, 139, 24);
+    transform: translateX(-50%);
+    display: none;
+}
+
+#user-profile .col-right-9 .btn-cancel {
+    margin: 0;
+    position: relative;
+    background-color: rgb(215, 39, 39);
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+
+
+
+@media screen and (max-width: 1400px) {
+    #user-profile .row-user-profile {
+        flex-direction: column;
+    }
+
+    #user-profile .col-right-9 .label {
+        padding: .5rem;
+    }
+
+    #user-profile .col-right-9 .input {
+        padding: .5rem;
+    }
+    
+    #user-profile .col-right-9 input {
+        width: 300px;
+    }
+
+    #user-profile .col-right-9 button {
+        height: fit-content;
+        margin-top: 1.5rem;
+        margin-left: 1rem;
+        padding: .75rem 1.5rem;
+        background-color: rgb(31, 38, 171);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    #user-profile .col-left-3 {
+        width: 100%;
+        background-color: rgb(246, 241, 235);
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #user-profile .col-right-9 {
+        width: 100%;
+        background-color: rgb(219, 255, 245);
+        height: 500px;
+    }
+
+    #user-profile .col-right-9 .information {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    #user-profile .col-right-9 .btn-edit {
+        position: absolute;
+        top: 140px;
+        right: 30px;
+    }
+    #user-profile .col-right-9 .label,
+    #user-profile .col-right-9 .input {
+        padding: 0;
+    }
+    #user-profile .col-right-9 .label p,
+    #user-profile .col-right-9 .input input {
+        padding: 6px;
+        width: 100%;
+    }
+}
+
+
