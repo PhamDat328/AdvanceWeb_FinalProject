@@ -120,11 +120,9 @@
             <div class="click-profile">
               <div class="profile-wrap" onclick="showUserOption();"></div>
               <div class="profile-info">
-                <p class="header-profile-fs-1">Hello,
+                <p class="header-profile-fs-1">Xin chào,
                   <span id="header-profile-username">
-                    {{#each user}}
-                      {{this.fullName}}
-                    {{/each}}
+                    {{user.fullName}}
                   </span>
                 </p>
                 <span id="role" class="header-profile-fs-2">
@@ -156,7 +154,7 @@
 
         <!-- deposit -->
         <a href="/admin/pending" class="menu-item">
-          <img src="/images/pending.png" alt="pending" width="100px" />
+          <img src="/images/pending.png" alt="pending" />
           <p class="side-nav-text side-nav-menu-text">Pending Accounts</p>
         </a>
 

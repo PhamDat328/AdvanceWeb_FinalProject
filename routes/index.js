@@ -46,12 +46,13 @@ router
   .post(authController.postRegisterPage);
 
 router
-  .route("/register")
-  .get(authController.getRegisterPage)
-  .post(authController.postRegisterPage);
-
-router.route("/deposit").get(userController.getDepositForm);
-router.route("/withdraw").get(userController.getWithdrawForm);
+  .route("/deposit")
+  .get(userController.getDepositForm)
+  .post(userController.postDepositForm);
+router
+  .route("/withdraw")
+  .get(userController.getWithdrawForm)
+  .post(userController.postWithdrawForm);
 router.route("/transfer").get(userController.getTransferForm);
 router.route("/buyphonecard").get(userController.getBuyPhoneCardForm);
 router.route("/transaction").get(userController.getTransactionHistory);

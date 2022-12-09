@@ -8,6 +8,7 @@
 
 body {
     color: white;
+    background-color: #e7e7e7c4;
     font-family: 'Lato', sans-serif;
     max-width: 100%;
     height: 100%;
@@ -30,6 +31,22 @@ body {
     /* Firefox */
 }
 
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox */
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 p {
     margin: 0;
 }
@@ -39,7 +56,6 @@ p {
 }
 
 .hide-logo {
-    /* display: none !important; */
     width: 0px !important;
 }
 
@@ -59,7 +75,6 @@ p {
 }
 
 .menu-item-hide p {
-
     font-size: 0.7rem !important;
     text-align: center !important;
     padding-top: 5px;
@@ -173,8 +188,8 @@ p {
     display: none;
     width: 165px;
     position: absolute;
-    top: 60px;
-    transform: translateX(50%);
+    top: 70px;
+    transform: translateX(80%);
     padding: 15px 0px;
 }
 
@@ -197,10 +212,9 @@ p {
 
 .profile-wrap {
     position: absolute;
-    width: 200px;
+    width: 100%;
     height: 55px;
     z-index: 99;
-    transform: translateX(-5%);
 }
 
 .profile-info {
@@ -273,7 +287,7 @@ p {
 .notification-dropdown {
     display: none;
     position: absolute;
-    width: 350px;
+    width: 450px;
     z-index: 100;
     top: 55px;
     transform: translateX(-85%);
@@ -283,7 +297,10 @@ p {
     box-shadow: 3px 6px 10px 1.5px #000000b8
 }
 
-.notification-box {height: 315px;padding: 16px;}
+.notification-box {
+    height: 315px;
+    padding: 16px;
+}
 
 .notification-list {
     list-style-type: none;
@@ -316,6 +333,7 @@ p {
 }
 
 .item-body {
+    width: 100%;
     padding-left: 3px;
 }
 
@@ -525,7 +543,7 @@ p {
     font-size: 20px;
     font-weight: 600;
     width: 80%;
-    padding-left: 6%;
+    padding-left: 0.75rem;
     z-index: 1;
 }
 
@@ -685,7 +703,7 @@ p {
 
 tbody tr:nth-child(odd) {
     background-image: linear-gradient(to right, #0f7bc4, #2093ca, #32afcf, #3dbed3);
-    transition: all 0.5s ease-out;
+    transition: 0.5s ease-out;
 }
 
 tbody tr:nth-child(even) {
@@ -950,8 +968,9 @@ footer {
 /* End Home page CSS */
 
 
-
 /* ---------------------------------------------------------------------------------------- */
+
+
 /* Start Login Form CSS */
 
 svg {
@@ -1243,17 +1262,19 @@ button {
 /* Start Admin PendingPage */
 
 #admin #pending {
-    width: 80%;
-    margin: 0 auto;
+    padding: 0px 20px;
+    margin-top: 40px;
+    font-family: system-ui;
 }
 
-#admin #pending tr {
-    background-color: #fff !important;
-    background-image: unset;
+#admin #pending .dataTable {
+    background-color: #fff;
+    border-radius: 10px;
+    min-height: 100px;
 }
 
-#admin #pending thead tr th {
-    background-color: #8338ec;
+#admin #pending thead {
+    background-color: #50a3fa;
     color: #fff;
 }
 
@@ -1262,19 +1283,14 @@ button {
 }
 
 #admin #pending .pending-title {
-    background-color: #8338ec;
-    color: #fff;
     width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 #admin #pending .pending-title .text-title {
-    padding: 20px;
-    font-weight: 700;
-    font-family: 'Coiny', cursive;
-    font-size: 24px;
+    color: #000;
+    font-weight: 800;
+    font-size: 26px;
 }
 
 .pending-modal .modal-body,
@@ -1282,11 +1298,113 @@ button {
     color: #000;
 }
 
+#admin #pending tbody tr {
+    background-color: #fff;
+    background-image: none !important;
+    cursor: pointer;
+    transition: none;
+    border-color: #aaaaaa;
+}
+
+#admin #pending .table tbody tr:nth-child(even) {
+    background-color: #f0f7ff;
+}
+
+#admin #pending .table tbody tr:hover {
+    background-color: #c1c1c1;
+}
+
+#admin #pending tbody td {
+    font-size: 14px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+#admin #pending .table thead :first-child :first-child {
+    border-top-left-radius: 10px;
+}
+
+#admin #pending .table thead :first-child :last-child {
+    border-top-right-radius: 10px;
+}
+
+#admin #pending .table tbody tr:last-child {
+    border-style: none;
+    border-color: #ffffff00 !important;
+}
+
+#admin #pending .table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+#admin #pending .table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+#admin #pending .table tbody .btn {
+    padding: 4px 6px !important;
+    width: fit-content;
+    margin-right: 5px;
+}
+
+#admin #pending .toolSearchBar,
+#admin #pending .dataTable {
+    border-radius: 10px;
+    box-shadow: rgb(150 150 150) 0px 6px 8px 0px;
+}
+
+#admin #pending #searchPendingData {
+    display: flex;
+    justify-content: space-between;
+}
+
+#admin #pending #searchPendingData .searchInput {
+    width: 100%;
+    background-color: #d6d6d6c4;
+    color: #000;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+#admin #pending #searchPendingData input {
+    background-color: inherit;
+}
+
+#admin #pending .toolSearchBar {
+    background-color: #fff;
+    color: black;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+#admin #pending .toolSearchBar .search-bar-item {
+    margin-right: 2.5rem;
+}
+
+#admin #pending .toolSearchBar .search-bar-item .search-item-title {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+#admin #pending .dataTable .tableNotification {
+    text-align: center;
+    padding: 0 !important;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.InLoading {
+    background-color: gainsboro;
+    min-height: 65px;
+}
+
 
 /* End Admin PendingPage */
 
 
 /* ----------------------------------------------------------------------------------- */
+
 
 /* Register page */
 
@@ -1369,7 +1487,7 @@ button {
 .multi-step-form {
     overflow: hidden;
     position: relative;
-  }
+}
 
 .register-form .card {
     background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
@@ -1384,7 +1502,7 @@ button {
 
 .register-form .card.active {
     animation: slide 300ms 150ms ease-in-out both;
-  }
+}
 
 .hide {
     display: none;
@@ -1392,27 +1510,27 @@ button {
 
 @keyframes slide {
     0% {
-      transform: translateX(200%);
-      opacity: 0;
+        transform: translateX(200%);
+        opacity: 0;
     }
     100% {
-      transform: translateX(0);
-      opacity: 1;
+        transform: translateX(0);
+        opacity: 1;
     }
 }
-  
+
 @keyframes fade {
     0% {
-      transform: scale(1);
-      opacity: 1;
+        transform: scale(1);
+        opacity: 1;
     }
     50% {
-      transform: scale(.75);
-      opacity: 0;
+        transform: scale(.75);
+        opacity: 0;
     }
     100% {
-      opacity: 0;
-      transform: scale(0);
+        opacity: 0;
+        transform: scale(0);
     }
 }
 
@@ -1503,11 +1621,12 @@ button {
     height: 100%;
     justify-content: center;
     align-items: center;
+    
 }
 
 .container-success-register .success-register-form {
     width: 50%;
-    /* background-color: #a2f18e; */
+    background-color: #fafef9;
     padding: 20px;
     border-radius: 8px;
     border: 1px rgb(69, 67, 67) solid;
@@ -1556,21 +1675,24 @@ button {
     display: block;
 }
 
+
 /* Responsive register page */
+
 @media screen and (max-width: 576px) {
     .register-form .card {
         width: 375px;
     }
-    
     .register-form form input {
         font-size: 16px;
     }
 }
 
+
 /* Change Password page */
 
 #changePassword {
-    color: #000;
+    color: rgb(249, 248, 248);
+    text-shadow: 2px 2px #303030;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -1581,7 +1703,9 @@ button {
 .change-password-form {
     border-radius: 8px;
     padding: 20px;
-    color: #000;
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+
     border: 1px solid black;
     width: 50%;
 }
@@ -1600,6 +1724,8 @@ button {
 
 #changePassword input {
     width: 91%;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #changePassword .title {
@@ -1680,7 +1806,25 @@ button {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
+}
+
+#userFunctionForm .invalid-feedback {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    line-height: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+@media screen and (max-width: 576px) {
+    #userFunctionForm {
+        width: 100% !important;
+    }
 }
 
 
@@ -1785,6 +1929,7 @@ button {
     height: 500px;
     margin: 0 auto;
     margin-top: 3rem;
+    box-shadow: rgb(38 57 77) -1px 0px 35px -5px;
 }
 
 #user-profile .row-user-profile {
@@ -1818,6 +1963,24 @@ button {
     width: 170px;
     margin: 1rem 0;
 }
+
+#user-profile .col-left-3 .avatar input {
+    display: none;
+}
+#user-profile .col-left-3 .avatar label {
+    color: #fff;
+    font-size: 18px;
+    position: absolute;
+    top: 41%;
+    left: 30%;
+    border-radius: 4px;
+    background-color: rgb(66, 64, 64);
+    padding: 0 8px;
+    font-weight: normal;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
 
 #user-profile .col-right-9 .information {
     display: flex;
@@ -1884,6 +2047,17 @@ button {
     left: 50%;
     transform: translateX(-50%);
     display: none;
+}
+
+#user-profile .col-right-9 .btn-edit {
+    display: none;
+}
+
+#user-profile #avatar {
+    background-image: url("images/user_profile.png");
+    background-size: cover;
+    width: 200px;
+    height: 200px;
 }
 
 
@@ -1954,6 +2128,48 @@ button {
         padding: 6px;
         width: 100%;
     }
+}
+
+/* ----------------------------------------------------------------------- */
+/* Buy Phone Card Section */
+
+#buyPhoneCardForm h5 {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    font-weight: 600;
+}
+
+#buyPhoneCardForm hr {
+    margin: 0.5rem 0;
+}
+
+#buyPhoneCardForm #userFunctionForm {
+    width: 800px;
+}
+
+#buyPhoneCardForm .denominations,
+#buyPhoneCardForm .network {
+    display: flex;
+    justify-content: center;
+}
+
+#buyPhoneCardForm .network .active {
+    border: rgb(12, 144, 12) 2px solid;
+    color: rgb(12, 144, 12);
+}
+
+#buyPhoneCardForm .denominations input,
+#buyPhoneCardForm .network input {
+    display: none;
+}
+
+#buyPhoneCardForm .denominations label,
+#buyPhoneCardForm .network label {
+    text-align: center;
+    width: 100px;
+    padding: .75rem .5rem;
+    border-radius: 6px;
+    border: #000 1px solid;
 }
 
 
