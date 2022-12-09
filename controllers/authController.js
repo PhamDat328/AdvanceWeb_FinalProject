@@ -11,21 +11,21 @@ const uploadDir = __dirname + "/../public/images/uploads";
 fs.existsSync(uploadDir) || fs.mkdirSync(uploadDir);
 
 const generateRandomUsername = () => {
-    let username = "";
-    for (let i = 0; i < 10; i++) {
-        username += Math.floor(Math.random() * 10);
-    }
-    return username;
+  let username = "";
+  for (let i = 0; i < 10; i++) {
+    username += Math.floor(Math.random() * 10);
+  }
+  return username;
 };
 
 const generateRandomPassword = () => {
-    let allAscii =
-        "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-    let password = "";
-    for (let i = 0; i < 6; i++) {
-        password += allAscii[Math.floor(Math.random() * allAscii.length)];
-    }
-    return password;
+  let allAscii =
+    "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+  let password = "";
+  for (let i = 0; i < 6; i++) {
+    password += allAscii[Math.floor(Math.random() * allAscii.length)];
+  }
+  return password;
 };
 
 function toMoney(moneyamount, style = 'VND') {
@@ -36,34 +36,25 @@ function toMoney(moneyamount, style = 'VND') {
 }
 
 function compareLastLoginWithCurrentTime(currentDate, LastLogin) {
-    if (currentDate.getFullYear() === LastLogin.getFullYear()) {
-
-        if (currentDate.getMonth() === LastLogin.getMonth()) {
-
-            if (currentDate.getDate() === LastLogin.getDate()) {
-                return false;
-            } else if (currentDate.getDate() > LastLogin.getDate()) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } else if (currentDate.getMonth() > LastLogin.getMonth()) {
-
-            return true;
-
-        } else {
-            return false;
-        }
-
-    } else if (currentDate.getFullYear() > LastLogin.getFullYear()) {
-
-        return true;
-
-    } else {
-
+  if (currentDate.getFullYear() === LastLogin.getFullYear()) {
+    if (currentDate.getMonth() === LastLogin.getMonth()) {
+      if (currentDate.getDate() === LastLogin.getDate()) {
         return false;
+      } else if (currentDate.getDate() > LastLogin.getDate()) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (currentDate.getMonth() > LastLogin.getMonth()) {
+      return true;
+    } else {
+      return false;
     }
+  } else if (currentDate.getFullYear() > LastLogin.getFullYear()) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 async function makeLogin(account,validPassword,currentDate,message,req ,res)
@@ -129,26 +120,18 @@ async function makeLogin(account,validPassword,currentDate,message,req ,res)
 }
 
 const authController = {
-    getLoginPage: (req, res, next) => {
-        res.render("login", {
-            title: "Express",
-            layout: "blankLayout"
-        });
-    },
-    getRegisterPage: (req, res, next) => {
-        res.render("register", {
-            title: "Express",
-            layout: "blankLayout"
-        });
-    },
+  getLoginPage: (req, res, next) => {
+    res.render("login", { title: "Express", layout: "blankLayout" });
+  },
+  getRegisterPage: (req, res, next) => {
+    res.render("register", { title: "Express", layout: "blankLayout" });
+  },
 
-    getSuccessRegister: (req, res) => {
-        res.render("successRegister", {
-            layout: "blankLayout"
-        });
-    },
+  getSuccessRegister: (req, res) => {
+    res.render("successRegister", { layout: "blankLayout" });
+  },
 
-    postRegisterPage: async(req, res) => {
+  postRegisterPage: async (req, res) => {
         const username = generateRandomUsername();
         const password = generateRandomPassword();
         const salt = await bcrypt.genSalt(10);
@@ -294,30 +277,6 @@ const authController = {
         });
     },
 
-    checkToken: async(req, res, next) => {
-        if (!req.session.isLogin) {
-            return next();
-        }
-        try {
-            const account = await Account.findOne({
-                username: req.session.username,
-            });
-
-            if (account) {
-                const refreshToken = account.refreshToken;
-
-                const verifyRefreshToken = jwt.verify(
-                    refreshToken,
-                    process.env.JWT_REFRESH_KEY
-                );
-                res.account = account;
-                next();
-            }
-        } catch (error) {
-            return res.json(error);
-        }
-    },
-
     refreshToken: async(req, res, next) => {
         if (!req.session.isLogin) {
             return next();
@@ -374,6 +333,7 @@ const authController = {
             });
         } catch (error) {
             console.log(error)
+            return res.json(error);
         }
     },
 
@@ -490,6 +450,31 @@ const authController = {
             next();
         };
     },
+
+  checkToken: async (req, res, next) => {
+    if (!req.session.isLogin) {
+      return next();
+    }
+    try {
+      const account = await Account.findOne({
+        username: req.session.username,
+      });
+
+      if (account) {
+        const refreshToken = account.refreshToken;
+
+        const verifyRefreshToken = jwt.verify(
+          refreshToken,
+          process.env.JWT_REFRESH_KEY
+        );
+        res.account = account;
+        next();
+      }
+    } catch (error) {
+      return res.json(error);
+    }
+  },
+
 };
 
 module.exports = authController;

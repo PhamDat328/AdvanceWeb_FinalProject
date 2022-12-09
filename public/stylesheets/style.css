@@ -1618,11 +1618,12 @@ button {
     height: 100%;
     justify-content: center;
     align-items: center;
+    
 }
 
 .container-success-register .success-register-form {
     width: 50%;
-    /* background-color: #a2f18e; */
+    background-color: #fafef9;
     padding: 20px;
     border-radius: 8px;
     border: 1px rgb(69, 67, 67) solid;
@@ -1687,7 +1688,8 @@ button {
 /* Change Password page */
 
 #changePassword {
-    color: #000;
+    color: rgb(249, 248, 248);
+    text-shadow: 2px 2px #303030;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -1698,7 +1700,9 @@ button {
 .change-password-form {
     border-radius: 8px;
     padding: 20px;
-    color: #000;
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(138, 138, 138, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+
     border: 1px solid black;
     width: 50%;
 }
@@ -1717,6 +1721,8 @@ button {
 
 #changePassword input {
     width: 91%;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #changePassword .title {
@@ -1920,6 +1926,7 @@ button {
     height: 500px;
     margin: 0 auto;
     margin-top: 3rem;
+    box-shadow: rgb(38 57 77) -1px 0px 35px -5px;
 }
 
 #user-profile .row-user-profile {
@@ -1952,6 +1959,22 @@ button {
 #user-profile .col-left-3 .avatar {
     width: 170px;
     margin: 1rem 0;
+}
+
+#user-profile .col-left-3 .avatar input {
+    display: none;
+}
+#user-profile .col-left-3 .avatar label {
+    color: #fff;
+    font-size: 18px;
+    position: absolute;
+    top: 41%;
+    left: 30%;
+    border-radius: 4px;
+    background-color: rgb(66, 64, 64);
+    padding: 0 8px;
+    font-weight: normal;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #user-profile .col-right-9 .information {
@@ -2021,6 +2044,17 @@ button {
     display: none;
 }
 
+#user-profile .col-right-9 .btn-edit {
+    display: none;
+}
+
+#user-profile #avatar {
+    background-image: url("images/user_profile.png");
+    background-size: cover;
+    width: 200px;
+    height: 200px;
+}
+
 @media screen and (max-width: 1400px) {
     #user-profile .row-user-profile {
         flex-direction: column;
@@ -2080,6 +2114,48 @@ button {
         padding: 6px;
         width: 100%;
     }
+}
+
+/* ----------------------------------------------------------------------- */
+/* Buy Phone Card Section */
+
+#buyPhoneCardForm h5 {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    font-weight: 600;
+}
+
+#buyPhoneCardForm hr {
+    margin: 0.5rem 0;
+}
+
+#buyPhoneCardForm #userFunctionForm {
+    width: 800px;
+}
+
+#buyPhoneCardForm .denominations,
+#buyPhoneCardForm .network {
+    display: flex;
+    justify-content: center;
+}
+
+#buyPhoneCardForm .network .active {
+    border: rgb(12, 144, 12) 2px solid;
+    color: rgb(12, 144, 12);
+}
+
+#buyPhoneCardForm .denominations input,
+#buyPhoneCardForm .network input {
+    display: none;
+}
+
+#buyPhoneCardForm .denominations label,
+#buyPhoneCardForm .network label {
+    text-align: center;
+    width: 100px;
+    padding: .75rem .5rem;
+    border-radius: 6px;
+    border: #000 1px solid;
 }
 
 

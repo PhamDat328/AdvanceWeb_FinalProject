@@ -1,46 +1,48 @@
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", true);
 
-let Account = mongoose.Schema({
+let Account = mongoose.Schema(
+  {
     username: String,
     password: String,
     hashPassword: String,
 
     lockedTimes: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     abnormalLogin: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     lockTo: {
-        type: Date,
-        default: "",
+      type: Date,
+      default: "",
     },
     status: {
-        type: String,
-        default: "pending",
+      type: String,
+      default: "pending",
     },
     balance: {
-        type: Number,
-        default: 500000,
+      type: Number,
+      default: 500000,
     },
     history: {
-        type: [],
-        default: [],
+      type: [],
+      default: [],
     },
     refreshToken: {
-        type: String,
-        default: "",
+      type: String,
+      default: "",
     },
     admin: {
-        type: Boolean,
-        default: false,
-        select: false,
+      type: Boolean,
+      default: false,
+      select: false,
     },
     lastLogin: {
-        type: Date,
-        default: "",
+      type: Date,
+      default: "",
     },
     remainWithDrawPerDay: {
         type: Number,
