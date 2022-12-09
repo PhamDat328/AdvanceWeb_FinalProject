@@ -45,6 +45,10 @@ let Account = mongoose.Schema({
     remainWithDrawPerDay: {
         type: Number,
         default: 2
+    },
+    isLocked: {
+        type: Boolean,
+        default: false
     }
 });
 

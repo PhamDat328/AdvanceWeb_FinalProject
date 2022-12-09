@@ -39,6 +39,7 @@ let User = mongoose.Schema({
         type: Date,
         require: true,
     }
+
 });
 
 module.exports = mongoose.model("User", User);
