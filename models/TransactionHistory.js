@@ -23,6 +23,10 @@ let Transaction = mongoose.Schema({
         type: String,
         default: ""
     },
+    note:{
+        type: String,
+        default: ""
+    },
     receiver: {
         type: String,
         default: ""

@@ -3,6 +3,9 @@ const router = express.Router();
 
 const adminController = require("../controllers/adminController");
 
+
+router.route("/profile").get(adminController.getProfile)
+
 router
   .route("/pending")
   .get(adminController.getPending)
@@ -16,10 +19,13 @@ router.route("/disabled").get(adminController.getDisabled);
 router.route("/userDetail/:username").get(adminController.getUserDetail);
 
 router
-  .route("/transactionApproval")
+  .route("/transactionApproval/withdraw")
   .get(adminController.getPendingTransaction)
   .post(adminController.searchPendingTransaction);
+
+router.route("/transactionApproval/withdraw/:transactionID").get(adminController.getPendingWithdrawDetail);
+
 router
-  .route("/transaction/accepted/:transactionID")
-  .post(adminController.acceptPendingTransaction);
+  .route("/transaction/withdraw/accepted")
+  .post(adminController.acceptWithdrawTransaction);
 module.exports = router;

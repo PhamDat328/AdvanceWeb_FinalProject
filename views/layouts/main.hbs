@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
+    <title>SmartWallet</title>
     <link rel="icon" type="image/x-icon" href="/images/logo.png" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
@@ -110,7 +110,7 @@
               </div>
               <a href="javascript:void(0)" class="view-all-notification">
 
-                See all notification &nbsp;<i class="bi bi-arrow-right"></i>
+                Xem tất cả &nbsp;<i class="bi bi-arrow-right"></i>
               </a>
             </div>
 
@@ -125,8 +125,10 @@
 
                   </span>
                 </p>
-                <span id="role" class="header-profile-fs-2">
-                  Activated user</span>
+                {{#ifCond accountStatus}}{{/ifCond}}
+
+                {{!-- <span id="role" class="header-profile-fs-2">
+                  Tài khoãn đã kích hoạt</span> --}}
               </div>
               <img src="/images/user.png" alt="" width="50px" />
             </div>
@@ -136,6 +138,10 @@
                   src="/images/user_profile.png"
                   width="30px"
                 /><span>Thông tin</span></a>
+                <a href="/changepassword"><img
+                  src="/images/changepassword.png"
+                  width="30px"
+                /><span>Đổi mật khẩu</span></a>
               <a href="/logout"><img
                   src="/images/log-out.png"
                   width="30px"

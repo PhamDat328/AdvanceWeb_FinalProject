@@ -22,9 +22,11 @@
                 </div>
                 <div class="form-group">
                     <label for="amount">Số tiền:</label>
-                    <input type="number" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền cần rút">
+                    <input type="number" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền cần rút" oninput="withdrawFee(this.value)">
+                    <div style="color: red;font-weight: 300;font-size:14px">*Phí rút tiền là 5%</div>
+                    <span id="withdrawFeeValue" style="color: red;font-weight: 300;font-size:14px"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 0px;">
                     <label for="note">Ghi chú:</label>
                     <input type="text" class="form-control" id="note" name="note" placeholder="Ghi chú của bạn" value="{{{preNote}}}">
                 </div>

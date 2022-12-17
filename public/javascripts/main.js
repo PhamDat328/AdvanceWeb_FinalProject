@@ -42,6 +42,9 @@ $(document).ready(function () {
       }, submitPhase2);
     }, submitPhase1);
   });
+
+  
+
 });
 
 // End Login JS
@@ -54,6 +57,14 @@ window.onload = () => {
   }
   if (window.location.pathname === "/users/recover") {
     timer();
+  }
+  if(window.location.pathname === "/transfer" && body.classList.contains("default-body"))
+  {
+    timer()
+  }
+  if(window.location.pathname === "/verifyTransfer" && body.classList.contains("default-body"))
+  {
+    timer()
   }
 };
 
@@ -290,7 +301,7 @@ multiStepForm.addEventListener("click", (e) => {
   inputs.forEach((inp, index) => {
     if (inp.value === "") {
       allValid = false;
-      allErrorSpan[index].innerText = "Please enter this field!";
+      allErrorSpan[index].innerText = "Vui lòng điền đẩy đủ thông tin";
     } else {
       countValid++;
     }
@@ -377,33 +388,14 @@ function check_and_submit(e) {
   if (e.key !== "Backspace" && get_otp6.value !== "" && e.key !== "Space") {
     get_otp6.setAttribute("disabled", "");
     let otp = document.querySelectorAll(".code input");
-    let get_email = document.getElementsByName("otp_email")[0].value;
+    let fullOTPInput = document.getElementById("fullOTP");
     let fullotp = "";
-
+    let form = document.querySelector(".OTP_Form");
     for (otpvalue of otp) {
       fullotp += otpvalue.value;
     }
-
-    $.ajax({
-      type: "POST",
-      url: "/database/check_otp.php",
-      data: {
-        fullotp: fullotp,
-        email: get_email,
-      },
-      success: function (check_data) {
-        let danger_alert = document.querySelector(".alert-box .alert-danger");
-        let form = document.querySelector(".OTP_Form");
-        if (check_data === "1") {
-          form.submit();
-        } else {
-          danger_alert.innerText = check_data;
-          danger_alert.style.display = "block";
-          get_otp6.removeAttribute("disabled");
-          get_otp6.focus();
-        }
-      },
-    });
+    fullOTPInput.setAttribute("value", fullotp);
+    form.submit();
   } else {
     focusOTP(e, "otp5", "otp6", "");
   }
@@ -411,12 +403,24 @@ function check_and_submit(e) {
 
 function timer() {
   let get_otp1 = document.querySelector(".code .code-item #otp1").focus();
-  let deadline = 60000;
   let danger_alert = document.querySelector(".alert-box .alert-danger");
   let countdown_box = document.querySelector(
     ".OTP_Form .countdown-box .timer .time"
   );
-
+  let deadline = parseInt(countdown_box.dataset.time);
+  let otp = document.querySelectorAll(".code input");
+  let other_alert = document.getElementById("otpRespone1")
+  if(deadline <= 0 )
+  {
+    for (otp_input of otp) {
+      otp_input.setAttribute("disabled", "");
+    }
+    danger_alert.innerHTML =
+      "Mã OTP đã hết hạn.<br>Vui lòng chọn nút gửi lại.";
+    other_alert.style.display = "none"
+    danger_alert.style.display = "block";
+    return 0;
+  }
   let set_countdown = setInterval(() => {
     deadline -= 1000;
     let second = Math.floor(deadline / 1000);
@@ -428,14 +432,14 @@ function timer() {
       countdown_box.innerHTML = minute + ":" + second;
     }
 
-    if (deadline === 0) {
+    if (deadline <= 0) {
       clearInterval(set_countdown);
-      let otp = document.querySelectorAll(".code input");
       for (otp_input of otp) {
         otp_input.setAttribute("disabled", "");
       }
       danger_alert.innerHTML =
-        "The OTP code has expired.<br>Please click resend button.";
+        "Mã OTP đã hết hạn.";
+      other_alert.style.display = "none"
       danger_alert.style.display = "block";
     }
   }, 1000);
@@ -501,18 +505,14 @@ function searchPendingUser() {
         let html = ``;
         if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
           JSONResult.result.forEach((row) => {
-            html += `<tr>
+            html += `<tr onclick="window.location.href ='/admin/userDetail/${row.username}';">
                         <td>${row.username}</td>
                         <td>${row.fullName}</td>
                         <td>${row.address}</td>
                         <td>${row.phoneNumber}</td>
                         <td>${row.email}</td>
-                        <td>
-                            <button onclick="window.location.href ='/admin/userDetail/${this.username}'" class="btn btn-info">Xem chi tiết</button>
-                            <button data-bs-toggle="modal" data-bs-target="#confirmModal-${row.username}" class="btn btn-success">Duyệt</button>
-                            <button data-bs-toggle="modal" data-bs-target="#cancelModal-${row.username}" class="btn btn-danger">Hủy</button>
-                            <button data-bs-toggle="modal" data-bs-target="#addInformationModal-${row.username}" class="btn btn-warning">Thêm thông tin</button>
-                        </td>
+                        <td>${row.createAt}</td>
+                  
                       </tr>`;
           });
           tableNotification.innerHTML = "";
@@ -569,62 +569,7 @@ function searchPendingTransaction() {
                         <td>${row.transactionDate}</td>
                         <td>${row.transactionAmount}</td>
                         <td>${row.status}</td>
-                        <td>
-                          <button data-bs-toggle="modal" data-bs-target="#confirmModal-${row._id}" class="btn btn-success">Duyệt</button>
-                          <button data-bs-toggle="modal" data-bs-target="#cancelModal-${row._id}" class="btn btn-danger">Hủy</button>
-                        </td>
                       </tr>
-                        <div class="modal pending-modal fade" id="confirmModal-${row._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <form action="/admin/activated/${row._id}" method="POST">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Modal</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                     ${row._id}
-                                </div>
-                                <div class="modal-footer">
-                                    <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                    >Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-                        <div class="modal pending-modal fade" id="cancelModal-${row._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <form action="/admin/cancel/${row._id}" method="POST">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Cancel Modal</h5>
-                                    <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                    ></button>
-                                </div>
-                                <div class="modal-body">
-                                    ${row._id}
-                                </div>
-                                <div class="modal-footer">
-                                    <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                    >Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                                </div>
-                            </div>
-                            </form>
-                        </div>
                       `;
           });
           tableNotification.innerHTML = "";
@@ -637,31 +582,47 @@ function searchPendingTransaction() {
       });
   }
 }
+function withdrawFee (amount)
+  {
+    let displayFee = document.getElementById("withdrawFeeValue")
+    if(amount >= 50000)
+    {
+      
+      displayFee.innerText = "*Phí rút tiền là: "+ toMoney ((amount * 5)/100)
+    }
+    else
+    {
+      displayFee.innerText = ""
+    }
+  }
 
-// user-profile;
-// function activeEdit() {
-//   const allInput = document.querySelectorAll("#user-profile input");
-//   allInput.forEach((inp) => {
-//     inp.removeAttribute("disabled");
-//   });
-//   const editBtn = document.querySelector(".btn-edit");
-//   editBtn.style.display = "none";
-//   const cancelBtn = document.querySelector(".btn-cancel");
-//   cancelBtn.style.display = "inline-block";
-//   const submitBtn = document.querySelector(".btn-submit");
-//   submitBtn.style.display = "inline-block";
-// }
+function getUserNameThroughtPhoneNum(phoneNumber)
+{
+  let receiverNameInput = document.getElementsByName("receiverName")[0]
+  if(phoneNumber.length === 10 )
+  {
+    fetch("/getUserNameByPhoneNumber",{
+        method:"POST",
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phoneNumber:phoneNumber})})
+    .then((result) => {return result.json();})
+    .then((JSONResult) => {
 
-// function cancelEdit() {
-//   console.log("cancel");
-//   const allInput = document.querySelectorAll("#user-profile input");
-//   allInput.forEach((inp) => {
-//     inp.setAttribute("disabled", "true");
-//   });
-//   const editBtn = document.querySelector(".btn-edit");
-//   editBtn.style.display = "block";
-//   const cancelBtn = document.querySelector(".btn-cancel");
-//   cancelBtn.style.display = "none";
-//   const submitBtn = document.querySelector(".btn-submit");
-//   submitBtn.style.display = "none";
-// }
+        if(JSONResult.receiverName)
+        {
+          receiverNameInput.value = JSONResult.receiverName
+          receiverNameInput.parentElement.style.display = "block"
+        }
+        else
+        {
+          receiverNameInput.value = ""
+          receiverNameInput.parentElement.style.display = "none"
+        }
+    })
+  }
+  else
+  {
+    receiverNameInput.value = ""
+    receiverNameInput.parentElement.style.display = "none"
+  }
+}

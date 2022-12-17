@@ -4,15 +4,44 @@ const jwt = require("jsonwebtoken");
 const Transaction = require("../models/TransactionHistory");
 const { ObjectId } = require("mongodb");
 const adminController = {
+  getProfile: async (req, res, next) => {
+    if (req.session.isLogin) {
+      const user = await User.findOne({ username: req.session.username })
+        .lean()
+        .select("dateOfBirth phoneNumber fullName address email avatar");
+
+      user.dateOfBirth = user.dateOfBirth
+        .toLocaleString("en-GB", { timeZone: "UTC" })
+        .split(",")[0];
+
+      const account = await Account.findOne({
+        username: req.session.username,
+      })
+        .lean()
+        .select("balance status history username");
+
+      return res.render("profile", {
+        layout: "admin",
+        user,
+        account,
+        accountStatus: req.session.accountStatus,
+      });
+    } else {
+      return res.redirect("/login");
+    }
+  },
+
   getPending: async (req, res) => {
     const accessToken = req.cookies.accessToken;
     const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
     const user = await User.findOne({
       username: verifyToken.data.username,
     }).lean();
+
     let pendingAccount = await Account.find({ status: "pending" })
       .lean()
       .select("username");
+
     let pendingUser = [];
 
     pendingAccount.forEach((userData) => {
@@ -25,6 +54,7 @@ const adminController = {
           generateSearchUserFilter(req),
         ],
       })
+        .sort({ createAt: -1 })
         .lean()
         .exec((err, result) => {
           if (err !== null) {
@@ -37,17 +67,24 @@ const adminController = {
 
             if (result.length >= 1) {
               noData.status = false;
+              result.forEach((userData) => {
+                userData.createAt = userData["createAt"]
+                  .toLocaleString("en-GB", { timeZone: "UTC" })
+                  .replace(",", " -");
+              });
             }
-            return res.render("pending", {
+            return res.render("./adminView/pending", {
               layout: "admin",
               user,
               noData: noData,
               pendingUsers: result,
+              accountStatus: req.session.accountStatus,
             });
           }
         });
     } else {
       User.find({ username: { $in: pendingUser } })
+        .sort({ createAt: -1 })
         .lean()
         .exec((err, result) => {
           let noData = {
@@ -57,12 +94,18 @@ const adminController = {
 
           if (result.length >= 1) {
             noData.status = false;
+            result.forEach((userData) => {
+              userData.createAt = userData["createAt"]
+                .toLocaleString("en-GB", { timeZone: "UTC" })
+                .replace(",", " -");
+            });
           }
-          return res.render("pending", {
+          return res.render("./adminView/pending", {
             layout: "admin",
             user,
             noData: noData,
             pendingUsers: result,
+            accountStatus: req.session.accountStatus,
           });
         });
     }
@@ -80,6 +123,7 @@ const adminController = {
       layout: "admin",
       user,
       activeUsers,
+      accountStatus: req.session.accountStatus,
     });
   },
   getDisabled: async (req, res) => {
@@ -97,12 +141,13 @@ const adminController = {
       layout: "admin",
       user,
       disabledUsers,
+      accountStatus: req.session.accountStatus,
     });
   },
 
   activated: async (req, res) => {
     try {
-      const account = await Account.findOne({ username: req.params.username });
+      let account = await Account.findOne({ username: req.params.username });
       if (account) {
         await account.updateOne({ status: "activated" });
       }
@@ -138,13 +183,32 @@ const adminController = {
   },
 
   getUserDetail: async (req, res) => {
-    const user = await User.findOne({ username: req.params.username }).lean();
-    const account = await Account.findOne({
-      username: req.params.username,
-    })
-      .lean()
-      .select("balance status history username");
-    console.log(account);
+    try {
+      let user = await User.findOne({ username: req.session.username }).lean(); // admin profile
+      let pendinguser = await User.findOne({
+        username: req.params.username,
+      }).lean();
+      let account = await Account.findOne({
+        username: req.params.username,
+      })
+        .lean()
+        .select("balance status history username");
+      pendinguser.dateOfBirth = pendinguser["dateOfBirth"]
+        .toLocaleString("en-GB", { timeZone: "UTC" })
+        .split(",")[0];
+      pendinguser.createAt = pendinguser["createAt"]
+        .toLocaleString("en-GB", { timeZone: "UTC" })
+        .replace(",", "-");
+      return res.render("./adminView/accountDetail", {
+        layout: "admin",
+        user,
+        ...pendinguser,
+        accountStatus: req.session.accountStatus,
+      });
+    } catch {
+      console.log(error);
+      return res.redirect("/admin/pending");
+    }
   },
 
   getPendingTransaction: async (req, res) => {
@@ -155,7 +219,7 @@ const adminController = {
     }).lean();
     if (req.query.search == "true") {
       Transaction.find(generateSearchTransactionFilter(req))
-        .sort({ transactionDate: 1 })
+        .sort({ transactionDate: -1 })
         .lean()
         .exec((err, result) => {
           if (err !== null) {
@@ -168,25 +232,31 @@ const adminController = {
             if (result.length >= 1) {
               result.forEach((transaction) => {
                 transaction.transactionDate = transaction["transactionDate"]
-                  .toLocaleString("en-GB")
+                  .toLocaleString("en-GB", { timeZone: "UTC" })
                   .replace(",", " -");
                 transaction.transactionAmount = toMoney(
                   transaction.transactionAmount
                 );
+                if (transaction.status.toLowerCase() === "pending") {
+                  transaction.status = "Chờ duyệt";
+                } else {
+                  transaction.status = "Trạng thái khác";
+                }
               });
               noData.status = false;
             }
-            return res.render("transactionApproval", {
+            return res.render("./adminView/transactionApproval", {
               layout: "admin",
               user,
               noData: noData,
               pendingTransaction: result,
+              accountStatus: req.session.accountStatus,
             });
           }
         });
     } else {
       Transaction.find({ status: "Pending" })
-        .sort({ transactionDate: 1 })
+        .sort({ transactionDate: -1 })
         .lean()
         .exec((err, result) => {
           let noData = {
@@ -196,62 +266,93 @@ const adminController = {
           if (result.length >= 1) {
             result.forEach((transaction) => {
               transaction.transactionDate = transaction["transactionDate"]
-                .toLocaleString("en-GB")
+                .toLocaleString("en-GB", { timeZone: "UTC" })
                 .replace(",", " -");
               transaction.transactionAmount = toMoney(
                 transaction.transactionAmount
               );
+              if (transaction.status.toLowerCase() === "pending") {
+                transaction.status = "Chờ duyệt";
+              } else {
+                transaction.status = "Trạng thái khác";
+              }
             });
             noData.status = false;
           }
-          return res.render("transactionApproval", {
+          return res.render("./adminView/transactionApproval", {
             layout: "admin",
             user,
             noData: noData,
             pendingTransaction: result,
+            accountStatus: req.session.accountStatus,
           });
         });
     }
   },
 
-  acceptPendingTransaction: async (req, res) => {
+  getPendingWithdrawDetail: async (req, res) => {
     try {
-      Transaction.findById(
-        { _id: new ObjectId(`${req.params.transactionID.toString()}`) },
-        (err, result) => {
-          if (err !== null) {
-            throw "Xảy ra lỗi trong quá trình tìm giao dịch.";
-          } else {
-            Account.findOne({ username: result.userID }, (err, userData) => {
-              if (err !== null) {
-              }
-              console.log(userData);
-              if (userData.balance >= result.transactionAmount) {
-                Account.updateOne(
-                  { username: userData.username },
-                  { $inc: { balance: result.transactionAmount * -1 } },
-                  (err, response) => {
-                    if (err !== null || result["modifiedCount"] < 1) {
-                      error.isError = true;
-                      error.errorMessage =
-                        "Có lỗi xảy ra trong quá trình thực hiện. Vui lòng thử lại.<br>";
-                      return backToInputForm(
-                        "deposit",
-                        user,
-                        res,
-                        error,
-                        dataBag
-                      );
-                    }
-                  }
-                );
-              } else {
-                console.log("less");
-              }
+      let user = await User.findOne({ username: req.session.username }).lean();
+      Transaction.findOne({ _id: new ObjectId(req.params.transactionID) })
+        .lean()
+        .exec((err, result) => {
+          if (result !== null) {
+            result.transactionDate = result["transactionDate"]
+              .toLocaleString("en-GB", { timeZone: "UTC" })
+              .replace(",", " -");
+            result.transactionAmount = toMoney(result.transactionAmount);
+            result.transactionFee = toMoney(result.transactionFee);
+            if (result.status.toLowerCase() === "pending") {
+              result.status = "Chờ duyệt";
+            } else {
+              result.status = "Trạng thái khác";
+            }
+            return res.render("./adminView/withdrawDetail", {
+              layout: "admin",
+              user,
+              accountStatus: req.session.accountStatus,
+              pendingTransaction: result,
             });
+          } else {
+            return res.redirect("/admin/pending");
           }
-        }
-      );
+        });
+    } catch (error) {
+      console.log(error);
+      return res.redirect("/admin/pending");
+    }
+  },
+
+  acceptWithdrawTransaction: async (req, res) => {
+    try {
+      let processedTransaction = await Transaction.findOne({
+        _id: new ObjectId(req.body.transactionID),
+      });
+      let processedAccount = await Account.findOne({
+        username: processedTransaction.userID,
+      });
+
+      if (!processedTransaction || !processedAccount) {
+        console.log("error");
+      }
+      await processedAccount.updateOne({ //Update account balance
+        $inc: {
+          balance:(processedTransaction.transactionAmount +processedTransaction.transactionFee) *-1,
+        },
+      });
+      await processedTransaction.updateOne({ //Update transaction status
+        status: "Success",
+        describe: `Số tiền giao dịch: -${toMoney(
+          processedTransaction.transactionAmount
+        )}\nPhí rút tiền: ${toMoney(
+          processedTransaction.transactionFee
+        )}\nSố dư hiện tại: ${toMoney(
+          parseFloat(processedAccount.balance) -
+            parseFloat(processedTransaction.transactionAmount +processedTransaction.transactionFee)
+        )}`,
+      });
+      return res.redirect("/admin/transactionApproval/withdraw");
+
       // console.log(pendingWithdraw.obj)
     } catch (error) {
       console.log(error);
@@ -303,6 +404,7 @@ const adminController = {
           generateSearchUserFilter(req),
         ],
       })
+        .sort({ createAt: -1 })
         .lean()
         .exec((err, result) => {
           if (err !== null) {

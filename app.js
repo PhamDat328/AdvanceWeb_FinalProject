@@ -19,6 +19,7 @@ const app = express();
 const DB = require("./connectDB");
 const authController = require("./controllers/authController");
 const { type } = require("os");
+const { handlebars } = require("hbs");
 DB.connect();
 
 // view engine setup
@@ -26,7 +27,33 @@ app.engine("hbs", hbs.engine({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", "hbs");
 app.use(cors());
 const hbsCreate = hbs.create({});
-hbsCreate.handlebars.registerHelper();
+hbsCreate.handlebars.registerHelper('ifCond', (status, options) => {
+
+        let result = `<span id="role" class="header-profile-fs-2">`
+        if(!status)
+        {      
+            result += "Không xác định được trạng thái.Vui lòng đăng nhập lại. </span>" 
+            return result;
+        }    
+        if(status.toLowerCase() === "pending")
+        {
+            result += "Tài khoản chờ kích hoạt"
+        }
+        else if(status.toLowerCase() === "activated")
+        {
+            result += "Tài khoản đã kích hoạt"
+        }
+        else if(status.toLowerCase() ==="adminstatus")
+        {
+            result += "Tài khoản quản trị viên"
+        }
+        else
+        {
+            result += `Không xác định được trạng thái`
+        }
+        result += `</span>`
+        return new handlebars.SafeString(result)
+});
 
 // app.use(logger("dev"));
 app.use(express.json());
@@ -62,7 +89,7 @@ app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
-
+    
     // render the error page
     res.status(err.status || 500);
     res.render("error");

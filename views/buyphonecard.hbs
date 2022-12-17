@@ -1,7 +1,6 @@
 <div id="buyPhoneCardForm" class="container">
-
   <form action="/buyPhoneCard" id="userFunctionForm" method="POST">
-    <h2>Buy phone card</h2>
+    <h2>Mua thẻ điện thoại</h2>
     <div class="form-content">
       <div class="user__form__icon">
         <img src="/images/userFormIcon/buy.png" />
@@ -11,22 +10,22 @@
       <hr />
       <div class="network">
         <div class="form-group">
-          <label class="" for="viettel">Viettel</label>
-          <input type="checkbox" id="viettel" value="viettel" name="network" />
+          <label class="" for="viettel" style="background-image: url('/images/network/viettel.png');" onclick="networkClickEffect(this);"></label>
+          <input type="radio" id="viettel" value="viettel" name="network" />
         </div>
         <div class="form-group">
-          <label for="mobifone">Mobifone</label>
+          <label for="mobifone" style="background-image: url('/images/network/mobi.png');" onclick="networkClickEffect(this);"></label>
           <input
-            type="checkbox"
+            type="radio"
             id="mobifone"
             value="mobifone"
             name="network"
           />
         </div>
         <div class="form-group">
-          <label for="vinaphone">Vinaphone</label>
+          <label for="vinaphone" style="background-image: url('/images/network/vina.png');" onclick="networkClickEffect(this);"></label>
           <input
-            type="checkbox"
+            type="radio"
             id="vinaphone"
             value="vinaphone"
             name="network"
@@ -38,20 +37,20 @@
       <hr />
       <div class="denominations">
         <div class="form-group">
-          <label for="10000">10000</label>
-          <input type="checkbox" id="10000" value="10000" name="network" />
+          <label for="10000" onclick="denominationsClickEffect(this);">10.000đ</label>
+          <input type="radio" id="10000" value="10000" name="denominations" />
         </div>
         <div class="form-group">
-          <label for="20000">20000</label>
-          <input type="checkbox" id="20000" value="20000" name="network" />
+          <label for="20000" onclick="denominationsClickEffect(this);">20.000đ</label>
+          <input type="radio" id="20000" value="20000" name="denominations" />
         </div>
         <div class="form-group">
-          <label for="50000">50000</label>
-          <input type="checkbox" id="50000" value="50000" name="network" />
+          <label for="50000" onclick="denominationsClickEffect(this);">50.000đ</label>
+          <input type="radio" id="50000" value="50000" name="denominations" />
         </div>
         <div class="form-group">
-          <label for="100000">100000</label>
-          <input type="checkbox" id="100000" value="100000" name="network" />
+          <label for="100000" onclick="denominationsClickEffect(this);">100.000đ</label>
+          <input type="radio" id="100000" value="100000" name="denominations" />
         </div>
       </div>
 
@@ -63,5 +62,24 @@
     </div>
 
   </form>
-
+  <script>
+    let network = document.querySelectorAll(".network label")
+    let cardValue = document.querySelectorAll(".denominations label")
+    function networkClickEffect(tag)
+    {
+      network.forEach((button) => {
+        button.classList.remove("onChooseEffect")
+      })
+      
+      tag.classList.add("onChooseEffect")
+    }
+    function denominationsClickEffect(tag)
+    {
+      cardValue.forEach((button) => {
+        button.classList.remove("onChooseEffect")
+      })
+      
+      tag.classList.add("onChooseEffect")
+    }
+  </script>
 </div>

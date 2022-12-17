@@ -1,6 +1,6 @@
 <section id="register" class="container">
   <h1 class="register-title">
-    Account Register
+    Đăng ký tài khoản
   </h1>
   <div class="register-form">
     <form
@@ -13,7 +13,7 @@
       <div id="form-1" class="card" data-step>
         {{! Fullname }}
         <div class="mb-3">
-          <label for="fullName" class="form-label">Full Name</label>
+          <label for="fullName" class="form-label">Họ tên</label>
           <div class="input__row">
             {{! login__icon name svg-icon }}
             <svg
@@ -40,7 +40,7 @@
         </div>
         {{! Date of birth }}
         <div class="mb-3">
-          <label for="dateOfBirth" class="form-label">Date of Birth</label>
+          <label for="dateOfBirth" class="form-label">Ngày sinh</label>
           <div class="input__row">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@
         </div>
         {{! Address }}
         <div class="mb-3">
-          <label for="address" class="form-label">Address</label>
+          <label for="address" class="form-label">Địa chỉ</label>
           <div class="input__row">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +124,7 @@
 
         {{! Phone }}
         <div class="mb-3">
-          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <label for="phoneNumber" class="form-label">Số điện thoại</label>
           <div class="input__row">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -140,10 +140,11 @@
             </svg>
             <input
               required
-              type="number"
+              type="tel"
               name="phoneNumber"
               class="form-control"
               id="phoneNumber"
+              minlength="10"
             />
           </div>
 
@@ -157,20 +158,20 @@
 
         <div class="btn-contain">
           
-          <a href="/login" class="btn btn-secondary">Back</a>
+          <a href="/login" class="btn btn-secondary">Hủy</a>
           <button
             id="register-next-btn"
             type="button"
             class="btn btn-success"
             data-next
-          >Next</button>
+          >Tiếp tục</button>
 
         </div>
 
       </div>
       <div id="form-2" class="card" data-step>
         <div class="mb-3">
-          <label for="font" class="form-label">Font ID Image</label>
+          <label for="font" class="form-label">Mặt trước CMND</label>
           <input
             type="file"
             class="form-control ID-input"
@@ -183,7 +184,7 @@
           <span class="form-text text-danger fontIdImage-error"></span>
         </div>
         <div class="mb-3">
-          <label for="back" class="form-label">Back ID Image</label>
+          <label for="back" class="form-label">Mặt sau CMND</label>
           <input
             type="file"
             class="form-control ID-input"
@@ -202,9 +203,9 @@
             id="register-back-btn"
             class="btn btn-secondary"
             data-previous
-          >Back</button>
+          >Quay lại</button>
 
-          <button type="button" class="btn btn-success submit-btn" onclick="registerSubmit();">Submit</button>
+          <button type="button" class="btn btn-success submit-btn" onclick="registerSubmit();">Đăng ký</button>
 
         </div>
 

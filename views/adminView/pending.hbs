@@ -1,0 +1,80 @@
+<div class="pending-container" id="pending">
+  <div class="pending-title">
+    <p class="text-title">
+      Danh sách tài khoản chờ được duyệt
+    </p>
+  </div>
+
+  <div class="toolSearchBar">
+    <form id="searchPendingData" style="justify-content: center;">
+      <div class="search-bar-item" style="width: 30%;">
+        <div class="search-item-title">
+          <label for="userName">Tìm kiếm tài khoản</label>
+        </div>
+        <label  for="searchString" class="searchInput" style="display:flex; align-items:center">
+          <i class="bi bi-search" style="margin-right: 4px;"></i>
+          <input type="text" id="searchString" name="searchString" placeholder="Nhập mã người dùng/SĐT/Email" style="width: 100%;">
+        </label>
+      </div>
+      
+      <div class="search-bar-item">
+        <div class="search-item-title">
+          <label>Tìm kiếm theo</label>
+        </div>
+        <div style="width:200px; display:flex; justify-content:space-between;">
+          <div style="display: grid; justify-items: center;">
+            <label for="byUsername">Mã người dùng</label> 
+            <input type="radio" id="byUsername" name="searchType" value="1" checked>
+          </div>
+          <div style="display: grid; justify-items: center;">
+            <label for="byPhone">SĐT</label> 
+            <input type="radio" id="byPhone" name="searchType" value="2">
+          </div>
+          <div style="display: grid; justify-items: center;">
+            <label for="byEmail">Email</label> 
+            <input type="radio" id="byEmail" name="searchType" value="3">
+          </div>   
+        </div>     
+      </div>
+      <div style="align-self:end;">
+        <button class="btn btn-info" type="button" style="margin-right: 8px;" onclick="searchPendingUser();">Search</button>
+        <button class="btn btn-secondary" type="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dataTable">
+    <table class="table" style="margin: 0;">
+      <thead>
+        <tr>
+          <th scope="col">Tài khoản</th>
+          <th scope="col">Họ tên</th>
+          <th scope="col">Địa chỉ</th>
+          <th scope="col">SĐT</th>
+          <th scope="col">Email</th>
+          <th scope="col">Ngày tạo</th>
+        </tr>
+      </thead>
+      <tbody id="userData">
+        {{#each pendingUsers}}   
+          <tr onclick="window.location.href =`/admin/userDetail/{{this.username}}`;">       
+                <td>{{this.username}}</td>
+                <td>{{this.fullName}}</td>
+                <td>{{this.address}}</td>
+                <td>{{this.phoneNumber}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.createAt}}</td>
+          </tr>
+        {{/each}}
+
+      </tbody>
+    </table>
+    <div class="tableNotification">
+        {{#if noData.status}}
+            <div style="color:#000; padding-top: 0.5rem;">{{noData.msg}}</div>
+        {{/if}}
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->

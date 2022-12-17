@@ -1,9 +1,9 @@
 <div class="cont">
     <div class="entercode">
-        <form action="/users/recover" method="POST" class="OTP_Form">
+        <form action="verifyTransfer" method="POST" class="OTP_Form">
             <input type="hidden" value="" type="text" id="fullOTP" name="fullOTP" />
             <div class="title-Verify">
-                <h3>Xác thực</h3>
+                <h3>Xác thực OTP chuyển tiền</h3>
             </div>
             <div class="logo_entercode">
                 <img width="100px" src="/images/logo.png" alt="logo" srcset="" />
@@ -49,8 +49,7 @@
 
             <div class="button">
                 <div class="resend">
-                    <button type="button" onclick="window.location.href='/login'" style="background-color: #a5a5a5; margin-right:8px;">Trở lại</button>
-                    <button type="reset" onclick="window.location.href='/users/forgotpassword'">Gửi lại</button>
+                    <button type="button" onclick="window.location.href='/transfer'" style="background-color: #ff0000;">Hủy</button>
                 </div>
             </div>
         </form>
