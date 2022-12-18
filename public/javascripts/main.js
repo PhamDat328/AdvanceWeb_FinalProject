@@ -529,7 +529,7 @@ function searchPendingUser() {
 function searchPendingTransaction() {
   let searchForm = new FormData(document.getElementById("searchPendingData"));
   let data = Object.fromEntries(searchForm);
-  let url = "/admin/transactionApproval";
+  let url = "/admin/transactionApproval/withdraw";
   let firstItem = 0;
   let tableTbody = document.querySelector(
     "#admin #pending .table #transactionData"

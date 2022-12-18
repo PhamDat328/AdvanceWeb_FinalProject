@@ -18,13 +18,11 @@ function generateLocalDate() {
 }
 
 //This function will turn number to money format
-function toMoney(moneyamount, style = "VND") {
+function toMoney(moneyamount, style = " VND") {
   return (
     parseFloat(moneyamount).toLocaleString("en-US", {
       maximumFractionDigits: 2,
-    }) +
-    " " +
-    style
+    }) +style
   );
 }
 
@@ -41,6 +39,7 @@ function backToInputForm(view, user, res, error, dataBag,req) {
   if(view == 'deposit'){option.depositButton = true}
   if(view == 'withdraw'){option.withdrawButton = true}
   if(view == 'transfer'){option.transferButton = true}
+  if(view == 'buyphonecard'){option.buyButton = true}
   return res.render(view, option);
 }
 
@@ -745,5 +744,92 @@ module.exports = {
     }
     
   },
+
+  postBuyPhoneCard: async(req,res) => {
+
+    try {
+
+      if (!req.session.isLogin) {
+        return res.redirect("/login");
+        }
+      else
+      {
+        const accessToken = req.cookies.accessToken;
+        const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+        let user = await User.findOne({ username: verifyToken.data.username });
+        let userAccount = await Account.findOne({username: user.username})
+        let error = {
+          isError: false,
+          errorMessage: "",
+        };
+       
+        if(!req.body.network)
+        {
+          error.isError = true;
+          error.errorMessage = "Vui lòng chọn nhà mạng";
+          return backToInputForm("buyphonecard", user, res, error, {},req);
+        }
+        if(!req.body.denominations )
+        {
+          error.isError = true;
+          error.errorMessage = "Vui lòng chọn mệnh giá";
+          return backToInputForm("buyphonecard", user, res, error, {},req);
+        }
+        if(!req.body.network  || !req.body.amount  || !req.body.denominations || req.body.amount > 5||req.body.amount < 1 )
+        {
+          error.isError = true;
+          error.errorMessage = "Dữ liệu truyền vào không hợp lệ";
+          return backToInputForm("buyphonecard", user, res, error, {},req);
+        }
+
+          let cardList = [];
+          for(let i = 1 ; i <= req.body.amount; i++)
+          {
+            let card = req.body.network;
+            for(let j = 1 ; j <= 5 ; j++) // random card character
+            {
+              card += Math.floor(Math.random()*9)
+            }
+            cardList.push(card)
+          }
+          let cardType = '';
+          if(req.body.network == '11111')
+          {
+            cardType = "Viettel " +toMoney(req.body.denominations,"đ")+": "; 
+          }
+          else if (req.body.network =='22222')
+          {
+            cardType = "Mobifone" +toMoney(req.body.denominations,"đ")+": "; 
+          }
+          else
+          {
+            cardType = "Vinaphone" +toMoney(req.body.denominations,"đ")+": "; 
+          }
+          let describe = ''
+          cardList.forEach((data) => {
+            describe += cardType + data+"\n"
+          })
+
+          let total = parseInt(req.body.denominations) * parseInt(req.body.amount)
+          await Transaction.create({
+            userID: user.username,
+            transactionType:"Buy",
+            transactionDate: generateLocalDate(),
+            transactionAmount: total,
+            status: "Success",
+            describe: describe,
+          })
+          await userAccount.updateOne({$inc: { balance: (total * -1)}})
+        return res.redirect("/")
+      }  
+
+    } catch (error) {
+      console.log(error)
+      return res.redirect("/logout")
+    }
+
+
+  },
+
 
 };

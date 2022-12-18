@@ -510,19 +510,13 @@ const authController = {
             let currentUserAcount = await Account.findOne({
                 username: user.username,
             });
-            let layoutType = "main";
+            
             if (user.admin) {
-                layoutType = "admin";
-                return res.render("index", {
-                   
-                    layout: layoutType,
-                    accountStatus: req.session.accountStatus,
-                    user: user.toObject(),
-                });
+                return res.redirect("/admin")
             }
             return res.render("index", {
               
-                layout: layoutType,
+                layout: "main",
                 user: user.toObject(),
                 accountStatus: req.session.accountStatus,
                 balance: toMoney(currentUserAcount["balance"]),

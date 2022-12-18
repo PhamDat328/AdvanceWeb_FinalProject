@@ -2301,3 +2301,105 @@ button {
 }
 
 /*-------------------------------------------------- Admin view account detail ----------------------------------------------------- */
+
+/*-------------------------------------------------- Admin main view ----------------------------------------------------- */
+
+#adminDashBoard .dashboard-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#adminDashBoard .dashboard {
+  width: 35%;
+  height: 200px;
+  margin-top: 1rem;
+  display: grid;
+}
+
+#adminDashBoard .dashboard-display img {
+  width: 120px;
+}
+
+#adminDashBoard .dashboard .dashboard-display {
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+}
+
+#adminDashBoard .productTotal {
+  background-color: #4dc0e9;
+}
+
+#adminDashBoard .accountTotal {
+  background-color: #e99d40;
+}
+
+#adminDashBoard .ordersTotal {
+  background-color: #47a05e;
+}
+
+#adminDashBoard .dashboard-content {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+#adminDashBoard .dashboard-content .dasboard-value {
+  font-size: 3rem;
+  font-weight: 900;
+  font-family: monospace;
+}
+
+#adminDashBoard .dashboard-link {
+  display: flex;
+  width: 100%;
+  text-decoration: unset;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#adminDashBoard .dashboard-link::after {
+  content: '➜';
+  margin-left: 8px;
+  color:#aba6a6;
+  background-color: white;
+  border-radius: 100%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+}
+
+#adminDashBoard .productTotal .dashboard-link {
+  background-color: #45add2;
+}
+
+#adminDashBoard .accountTotal .dashboard-link {
+  background-color: #d18d39;
+}
+
+#adminDashBoard .ordersTotal .dashboard-link {
+  background-color: #3f8f55;
+}
+@media screen and (max-width: 860px) {
+  #adminDashBoard .dashboard{
+      width: 65%;
+  }
+}
+
+/*-------------------------------------------------- Admin main view ----------------------------------------------------- */
+
+
+
+/*-------------------------------------------------- Other CSS ----------------------------------------------------- */
+#backtoAdminMain:hover{
+  scale: 0.95;
+}
+/*-------------------------------------------------- Other CSS ----------------------------------------------------- */

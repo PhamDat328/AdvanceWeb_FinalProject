@@ -4,6 +4,21 @@ const jwt = require("jsonwebtoken");
 const Transaction = require("../models/TransactionHistory");
 const { ObjectId } = require("mongodb");
 const adminController = {
+
+  getAdminHomePage: async(req,res) => {
+    const accessToken = req.cookies.accessToken;
+    const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+    const user = await User.findOne({
+      username: verifyToken.data.username,
+    }).lean();
+    return res.render("./adminView/adminHomepage", {
+      layout: "admin",
+      user,
+      accountStatus: req.session.accountStatus,
+    });
+  },
+
+
   getProfile: async (req, res, next) => {
     if (req.session.isLogin) {
       const user = await User.findOne({ username: req.session.username })
@@ -255,7 +270,7 @@ const adminController = {
           }
         });
     } else {
-      Transaction.find({ status: "Pending" })
+      Transaction.find({ transactionType:"Withdraw",status: "Pending" })
         .sort({ transactionDate: -1 })
         .lean()
         .exec((err, result) => {

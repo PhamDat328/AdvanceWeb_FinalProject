@@ -50,7 +50,7 @@ router.route("/transfer").get(userController.getTransferForm).post(userControlle
 router.route("/getUserNameByPhoneNumber").post(userController.getUserNameByPhoneNumber);
 router.route("/verifyTransfer").post(userController.makeTransfer)
 
-router.route("/buyphonecard").get(userController.getBuyPhoneCardForm);
+router.route("/buyphonecard").get(userController.getBuyPhoneCardForm).post(userController.postBuyPhoneCard);
 router.route("/transaction").get(userController.getTransactionHistory);
 router.route("/profile").get(userController.getProfile);
 
