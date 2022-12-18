@@ -11,10 +11,21 @@ const adminController = {
     const user = await User.findOne({
       username: verifyToken.data.username,
     }).lean();
+
+    let pendingUser = await Account.find({status: "pending"})
+    let activatedUser = await Account.find({status: "activated"})
+    let locked = await Account.find({isLocked:true})
+    let pendingWithdraw = await Transaction.find({transactionType:"Withdraw", status:"Pending"})
+    let pendingTransfer = await Transaction.find({transactionType:"Transfer", status:"Pending"})
     return res.render("./adminView/adminHomepage", {
       layout: "admin",
       user,
       accountStatus: req.session.accountStatus,
+      pendingUserList: pendingUser.length,
+      activatedUserList: activatedUser.length,
+      lockedUserList: locked.length,
+      pendingWithdrawList : pendingWithdraw.length,
+      pendingTransferList: pendingTransfer.length
     });
   },
 
@@ -104,7 +115,7 @@ const adminController = {
         .exec((err, result) => {
           let noData = {
             status: true,
-            msg: "Không có kết quả",
+            msg: "Không có tài khoản chờ duyệt",
           };
 
           if (result.length >= 1) {
@@ -126,20 +137,83 @@ const adminController = {
     }
   },
   getActive: async (req, res) => {
-    const activeAccounts = await Account.find({ status: "active" });
-    let activeUsers = [];
     const accessToken = req.cookies.accessToken;
     const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
-    const user = await User.findOne({ username: verifyToken.data.username });
-    for (let item of activeAccounts) {
-      activeUsers.push(await User.findOne({ username: item.username }).lean());
-    }
-    return res.render("activated", {
-      layout: "admin",
-      user,
-      activeUsers,
-      accountStatus: req.session.accountStatus,
+    const user = await User.findOne({
+      username: verifyToken.data.username,
+    }).lean();
+
+    let pendingAccount = await Account.find({ status: "activated" })
+      .lean()
+      .select("username");
+
+    let pendingUser = [];
+
+    pendingAccount.forEach((userData) => {
+      pendingUser.push(userData.username);
     });
+    if (req.query.search == "true") {
+      User.find({
+        $and: [
+          { username: { $in: pendingUser } },
+          generateSearchUserFilter(req),
+        ],
+      })
+        .sort({ createAt: -1 })
+        .lean()
+        .exec((err, result) => {
+          if (err !== null) {
+            res.redirect("/admin/pending");
+          } else {
+            let noData = {
+              status: true,
+              msg: "Không có kết quả",
+            };
+
+            if (result.length >= 1) {
+              noData.status = false;
+              result.forEach((userData) => {
+                userData.createAt = userData["createAt"]
+                  .toLocaleString("en-GB", { timeZone: "UTC" })
+                  .replace(",", " -");
+              });
+            }
+            return res.render("./adminView/activated", {
+              layout: "admin",
+              user,
+              noData: noData,
+              pendingUsers: result,
+              accountStatus: req.session.accountStatus,
+            });
+          }
+        });
+    } else {
+      User.find({ username: { $in: pendingUser } })
+        .sort({ createAt: -1 })
+        .lean()
+        .exec((err, result) => {
+          let noData = {
+            status: true,
+            msg: "Không có tài khoản nào được kích hoạt",
+          };
+
+          if (result.length >= 1) {
+            noData.status = false;
+            result.forEach((userData) => {
+              userData.createAt = userData["createAt"]
+                .toLocaleString("en-GB", { timeZone: "UTC" })
+                .replace(",", " -");
+            });
+          }
+          return res.render("./adminView/activated", {
+            layout: "admin",
+            user,
+            noData: noData,
+            pendingUsers: result,
+            accountStatus: req.session.accountStatus,
+          });
+        });
+    }
   },
   getDisabled: async (req, res) => {
     const disableAccounts = await Account.find({ status: "disable" });
@@ -169,7 +243,7 @@ const adminController = {
       return res.redirect("/admin/pending");
     } catch (error) {
       console.log(error);
-      return res.render("404", { layout: "blankLayout" });
+      return res.redirect("/admin/pending");
     }
   },
   disabled: async (req, res) => {
@@ -214,15 +288,21 @@ const adminController = {
       pendinguser.createAt = pendinguser["createAt"]
         .toLocaleString("en-GB", { timeZone: "UTC" })
         .replace(",", "-");
+      let ispending = false
+      if(account.status.toLowerCase() == 'pending')
+      {
+        ispending = true
+      }
       return res.render("./adminView/accountDetail", {
         layout: "admin",
         user,
         ...pendinguser,
         accountStatus: req.session.accountStatus,
+        ispending: ispending
       });
     } catch {
       console.log(error);
-      return res.redirect("/admin/pending");
+      return res.redirect("/admin/");
     }
   },
 
@@ -359,9 +439,9 @@ const adminController = {
         status: "Success",
         describe: `Số tiền giao dịch: -${toMoney(
           processedTransaction.transactionAmount
-        )}\nPhí rút tiền: ${toMoney(
+        )}<br>Phí rút tiền: ${toMoney(
           processedTransaction.transactionFee
-        )}\nSố dư hiện tại: ${toMoney(processedAccount.balance - processedTransaction.transactionAmount -processedTransaction.transactionFee)}`,
+        )}<br>Số dư hiện tại: ${toMoney(processedAccount.balance - processedTransaction.transactionAmount -processedTransaction.transactionFee)}`,
       });
       return res.redirect("/admin/transactionApproval/withdraw");
 
@@ -375,7 +455,7 @@ const adminController = {
   searchPendingTransaction: (req, res) => {
     if (req.query.search == "true") {
       Transaction.find(generateSearchTransactionFilter(req))
-        .sort({ transactionDate: 1 })
+        .sort({ transactionDate: -1 })
         .lean()
         .exec((err, result) => {
           if (err !== null) {
@@ -384,7 +464,7 @@ const adminController = {
             if (result.length >= 1) {
               result.forEach((transaction) => {
                 transaction.transactionDate = transaction["transactionDate"]
-                  .toLocaleString("en-GB")
+                  .toLocaleString("en-GB", { timeZone: "UTC" })
                   .replace(",", " -");
                 transaction.transactionAmount = toMoney(
                   transaction.transactionAmount
@@ -404,6 +484,39 @@ const adminController = {
   searchPendingUser: async (req, res) => {
     if (req.query.search == "true") {
       let account = await Account.find({ status: "pending" })
+        .lean()
+        .select("username");
+      let pendingAccount = [];
+
+      account.forEach((user) => {
+        pendingAccount.push(user.username);
+      });
+      User.find({
+        $and: [
+          { username: { $in: pendingAccount } },
+          generateSearchUserFilter(req),
+        ],
+      })
+        .sort({ createAt: -1 })
+        .lean()
+        .exec((err, result) => {
+          if (err !== null) {
+            return res.json({ msg: "Xảy ra lỗi trong quá trình tìm kiếm" });
+          } else {
+            if (result.length >= 1) {
+              return res.json({ dataFound: result.length, result });
+            } else {
+              return res.json({ msg: "Không có kết quả" });
+            }
+          }
+        });
+    } else {
+      return res.json({ msg: "Tìm kiếm không hợp lệ" });
+    }
+  },
+  searchActiveUser: async (req, res) => {
+    if (req.query.search == "true") {
+      let account = await Account.find({ status: "activated" })
         .lean()
         .select("username");
       let pendingAccount = [];

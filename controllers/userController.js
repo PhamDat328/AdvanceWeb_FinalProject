@@ -9,7 +9,7 @@ const uploadDir = __dirname + "/../public/images/uploads";
 const mailer = require("./sendMail");
 const { Cookie } = require("express-session");
 const session = require("express-session");
-
+const { ObjectId } = require("mongodb");
 //This function will generate a current date time
 function generateLocalDate() {
   let d = new Date();
@@ -67,11 +67,11 @@ async function makeDeposit(user, userAccount, req, res, error, dataBag) {
           status: "Success",
           describe: `Số tiền giao dịch: +${toMoney(
             req.body.amount
-          )}\nSố dư hiện tại: ${toMoney(
+          )}<br>Số dư hiện tại: ${toMoney(
             parseInt(userAccount.balance) + parseInt(req.body.amount)
           )}`,
         });
-        return res.redirect("/");
+        return res.redirect("/transaction");;
       }
     }
   );
@@ -112,14 +112,14 @@ async function makeWithdraw(
             status: "Success",
             describe: `Số tiền giao dịch: -${toMoney(
               req.body.amount
-            )}\nPhí rút tiền: ${toMoney(
+            )}<br>Phí rút tiền: ${toMoney(
               (req.body.amount * 5) / 100
-            )}\nSố dư hiện tại: ${toMoney(
+            )}<br>Số dư hiện tại: ${toMoney(
               parseFloat(userAccount.balance) - parseFloat(amountWithFee)
             )}`,
             note: req.body.note
           });
-          return res.redirect("/");
+          return res.redirect("/transaction");;
         }
       }
     );
@@ -137,7 +137,7 @@ async function makeWithdraw(
     });
 
     //So tien giao dich: -${toMoney(req.body.amount)}\nPhi rut tien: ${toMoney((req.body.amount * 5) / 100)}\nSo du hien tai: ${toMoney(parseFloat(userAccount.balance) - parseFloat(amountWithFee))}\nGhi chu: ${req.body.note}
-    return res.redirect("/");
+    return res.redirect("/transaction");;
   }
 }
 module.exports = {
@@ -696,7 +696,7 @@ module.exports = {
               let dataBag = req.session.dataBag
               let sender = await User.findOne({username: dataBag.performer})
               let senderAccount = await Account.findOne({username: dataBag.performer})
-              let receiver = await User.findOne({phoneNumber: dataBag.prePhoneNum}).select("username fullName")
+              let receiver = await User.findOne({phoneNumber: dataBag.prePhoneNum}).select("username fullName email")
               let receiverAccount = await Account.findOne({username: receiver.username}).select("username balance")
               if( parseFloat(dataBag.preAmount) < 5000000)
               {
@@ -707,7 +707,7 @@ module.exports = {
                   transactionDate: generateLocalDate(),
                   transactionAmount: dataBag.preAmount,
                   status:"Success",
-                  describe:`Số tiền giao dịch: -${toMoney(dataBag.preAmount)}\nPhí chuyển khoản: ${toMoney((dataBag.preAmount * 5) / 100)}\nSố dư hiện tại: ${toMoney(senderAccount.balance - parseFloat( dataBag.preAmount) - (dataBag.preAmount*5/100) )}`,
+                  describe:`Số tiền giao dịch: -${toMoney(dataBag.preAmount)}<br>Phí chuyển khoản: ${toMoney((dataBag.preAmount * 5) / 100)}<br>Số dư hiện tại: ${toMoney(senderAccount.balance - parseFloat( dataBag.preAmount) - (dataBag.preAmount*5/100) )}`,
                   note:dataBag.preNote,
                   receiver: receiver.username,
                   feeBearer : dataBag.preBearer
@@ -718,7 +718,7 @@ module.exports = {
                   transactionDate: generateLocalDate(),
                   transactionAmount: dataBag.preAmount,
                   status:"Success",
-                  describe:`Số tiền giao dịch: +${toMoney(dataBag.preAmount)}\nSố dư hiện tại: ${toMoney(receiverAccount.balance + parseFloat( dataBag.preAmount) )}`,
+                  describe:`Số tiền giao dịch: +${toMoney(dataBag.preAmount)}<br>Số dư hiện tại: ${toMoney(receiverAccount.balance + parseFloat( dataBag.preAmount) )}`,
                   note:dataBag.preNote,
                   feeBearer : dataBag.preBearer
                 }
@@ -734,14 +734,14 @@ module.exports = {
                 else
                 {
                   let amountMinusFee = parseFloat(dataBag.preAmount) - (dataBag.preAmount * 5) / 100;
-                  senderModel.describe = `Số tiền giao dịch: -${toMoney(dataBag.preAmount)}\nSố dư hiện tại: ${ toMoney( senderAccount.balance - parseFloat(dataBag.preAmount))}`;
+                  senderModel.describe = `Số tiền giao dịch: -${toMoney(dataBag.preAmount)}<br>Số dư hiện tại: ${ toMoney( senderAccount.balance - parseFloat(dataBag.preAmount))}`;
                   receiverModel.transactionFee = (dataBag.preAmount*5)/100;
-                  receiverModel.describe = `Số tiền giao dịch: +${toMoney(dataBag.preAmount)}\nPhí chuyển khoản: ${toMoney((dataBag.preAmount * 5) / 100)}\nSố dư hiện tại: ${toMoney (receiverAccount.balance + amountMinusFee)}`
+                  receiverModel.describe = `Số tiền giao dịch: +${toMoney(dataBag.preAmount)}<br>Phí chuyển khoản: ${toMoney((dataBag.preAmount * 5) / 100)}<br>Số dư hiện tại: ${toMoney (receiverAccount.balance + amountMinusFee)}`
                   await Transaction.create([senderModel,receiverModel])
                   await senderAccount.updateOne({$inc: { balance: parseFloat(dataBag.preAmount)*(-1) }})
                   await receiverAccount.updateOne({$inc: { balance: amountMinusFee }})
                 }
-                
+                await mailer.sendMail(receiver.email,"Smart Wallet Transfer System",`Bạn đã nhận được ${toMoney(dataBag.preAmount)} từ ${sender.fullName}`)
               }
               else{        
                   await Transaction.create({
@@ -759,7 +759,7 @@ module.exports = {
 
                   }); 
               }
-              return res.redirect("/")
+              return res.redirect("/transaction");
             }
             else if((current < otpExpire) && (req.session.verifyOTP !== req.body.fullOTP))
             {
@@ -846,7 +846,7 @@ module.exports = {
           }
           let describe = ''
           cardList.forEach((data) => {
-            describe += cardType + data+"\n"
+            describe += cardType + data+"<br>"
           })
 
           let total = parseInt(req.body.denominations) * parseInt(req.body.amount)
@@ -859,7 +859,7 @@ module.exports = {
             describe: describe,
           })
           await userAccount.updateOne({$inc: { balance: (total * -1)}})
-        return res.redirect("/")
+          return res.redirect("/transaction");
       }  
 
     } catch (error) {
@@ -870,5 +870,116 @@ module.exports = {
 
   },
 
+  searchTransaction:  async(req, res) => {
+    try {
+        if (req.query.search == "true") {
+        Transaction.find(generateSearchTransactionFilter(req))
+          .sort({ transactionDate: -1 })
+          .lean()
+          .exec((err, result) => {
+            if (err !== null) {
+              return res.json({ msg: "Xảy ra lỗi trong quá trình tìm kiếm" });
+            } else {
+              if (result.length >= 1) {
+                result.forEach((transaction) => {
+                  transaction.transactionDate = transaction["transactionDate"]
+                    .toLocaleString("en-GB",{ timeZone: "UTC" })
+                    .replace(",", " -");
+                  transaction.transactionAmount = toMoney(
+                    transaction.transactionAmount
+                  );
+                });
+                return res.json({ dataFound: result.length, result });
+              } else {
+                return res.json({ msg: "Không có kết quả" });
+              }
+            }
+          });
+      } else {
+        return res.json({ msg: "Tìm kiếm không hợp lệ" });
+      }
+    } catch (error) {
+        console.log(error)
+        return res.redirect("/transaction")
+    }
+    
+  },
+
+  viewTransactionDetail: async(req,res) => {
+    try {
+      let user = await User.findOne({ username: req.session.username }).lean();
+      Transaction.findOne({ _id: new ObjectId(req.body.inputTransactionID) })
+        .lean()
+        .exec((err, result) => {
+          if (result !== null) {
+            result.transactionDate = result["transactionDate"]
+              .toLocaleString("en-GB", { timeZone: "UTC" })
+              .replace(",", " -");
+            result.transactionAmount = toMoney(result.transactionAmount);
+            result.transactionFee = toMoney(result.transactionFee);
+            if (result.status.toLowerCase() === "pending") {
+              result.status = "Chờ duyệt";
+            } else if(result.status.toLowerCase() === "fail") {
+              result.status = "Thất bại";
+            }
+            else{result.status = "Thành công";}
+
+            let detailView ="";
+            if(result.transactionType.toLowerCase() === "deposit")
+            {
+              detailView ="userDeposit";
+              result.transactionType ="Nạp tiền"
+            }else if(result.transactionType.toLowerCase() === "withdraw")
+            { detailView = "userWithdraw";
+              result.transactionType ="Rút tiền"}
+            else if(result.transactionType.toLowerCase() === "transfer")
+            {
+              detailView = "userTransfer" 
+              result.transactionType ="Chuyển tiền"}
+            else if(result.transactionType.toLowerCase() === "buy")
+            {
+              detailView = "userBuy"
+              result.transactionType ="Mua thẻ"}
+            else{
+              detailView = "userReceive"
+              result.transactionType ="Nhận tiền"}
+
+            return res.render("./userTransactionDetail/"+detailView, {
+              layout: "main",
+              user,
+              accountStatus: req.session.accountStatus,
+              TransactionData: result,
+            });
+          } else {
+            return res.redirect("/transaction");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+      return res.redirect("/transaction");
+    }
+
+  }
+
 
 };
+
+function generateSearchTransactionFilter(req) {
+  let filter = {};
+  if (req.query.from && req.query.to) {
+    filter.transactionDate = {
+      $gte: new Date(req.query.from),
+      $lt: new Date(req.query.to),
+    };
+  } else if (req.query.from && !req.query.to) {
+    filter.transactionDate = { $gte: new Date(req.query.from) };
+  } else if (!req.query.from && req.query.to) {
+    filter.transactionDate = { $lt: new Date(req.query.to) };
+  }
+  if (req.query.amount && req.query.amount >= 5) {
+    let realAmount = req.query.amount * 1000000;
+    filter.transactionAmount = { $gte: realAmount };
+  }
+
+  return filter;
+}

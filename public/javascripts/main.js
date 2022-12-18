@@ -526,6 +526,63 @@ function searchPendingUser() {
   }
 }
 
+
+function searchActivatedUser() {
+  let searchForm = new FormData(document.getElementById("searchPendingData"));
+  let data = Object.fromEntries(searchForm);
+  let url = "/admin/activated";
+  let firstItem = 0;
+  let tableTbody = document.querySelector("#admin #pending .table #userData");
+  let tableNotification = document.querySelector(
+    "#admin #pending .tableNotification"
+  );
+
+  tableTbody.innerHTML = "";
+  tableNotification.innerHTML = `<div class="spinner-border" role="status" style="color:#000"></div>`;
+  tableNotification.classList.add("InLoading");
+  for (item in data) {
+    if (data[item] !== "") {
+      if (firstItem === 0) {
+        url += `?${item}=${data[item]}`;
+        firstItem = 1;
+      } else {
+        url += `&${item}=${data[item]}`;
+      }
+    }
+  }
+  if (firstItem != 0) {
+    url += "&search=true";
+    fetch(url, { method: "POST" })
+      .then((result) => {
+        return result.json();
+      })
+      .then((JSONResult) => {
+        tableNotification.classList.remove("InLoading");
+        let html = ``;
+        if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
+          JSONResult.result.forEach((row) => {
+            html += `<tr onclick="window.location.href ='/admin/userDetail/${row.username}';">
+                        <td>${row.username}</td>
+                        <td>${row.fullName}</td>
+                        <td>${row.address}</td>
+                        <td>${row.phoneNumber}</td>
+                        <td>${row.email}</td>
+                        <td>${row.createAt}</td>
+                  
+                      </tr>`;
+          });
+          tableNotification.innerHTML = "";
+          tableTbody.innerHTML = html;
+        } else {
+          html = `<div style="color:#000; padding-top: 0.5rem;">${JSONResult.msg}</div>`;
+          tableNotification.innerHTML = html;
+        }
+        history.replaceState("", "", url);
+      });
+  }
+}
+
+
 function searchPendingTransaction() {
   let searchForm = new FormData(document.getElementById("searchPendingData"));
   let data = Object.fromEntries(searchForm);
@@ -621,9 +678,28 @@ function userSearchPendingTransaction() {
         let html = ``;
         if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
           JSONResult.result.forEach((row) => {
+
+            if (row.status.toLowerCase() === "pending") {
+              row.status = "Chờ duyệt";
+            } else if(row.status.toLowerCase() === "fail") {
+              row.status = "Thất bại";
+            }
+            else{row.status = "Thành công";}
+
+            if(row.transactionType.toLowerCase() === "deposit")
+            {
+              row.transactionType ="Nạp tiền"
+            }else if(row.transactionType.toLowerCase() === "withdraw")
+            {row.transactionType ="Rút tiền"}
+            else if(row.transactionType.toLowerCase() === "transfer")
+            {row.transactionType ="Chuyển tiền"}
+            else if(row.transactionType.toLowerCase() === "buy")
+            {row.transactionType ="Mua thẻ"}
+            else{row.transactionType ="Nhận tiền"}
+
             html += `<tr>
                         <td>${row._id}</td>
-                        <td>${row.userID}</td>
+                        <td>${row.transactionType}</td>
                         <td>${row.transactionDate}</td>
                         <td>${row.transactionAmount}</td>
                         <td>${row.status}</td>
@@ -686,4 +762,26 @@ function getUserNameThroughtPhoneNum(phoneNumber)
     receiverNameInput.value = ""
     receiverNameInput.parentElement.style.display = "none"
   }
+}
+
+function getTransactionID(id)
+{
+  let sendForm = document.getElementById("findTransactionDetail")
+  let inputID = document.getElementById("inputTransactionID")
+  inputID.value = id
+  sendForm.submit();
+}
+
+
+
+function networkClickEffect(tag) { 
+    let network = document.querySelectorAll(".network label") 
+    network.forEach((button) => {
+    button.classList.remove("onChooseEffect") })
+    tag.classList.add("onChooseEffect") 
+} 
+function denominationsClickEffect(tag)
+{     let cardValue =document.querySelectorAll(".denominations label") 
+      cardValue.forEach((button) => { button.classList.remove("onChooseEffect")}) 
+      tag.classList.add("onChooseEffect") 
 }

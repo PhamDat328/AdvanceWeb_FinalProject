@@ -1401,8 +1401,8 @@ button {
 }
 
 #admin #pending .toolSearchBar .search-bar-item {
-  margin-right: 2.5rem;
-  width: 30%;
+  margin-right: 2rem;
+  width: 20%;
 }
 #admin #pending .toolSearchBar .search-by {
   width:fit-content;
@@ -1953,7 +1953,7 @@ button {
   margin-top: 1.5rem;
 }
 
-@media screen and (max-width:576px) {
+@media screen and (max-width:700px) {
   #userFunctionForm {
     box-sizing: border-box;
     width: 90%;

@@ -34,19 +34,19 @@ router
   .post(authController.postRegisterPage);
 
 // ----------------------------------------------------------------------------------------------
-//check user is login or not
-router.use(/^((?!\/admin).)*$/gm,(req,res,next) => {
+// //check user is login or not
+// router.use(/^((?!\/admin).)*$/gm,(req,res,next) => {
   
-  if(req.session.isLogin === true)
-  {
-    next();
-  }
-  else
-  {
-    return res.redirect("/logout")
-  }
+//   if(req.session.isLogin === true)
+//   {
+//     next();
+//   }
+//   else
+//   {
+//     return res.redirect("/logout")
+//   }
   
-})
+// })
 
   router
   .route("/changePassword")
@@ -65,7 +65,9 @@ router.route("/getUserNameByPhoneNumber").post(userController.getUserNameByPhone
 router.route("/verifyTransfer").post(userController.makeTransfer)
 
 router.route("/buyphonecard").get(userController.getBuyPhoneCardForm).post(userController.postBuyPhoneCard);
-router.route("/transaction").get(userController.getTransactionHistory);
+router.route("/transaction").get(userController.getTransactionHistory).post(userController.searchTransaction);
+router.route("/transaction/detail").post(userController.viewTransactionDetail)
+
 router.route("/profile").get(userController.getProfile);
 
 module.exports = router;

@@ -33,7 +33,7 @@ router.route("/activated/:username").post(adminController.activated);
 router.route("/cancel/:username").post(adminController.disabled);
 router.route("/addInfo/:username").post(adminController.addInfo);
 
-router.route("/activated").get(adminController.getActive);
+router.route("/activated").get(adminController.getActive).post(adminController.searchActiveUser);
 router.route("/disabled").get(adminController.getDisabled);
 router.route("/userDetail/:username").get(adminController.getUserDetail);
 

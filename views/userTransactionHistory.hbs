@@ -1,4 +1,7 @@
 <div id="admin">
+    <form id="findTransactionDetail" style="display: none;" action="/transaction/detail" method="POST">
+      <input type="hidden"  id="inputTransactionID" name="inputTransactionID">
+    </form>
     <div class="pending-container" id="pending">
    <a
     id ="backToAdminMain"
@@ -69,7 +72,7 @@
       </thead>
       <tbody id="transactionData">
           {{#each pendingTransaction}}
-          <tr onclick="window.location.href =`/`;">
+          <tr onclick="getTransactionID('{{this._id}}')"`>
             <td>{{this._id}}</td>
             <td>{{this.transactionType}}</td>
             <td>{{this.transactionDate}}</td>
