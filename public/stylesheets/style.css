@@ -1399,6 +1399,7 @@ button {
 
 #admin #pending .toolSearchBar .search-bar-item {
   margin-right: 2.5rem;
+  width: 30%;
 }
 
 #admin #pending .toolSearchBar .search-bar-item .search-item-title {
@@ -1418,6 +1419,74 @@ button {
   background-color: gainsboro;
   min-height: 65px;
 }
+
+#admin #pending .btn-search-and-reset {
+  align-self:end;
+}
+
+
+@media screen and (max-width: 950px) {
+  #admin #pending table .address {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #admin #pending table .email,
+  #admin #pending table .address {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  #admin #pending #searchPendingData {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  #admin #pending .toolSearchBar .search-bar-item {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  #admin #pending .toolSearchBar .search-by {
+    width: 50%;
+    margin-bottom: 16px;
+  }
+
+  #admin #pending .btn-search-and-reset {
+    align-self:center;
+  }
+}
+
+
+@media screen and (max-width: 576px) {
+  #admin #pending table .email,
+  #admin #pending table .fullName,
+  #admin #pending table .phoneNumber,
+  #admin #pending table .address {
+    display: none;
+  }
+  #admin #pending #searchPendingData {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  #admin #pending .toolSearchBar .search-bar-item {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  #admin #pending .toolSearchBar .search-by {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  #admin #pending .btn-search-and-reset {
+    align-self:center;
+  }
+}
+
+
+
 
 /* End Admin PendingPage */
 
@@ -1876,7 +1945,7 @@ button {
 
 .entercode {
   margin: auto;
-  width: 25%;
+  width: 420px;
   height: auto;
   border: 1px solid lightgray;
   background: linear-gradient(
@@ -1892,6 +1961,12 @@ button {
   transform: translate3d(-50%, -50%, 0);
   text-shadow: 2px 2px #303030;
   padding: 1rem;
+}
+
+@media screen and (max-width: 576px) {
+  .entercode {
+    width: 320px;
+  }
 }
 
 .title-Verify {
