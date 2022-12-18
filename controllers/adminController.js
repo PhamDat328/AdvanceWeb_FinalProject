@@ -348,11 +348,11 @@ const adminController = {
       });
 
       if (!processedTransaction || !processedAccount) {
-        console.log("error");
+        throw "Thiếu dữ liệu giao dịch và dữ liệu người dùng."
       }
       await processedAccount.updateOne({ //Update account balance
         $inc: {
-          balance:(processedTransaction.transactionAmount +processedTransaction.transactionFee) *-1,
+          balance:-processedTransaction.transactionAmount -processedTransaction.transactionFee ,
         },
       });
       await processedTransaction.updateOne({ //Update transaction status
@@ -361,16 +361,14 @@ const adminController = {
           processedTransaction.transactionAmount
         )}\nPhí rút tiền: ${toMoney(
           processedTransaction.transactionFee
-        )}\nSố dư hiện tại: ${toMoney(
-          parseFloat(processedAccount.balance) -
-            parseFloat(processedTransaction.transactionAmount +processedTransaction.transactionFee)
-        )}`,
+        )}\nSố dư hiện tại: ${toMoney(processedAccount.balance - processedTransaction.transactionAmount -processedTransaction.transactionFee)}`,
       });
       return res.redirect("/admin/transactionApproval/withdraw");
 
       // console.log(pendingWithdraw.obj)
     } catch (error) {
       console.log(error);
+      return res.redirect("/admin/transactionApproval/withdraw");
     }
   },
 

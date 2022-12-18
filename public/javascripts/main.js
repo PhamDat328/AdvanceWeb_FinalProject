@@ -582,6 +582,67 @@ function searchPendingTransaction() {
       });
   }
 }
+
+
+function userSearchPendingTransaction() {
+  let searchForm = new FormData(document.getElementById("searchPendingData"));
+  let data = Object.fromEntries(searchForm);
+  let url = "/transaction";
+  let firstItem = 0;
+  let tableTbody = document.querySelector(
+    "#admin #pending .table #transactionData"
+  );
+  let tableNotification = document.querySelector(
+    "#admin #pending .tableNotification"
+  );
+
+  tableTbody.innerHTML = "";
+  tableNotification.innerHTML = `<div class="spinner-border" role="status" style="color:#000"></div>`;
+  tableNotification.classList.add("InLoading");
+
+  for (item in data) {
+    if (data[item] !== "") {
+      if (firstItem === 0) {
+        url += `?${item}=${data[item]}`;
+        firstItem = 1;
+      } else {
+        url += `&${item}=${data[item]}`;
+      }
+    }
+  }
+  if (firstItem != 0) {
+    url += "&search=true";
+    fetch(url, { method: "POST" })
+      .then((result) => {
+        return result.json();
+      })
+      .then((JSONResult) => {
+        tableNotification.classList.remove("InLoading");
+        let html = ``;
+        if (JSONResult.dataFound && JSONResult.dataFound >= 1) {
+          JSONResult.result.forEach((row) => {
+            html += `<tr>
+                        <td>${row._id}</td>
+                        <td>${row.userID}</td>
+                        <td>${row.transactionDate}</td>
+                        <td>${row.transactionAmount}</td>
+                        <td>${row.status}</td>
+                      </tr>
+                      `;
+          });
+          tableNotification.innerHTML = "";
+          tableTbody.innerHTML = html;
+        } else {
+          html = `<div style="color:#000; padding-top: 0.5rem;">${JSONResult.msg}</div>`;
+          tableNotification.innerHTML = html;
+        }
+        history.replaceState("", "", url);
+      });
+  }
+}
+
+
+
 function withdrawFee (amount)
   {
     let displayFee = document.getElementById("withdrawFeeValue")

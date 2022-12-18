@@ -6,14 +6,17 @@ const adminController = require("../controllers/adminController");
 
 //check if user is admin or not
 router.use((req,res,next) => {
-  
-  if(req.session.admin && req.session.isLogin)
+  if(req.session.admin === true && req.session.isLogin === true)
   {
     next();
   }
   else
   {
-    return res.redirect("/login")
+    if(!req.session.isLogin || req.session.isLogin === false)
+    {
+      return res.redirect("/logout")
+    }
+    return res.redirect("/")
   }
   
 })

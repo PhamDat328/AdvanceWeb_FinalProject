@@ -43,7 +43,7 @@ function backToInputForm(view, user, res, error, dataBag,req) {
   return res.render(view, option);
 }
 
-function makeDeposit(user, userAccount, req, res, error, dataBag) {
+async function makeDeposit(user, userAccount, req, res, error, dataBag) {
   if (parseFloat(req.body.amount) <= 0) {
     error.isError = true;
     error.errorMessage = "Số tiền giao dịch không hợp lệ";
@@ -59,7 +59,7 @@ function makeDeposit(user, userAccount, req, res, error, dataBag) {
           "Có lỗi xảy ra trong quá trình thực hiện. Vui lòng thử lại.<br>";
         return backToInputForm("deposit", user, res, error, dataBag,req);
       } else {
-        Transaction.create({
+        await Transaction.create({
           userID: user.username,
           transactionType: "Deposit",
           transactionDate: generateLocalDate(),
@@ -77,7 +77,7 @@ function makeDeposit(user, userAccount, req, res, error, dataBag) {
   );
 }
 
-function makeWithdraw(
+async function makeWithdraw(
   user,
   userAccount,
   req,
@@ -95,7 +95,7 @@ function makeWithdraw(
   if (parseFloat(req.body.amount) < 5000000) {
     Account.updateOne(
       { username: user.username },
-      { $inc: { balance: (amountWithFee * -1) } },
+      { $inc: { balance: (amountWithFee * -1), remainWithDrawPerDay: -1 } },
       async (err, result) => {
         if (err || result["modifiedCount"] < 1) {
           error.isError = true;
@@ -103,7 +103,7 @@ function makeWithdraw(
             "Có lỗi xảy ra trong quá trình thực hiện. Vui lòng thử lại.<br>";
           return backToInputForm("withdraw", user, res, error, dataBag,req);
         } else {
-          Transaction.create({
+          await Transaction.create({
             userID: user.username,
             transactionType: "Withdraw",
             transactionDate: generateLocalDate(),
@@ -124,7 +124,8 @@ function makeWithdraw(
       }
     );
   } else {
-    Transaction.create({
+    await Account.updateOne({ username: user.username },{ $inc: {remainWithDrawPerDay: -1 }})
+    await Transaction.create({
       userID: user.username,
       transactionType: "Withdraw",
       transactionDate: generateLocalDate(),
@@ -391,10 +392,48 @@ module.exports = {
       const accessToken = req.cookies.accessToken;
       const verifyToken = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
       let user = await User.findOne({ username: verifyToken.data.username });
-      return res.render("transaction", {
+      let userTransaction = await Transaction.find({userID: user.username})
+      .sort({ transactionDate: -1 })
+      .lean()
+      
+      let noData = {
+        status: true,
+        msg: "Không có giao dịch cần duyệt",
+      };
+      if (userTransaction.length >= 1) {
+        userTransaction.forEach((transaction) => {
+          transaction.transactionDate = transaction["transactionDate"]
+            .toLocaleString("en-GB", { timeZone: "UTC" })
+            .replace(",", " -");
+          transaction.transactionAmount = toMoney(
+            transaction.transactionAmount
+          );
+          if (transaction.status.toLowerCase() === "pending") {
+            transaction.status = "Chờ duyệt";
+          } else if(transaction.status.toLowerCase() === "fail") {
+            transaction.status = "Thất bại";
+          }
+          else{transaction.status = "Thành công";}
+
+          if(transaction.transactionType.toLowerCase() === "deposit")
+          {
+            transaction.transactionType ="Nạp tiền"
+          }else if(transaction.transactionType.toLowerCase() === "withdraw")
+          {transaction.transactionType ="Rút tiền"}
+          else if(transaction.transactionType.toLowerCase() === "transfer")
+          {transaction.transactionType ="Chuyển tiền"}
+          else if(transaction.transactionType.toLowerCase() === "buy")
+          {transaction.transactionType ="Mua thẻ"}
+          else{transaction.transactionType ="Nhận tiền"}
+        });
+        noData.status = false;
+      }
+      return res.render("userTransactionHistory", {
         layout: "main",
         user: user.toObject(),
         transactionButton: true,
+        noData: noData,
+        pendingTransaction: userTransaction,
         accountStatus:req.session.accountStatus
       });
     }

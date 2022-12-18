@@ -35,26 +35,18 @@ router
 
 // ----------------------------------------------------------------------------------------------
 //check user is login or not
-// router.use((req,res,next) => {
+router.use(/^((?!\/admin).)*$/gm,(req,res,next) => {
   
-//   if(req.session.isLogin)
-//   {
-//     if(req.session.admin)
-//     {
-//       return res.redirect("/admin")
-//     }
-//     else
-//     {
-//       next()
-//     }
-//   }
-//   else
-//   {
-//     req.session.destroy()
-//     return res.redirect("/login")
-//   }
+  if(req.session.isLogin === true)
+  {
+    next();
+  }
+  else
+  {
+    return res.redirect("/logout")
+  }
   
-// })
+})
 
   router
   .route("/changePassword")

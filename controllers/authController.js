@@ -511,7 +511,7 @@ const authController = {
                 username: user.username,
             }).select("balance");
             
-            if (user.admin) {
+            if (user.admin === true) {
                 req.session.admin = true;
                 return res.redirect("/admin")
             }

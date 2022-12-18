@@ -24,7 +24,7 @@
                     <div style="text-align: center;color: red;font-weight: 700; margin:2rem auto;">{{message}}</div>
                     <div class="content" style="padding-top:0.5rem;">     
                         <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#confirmModal-{{pendingTransaction._id}}">Duyệt</button>        
-                        <button class="btn btn-danger">Từ chối</button>                       
+                        <button class="btn btn-danger" data-bs-toggle="modal"  data-bs-target="#cancelModal-{{pendingTransaction._id}}">Từ chối</button>                       
                     </div>
                 </div>
             </div>
@@ -73,3 +73,39 @@ aria-hidden="true"
         </div>
     </form>
 </div>
+
+ <div
+            class="modal pending-modal fade"
+            id="cancelModal-{{pendingTransaction._id}}"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <form action="/admin/transaction/withdraw/cancel/{{pendingTransaction._id}}" method="POST">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cancel Modal</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="transactionID" value="{{pendingTransaction._id}}">
+                    Xác nhận hủy giao dịch <strong>{{pendingTransaction._id}}</strong> ? 
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >Đóng</button>
+                    <button type="submit" class="btn btn-danger">Hủy</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
