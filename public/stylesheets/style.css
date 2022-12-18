@@ -742,9 +742,12 @@ footer {
   bottom: 0;
   width: 100%;
   height: 70px;
-  background: aqua;
+  background: rgb(134, 136, 136);
   margin-top: 20px;
+  text-align: center;
+  line-height: 70px;
 }
+
 
 /* Start home page responsive */
 
@@ -1857,16 +1860,22 @@ button {
 
 #userFunctionForm {
   width: 600px;
-  margin: auto;
   color: black;
   margin-top: 50px;
+  margin: 0 auto;
   box-shadow: rgb(38 57 77) 0px 20px 35px -5px;
   border-radius: 10px;
   background-color: #fff;
 }
 
+
+
 #userFunctionForm .form-content {
   padding: 2.5rem 3rem 2rem;
+}
+
+.container {
+  padding: 0;
 }
 
 #userFunctionForm h2 {
@@ -1893,10 +1902,13 @@ button {
   width: 200px;
   padding-right: 2rem;
 }
-
 #userFunctionForm input {
   width: 80%;
 }
+
+
+
+
 
 #userFunctionForm .form-group {
   line-height: 2rem;
@@ -1941,11 +1953,42 @@ button {
   margin-top: 1.5rem;
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width:576px) {
+  #userFunctionForm {
+    box-sizing: border-box;
+    width: 90%;
+    margin: 0 auto;
+    color: black;
+    margin-top: 50px;
+    margin-right: 20px;
+    box-shadow: rgb(38 57 77) 0px 20px 35px -5px;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+  #userFunctionForm .user__form__icon img {
+    width: 130px;
+    padding: 0;
+    margin: 0 auto;
+  }
+  #userFunctionForm input {
+    width: 85%;
+  }
+  #userFunctionForm .form-content {
+    padding: 2.5rem 0rem 2rem 0rem;
+  }
+
+  #userFunctionForm .option {
+    justify-content: space-evenly;
+    
+    /* padding-left: 1rem; */
+  }
+}
+
+/* @media screen and (max-width: 576px) {
   #userFunctionForm {
     width: 100% !important;
   }
-}
+} */
 
 /* End User Function CSS */
 
@@ -2283,6 +2326,8 @@ button {
   width: 800px;
 }
 
+
+
 #buyPhoneCardForm .denominations,
 #buyPhoneCardForm .network {
   display: flex;
@@ -2326,6 +2371,81 @@ button {
 
 .onChooseEffect{
   border: 4px solid #50a3fa !important;
+}
+
+@media screen and (max-width: 576px) {
+  #buyPhoneCardForm h5 {
+    margin-left: 8px;
+  }
+  #buyPhoneCardForm #userFunctionForm {
+    width: 95%;
+    margin: 0 auto;
+  }
+  #buyPhoneCardForm #userFunctionForm .form-group {
+    padding: 5px;
+  }
+  
+  #buyPhoneCardForm .denominations label,
+  #buyPhoneCardForm .network label {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 40px;
+    padding: 0.75rem 2px;
+    border-radius: 6px;
+    border: #c9c9c9 1px solid;
+    box-shadow: rgb(84 84 84) 0px 5px 6px 0px;
+    cursor: pointer;
+    transition: 0.5;
+  }
+  #buyPhoneCardForm .network label {
+    margin-left: 10px;
+  }
+
+  #buyPhoneCardForm .denominations {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 400px) {
+  #buyPhoneCardForm h5 {
+    margin-left: 8px;
+  }
+  #buyPhoneCardForm #userFunctionForm {
+    width: 95%;
+    margin: 0 auto;
+  }
+  #buyPhoneCardForm #userFunctionForm .form-group {
+    padding: 5px;
+  }
+  
+  #buyPhoneCardForm .denominations label,
+  #buyPhoneCardForm .network label {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 40px;
+    padding: 0.75rem 2px;
+    border-radius: 6px;
+    border: #c9c9c9 1px solid;
+    box-shadow: rgb(84 84 84) 0px 5px 6px 0px;
+    cursor: pointer;
+    transition: 0.5;
+  }
+  #buyPhoneCardForm .network label {
+    margin-left: 10px;
+  }
+
+  #buyPhoneCardForm .denominations {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #buyPhoneCardForm #userFunctionForm .form-group {
+    width: 30%;
+  }
 }
 
 /*-------------------------------------------------- Admin view account detail ----------------------------------------------------- */
