@@ -4,6 +4,19 @@ const router = express.Router();
 const adminController = require("../controllers/adminController");
 
 
+//check if user is admin or not
+router.use((req,res,next) => {
+  
+  if(req.session.admin && req.session.isLogin)
+  {
+    next();
+  }
+  else
+  {
+    return res.redirect("/login")
+  }
+  
+})
 
 router.route("/").get(adminController.getAdminHomePage)
 

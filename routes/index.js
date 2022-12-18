@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");
 const User = require("../models/User");
+const { route } = require("./users");
 
 /* GET home page. */
 
@@ -33,6 +34,27 @@ router
   .post(authController.postRegisterPage);
 
 // ----------------------------------------------------------------------------------------------
+//check user is login or not
+// router.use((req,res,next) => {
+  
+//   if(req.session.isLogin)
+//   {
+//     if(req.session.admin)
+//     {
+//       return res.redirect("/admin")
+//     }
+//     else
+//     {
+//       next()
+//     }
+//   }
+//   else
+//   {
+//     req.session.destroy()
+//     return res.redirect("/login")
+//   }
+  
+// })
 
   router
   .route("/changePassword")

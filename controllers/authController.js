@@ -509,9 +509,10 @@ const authController = {
 
             let currentUserAcount = await Account.findOne({
                 username: user.username,
-            });
+            }).select("balance");
             
             if (user.admin) {
+                req.session.admin = true;
                 return res.redirect("/admin")
             }
             return res.render("index", {
